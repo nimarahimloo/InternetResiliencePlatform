@@ -59,6 +59,16 @@ jobs:
           xcodebuild -version
           swift --version
 
+      - name: Install and verify selected Xcode iOS platform
+        run: |
+          set -euo pipefail
+          # Hosted images may retain Xcode without its matching iOS platform.
+          # Install it for the selected toolchain; the full simulator build
+          # remains mandatory and a failed platform download fails this job.
+          xcodebuild -downloadPlatform iOS
+          xcrun --sdk iphonesimulator --show-sdk-version
+          xcodebuild -showsdks
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
