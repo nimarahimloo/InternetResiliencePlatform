@@ -55,8 +55,18 @@ describe('production certification report checksum', () => {
         readFileSync(join(outputDir, 'certification-report.json'), 'utf8'),
       );
       expect(report.verdict).toBe('PENDING');
-      expect(typeof report.generatedAt).toBe('string');
+      // `generatedAt` lives on the run envelope (certification-run.json), not
+      // the deterministic canonical report — the report is byte-stable for a
+      // given source tree.
+      expect(report.generatedAt).toBeUndefined();
+      expect(typeof report.sourceFingerprint).toBe('string');
       expect(Array.isArray(report.checks)).toBe(true);
+      // The run envelope carries the per-run generatedAt timestamp.
+      const envelope = JSON.parse(
+        readFileSync(join(outputDir, 'certification-run.json'), 'utf8'),
+      );
+      expect(typeof envelope.generatedAt).toBe('string');
+      expect(typeof envelope.commitSha).toBe('string');
     } finally {
       rmSync(outputDir, { recursive: true, force: true });
     }

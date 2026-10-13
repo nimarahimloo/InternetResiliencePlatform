@@ -28,27 +28,28 @@ const gitHeadSha = async () => {
  */
 const sourceContentHash = async () => {
   try {
+    // `git ls-files -s` gives us (mode, sha, stage, path) for every tracked file
+    // in a single subprocess, so we do not need one `git hash-object` spawn per
+    // file. `:!!` is the negation prefix (paths excluded below `artifacts/`).
     const ls = (
-      await execFileAsync('git', ['ls-files', '--full-name', '--', '.', ':!artifacts'], {
-        cwd: process.cwd(),
-        maxBuffer: 64 * 1024 * 1024,
-      })
+      await execFileAsync(
+        ['ls-files', '-s', '--full-name', '--', '.', ':!artifacts'],
+        { cwd: process.cwd(), maxBuffer: 64 * 1024 * 1024 },
+      )
     ).stdout
       .toString()
       .split('\n')
-      .filter((p) => p.length > 0)
-      .sort();
+      .map((line) => {
+        // Format: `100644 <sha> 0\t<path>`
+        const m = line.match(/^(\d+) ([0-9a-f]+) (\d+)\t(.+)$/);
+        if (!m) return null;
+        return { sha: m[2], rel: m[4] };
+      })
+      .filter((r) => r !== null);
     if (ls.length === 0) return undefined;
+    ls.sort((a, b) => (a.rel < b.rel ? -1 : a.rel > b.rel ? 1 : 0));
     const digest = createHash('sha256');
-    for (const rel of ls) {
-      const sha = (
-        await execFileAsync('git', ['hash-object', rel], {
-          cwd: process.cwd(),
-          maxBuffer: 64 * 1024 * 1024,
-        })
-      ).stdout
-        .toString()
-        .trim();
+    for (const { rel, sha } of ls) {
       digest.update(`${rel}\n${sha}\n`);
     }
     return digest.digest('hex');
