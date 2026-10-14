@@ -10,6 +10,7 @@
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
 - **Phase 78 status:** the bounded closed-loop controller is implemented and present on `main`.
 - **Issue #13 progress (this run):** acceptance contracts for Phases 79–83 formalized and merged (PR #22). Phase matrix regenerated on current HEAD to reflect contracts; dispositions remain PARTIAL pending full verification evidence. No COMPLETE claimed from documentation alone.
+- **Matrix probe fix (this run):** phase_matrix.py PLATFORM_GLOBALS extended to ignore language builtins (RangeError etc.); Phase 78 disposition corrected to COMPLETE on current HEAD after regeneration.
 - **Release state:** Phase 71 release-contract evidence exists: GitHub Release [v0.2.1](https://github.com/nimarahimloo/InternetResiliencePlatform/releases/tag/v0.2.1). Production certification (roadmap Step 6) remains open.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–78, but it must not be represented as certified until its evidence exists.
 - **Post-70 roadmap:** `docs/roadmap/MASTER_ROADMAP_V2.md` remains architectural reference material for Phases 72–150. Phase 79–83 contract definition is authorized by issue #13 for existing capability mapping only. Phases 84–150 remain unauthorized for implementation until issue #14 contracts and explicit PROJECT_STATE authorization exist.

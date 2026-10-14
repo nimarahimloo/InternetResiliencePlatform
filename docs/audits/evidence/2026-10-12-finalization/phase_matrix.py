@@ -68,7 +68,7 @@ def package_of(path):
 
 
 NATIVE_FILES = [f for f in TRACKED if re.search(r'\.(swift|kt|java)$', f)]
-PLATFORM_GLOBALS = {'AbortSignal', 'AbortController', 'Promise', 'Error', 'Date', 'Map', 'Set', 'Buffer', 'URL'}
+PLATFORM_GLOBALS = {"AbortSignal", "AbortController", "Promise", "Error", "RangeError", "TypeError", "SyntaxError", "ReferenceError", "Date", "Map", "Set", "Buffer", "URL", "Array", "Object", "String", "Number", "Boolean"}
 
 
 def native_package(f):
