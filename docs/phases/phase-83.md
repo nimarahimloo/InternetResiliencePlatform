@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7` in intent arbitration and API conflict surfaces. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only.
+**Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `01cf1282cd89d9c7e2ba162b14a003d4b3e20251` in intent arbitration and API conflict surfaces. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only.
 
 ## Objective
 
@@ -51,7 +51,7 @@ Detect and deterministically resolve conflicts between multiple effective intent
 
 Source presence is not completion. Phase 83 completion requires mapped paths, green tests/CI on a recorded SHA, and matrix update only from evidence regeneration.
 
-## Evidence map (baseline SHA `decd921`)
+## Evidence map (baseline SHA `01cf128`)
 
 | Criterion | Location |
 |-----------|----------|

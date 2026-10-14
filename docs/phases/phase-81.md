@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7`. This phase document defines the acceptance contract and maps existing code/tests. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is regenerated from evidence (not documentation alone).
+**Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `01cf1282cd89d9c7e2ba162b14a003d4b3e20251`. This phase document defines the acceptance contract and maps existing code/tests. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is regenerated from evidence (not documentation alone).
 
 ## Objective
 
@@ -52,7 +52,7 @@ Source presence is not completion. Phase 81 completion requires:
 - Green package/unit test run (or CI workflow URL) on a recorded SHA.
 - Phase matrix update only after evidence regeneration (see issue #12/#13 process).
 
-## Evidence map (baseline SHA `decd921`)
+## Evidence map (baseline SHA `01cf128`)
 
 | Criterion | Location |
 |-----------|----------|

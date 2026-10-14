@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized (issue #13).** Implementation fragments already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7` under intent governance and autonomy enforcement. This phase document defines the acceptance contract and maps existing code/tests. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and remaining policy-engine gaps (if any) are closed without creating a second authority.
+**Contract formalized (issue #13).** Implementation fragments already present on `main` at baseline SHA `01cf1282cd89d9c7e2ba162b14a003d4b3e20251` under intent governance and autonomy enforcement. This phase document defines the acceptance contract and maps existing code/tests. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and remaining policy-engine gaps (if any) are closed without creating a second authority.
 
 ## Objective
 
@@ -50,7 +50,7 @@ Decide whether a compiled intent (or set of candidates) may be admitted for plan
 
 Source presence is not completion. Phase 82 completion requires mapped paths, green tests/CI evidence on a recorded SHA, and phase-matrix update only from regenerated evidence.
 
-## Evidence map (baseline SHA `decd921`)
+## Evidence map (baseline SHA `01cf128`)
 
 | Criterion | Location |
 |-----------|----------|
