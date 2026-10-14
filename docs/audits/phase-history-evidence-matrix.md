@@ -44,9 +44,9 @@ The table below preserves the 70-phase historical/v1 product contract. Current p
 | Current phase | Product contract                                           | Current evidence state                           | Canonical record                     |
 | ------------: | ---------------------------------------------------------- | ------------------------------------------------ | ------------------------------------ |
 |            00 | Reproducible bootstrap and repository baseline             | `recorded`                                       | `docs/phases/phase-00.md`            |
-|            01 | Core infrastructure and lifecycle/config/logging contracts | `historical-evidence`                            | pending reconstruction               |
-|            02 | Quality, type, lint, test and validation baseline          | `historical-evidence`                            | pending reconstruction               |
-|            03 | Reproducible CI/CD verification and release pipeline       | `historical-evidence`                            | pending reconstruction               |
+|            01 | Core infrastructure and lifecycle/config/logging contracts | `mapped`                                         | `docs/phases/phase-01.md`          |
+|            02 | Quality, type, lint, test and validation baseline          | `mapped`                                         | `docs/phases/phase-02.md`          |
+|            03 | Reproducible CI/CD verification and release pipeline       | `mapped`                                         | `docs/phases/phase-03.md`          |
 |            04 | Architecture boundaries and module contracts               | `historical-evidence`                            | pending reconstruction               |
 |            05 | Bounded shared scheduling/retry/cache/concurrency services | `historical-evidence`                            | pending reconstruction               |
 |            06 | Portable network primitives                                | `historical-evidence`                            | pending reconstruction               |
