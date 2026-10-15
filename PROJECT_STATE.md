@@ -11,10 +11,10 @@
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
 - **Phase 78 status:** the bounded closed-loop controller is implemented and present on `main`.
 - **Issue #13 progress:** acceptance contracts for Phases 79–83 formalized and merged (PR #22). Phase matrix regenerated; dispositions remain PARTIAL pending full verification evidence. No COMPLETE claimed from documentation alone.
-- **Issue #14 progress (this branch):** Phase 84 — Safety Constraints & Change Governance acceptance contract formalized in `docs/phases/phase-84.md`. Dispositions remain PARTIAL. Implementation of gaps not yet authorized; subsequent phases 85–150 still require contracts.
+- **Issue #14 progress (this branch):** Phase 84 — Safety Constraints & Change Governance and Phase 85 — Intent Assurance & Drift Management acceptance contracts formalized in `docs/phases/phase-84.md` and `docs/phases/phase-85.md`. Group B (79–85) contracts are complete at documentation level. Dispositions remain PARTIAL. Implementation of gaps not yet authorized; Groups C–L (Phases 86–150) still require contracts.
 - **Release state:** Phase 71 release-contract evidence exists: GitHub Release [v0.2.1](https://github.com/nimarahimloo/InternetResiliencePlatform/releases/tag/v0.2.1). Production certification (roadmap Step 6) remains open.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–78, but it must not be represented as certified until its evidence exists.
-- **Post-70 roadmap:** `docs/roadmap/MASTER_ROADMAP_V2.md` remains architectural reference material for Phases 72–150. Phase 79–83 contract definition is authorized by issue #13 for existing capability mapping only. Phase 84 contract is formalized under issue #14. Phases 85–150 remain unauthorized for implementation until further contracts and explicit PROJECT_STATE authorization exist.
+- **Post-70 roadmap:** `docs/roadmap/MASTER_ROADMAP_V2.md` remains architectural reference material for Phases 72–150. Phase 79–83 contract definition is authorized by issue #13. Phases 84–85 contracts are formalized under issue #14. Phases 86–150 remain unauthorized for implementation until further contracts and explicit PROJECT_STATE authorization exist.
 
 ## Phase 78 objective
 
@@ -41,7 +41,7 @@ The Phase 71 gate is limited to the release/distribution contract defined by `do
 - Release path and blockers: `docs/release/RELEASE_GATE_ROADMAP.md`.
 - Current post-70 roadmap: `docs/roadmap/MASTER_ROADMAP_V2.md`.
 - Historical 0–70 roadmap: `ROADMAP.md`.
-- Current phase records: `docs/phases/` (including formalized Phase 79–83 contracts under issue #13 and Phase 84 under issue #14).
+- Current phase records: `docs/phases/` (including formalized Phase 79–83 under issue #13 and Phases 84–85 under issue #14).
 - Engineering governance: `docs/architecture/engineering-governance.md`.
 
 ## Product objective
@@ -49,4 +49,4 @@ The Phase 71 gate is limited to the release/distribution contract defined by `do
 IRP's long-term objective is a safe, observable and policy-governed Internet control plane that can continuously measure network conditions, diagnose failures, select and apply bounded changes, verify the result, recover from failure and explain decisions across supported clients and network providers.
 
 - **Issue #12 progress (2026-10-14):** Acceptance evidence register extended through Phases 1–38. History matrix set to mapped for all 1–38. Dispositions remain PARTIAL pending fresh CI evidence. No COMPLETE claimed from documentation alone.
-- **Issue #14 progress (2026-10-15):** Phase 84 acceptance contract formalized. Remaining phases 85–150 require contracts before implementation authorization.
+- **Issue #14 progress (2026-10-15):** Phases 84–85 acceptance contracts formalized. Group B documentation-level contracts complete. Remaining phases 86–150 require contracts before implementation authorization.
