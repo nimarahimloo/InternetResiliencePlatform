@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "sourceSha": "ad822e66b3ddc29d7bda0194f9c6237d6bf26867",
+  "sourceSha": "19392bc72870227a7034fe69746da79b60f9d8db",
   "summary": {
-    "PARTIAL": 53,
-    "COMPLETE": 27,
+    "PARTIAL": 52,
+    "COMPLETE": 28,
     "BLOCKED": 3,
     "NOT STARTED": 67
   },
@@ -353,16 +353,20 @@
     {
       "phase": 39,
       "title": "device identity and scoped sessions",
-      "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'IMPLEMENTED / verification state inherited from current repository gates'); implementation cannot be mapped to tests.",
+      "disposition": "COMPLETE",
+      "justification": "Phase contract docs/phases/phase-39.md; all 4 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/auth) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
       "probe": {
         "doc": "docs/phases/phase-39.md",
         "recordedStatus": "IMPLEMENTED / verification state inherited from current repository gates",
-        "resolvedReferences": 0,
+        "resolvedReferences": 4,
         "missingReferences": [],
-        "packages": [],
+        "packages": [
+          "@irp/auth"
+        ],
         "nativeSources": [],
-        "packagesWithPassingTests": []
+        "packagesWithPassingTests": [
+          "@irp/auth"
+        ]
       }
     },
     {

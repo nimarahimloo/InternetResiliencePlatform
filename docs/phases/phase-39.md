@@ -63,3 +63,11 @@ Failure-path verification must cover invalid, expired and revoked device credent
 - Remote-client API integration: [`phase-42.md`](phase-42.md)
 - Current project truth: [`../../PROJECT_STATE.md`](../../PROJECT_STATE.md)
 - 70-phase execution contract: [`../architecture/product-roadmap-70-phases.md`](../architecture/product-roadmap-70-phases.md)
+
+## Canonical implementation references
+
+- Package: `@irp/auth`
+- Path: `packages/auth/src/client-security.ts`
+- Symbol: `DeviceCredentialService`
+- Tests: `packages/auth/src/client-security.test.ts` (covers credential lifecycle, refresh replay, scope validation, audit bounds and secret redaction)
+- Owning package tests recorded as passed in `docs/audits/evidence/2026-10-12-finalization/test-counts.tsv` (`@irp/auth` 14 passed)
