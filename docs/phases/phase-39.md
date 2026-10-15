@@ -63,3 +63,11 @@ Failure-path verification must cover invalid, expired and revoked device credent
 - Remote-client API integration: [`phase-42.md`](phase-42.md)
 - Current project truth: [`../../PROJECT_STATE.md`](../../PROJECT_STATE.md)
 - 70-phase execution contract: [`../architecture/product-roadmap-70-phases.md`](../architecture/product-roadmap-70-phases.md)
+
+
+## Verification anchors
+
+- Package: `@irp/auth`
+- Paths: `packages/auth/src/client-security.ts`, `packages/auth/src/client-security.test.ts`
+- API integration (Phase 42 boundary): `apps/api/src/remote-client-api.ts`
+- Recorded tests: `@irp/auth` 14 passed (see test-counts.tsv)

@@ -77,3 +77,10 @@ For pull requests, also run the repository Docker smoke test. Phase completion r
 ## Architectural boundary
 
 The registry is an inventory/control-plane component. It must remain independent from tunnel execution and network decisioning. Later phases consume this contract rather than creating parallel gateway models.
+
+
+## Verification anchors
+
+- Package: `@irp/gateway-registry`
+- Paths: `packages/gateway-registry/src/`
+- Recorded tests: `@irp/gateway-registry` 59 passed (see test-counts.tsv)

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "sourceSha": "9ee3df458dc89c0c1485cda98c0b16aade4d2ae2",
+  "sourceSha": "ad822e66b3ddc29d7bda0194f9c6237d6bf26867",
   "summary": {
-    "PARTIAL": 54,
-    "COMPLETE": 26,
+    "PARTIAL": 50,
+    "COMPLETE": 30,
     "BLOCKED": 3,
     "NOT STARTED": 67
   },
@@ -353,16 +353,22 @@
     {
       "phase": 39,
       "title": "device identity and scoped sessions",
-      "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'IMPLEMENTED / verification state inherited from current repository gates'); implementation cannot be mapped to tests.",
+      "disposition": "COMPLETE",
+      "justification": "Phase contract docs/phases/phase-39.md; all 4 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/api, @irp/auth) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
       "probe": {
         "doc": "docs/phases/phase-39.md",
         "recordedStatus": "IMPLEMENTED / verification state inherited from current repository gates",
-        "resolvedReferences": 0,
+        "resolvedReferences": 4,
         "missingReferences": [],
-        "packages": [],
+        "packages": [
+          "@irp/api",
+          "@irp/auth"
+        ],
         "nativeSources": [],
-        "packagesWithPassingTests": []
+        "packagesWithPassingTests": [
+          "@irp/api",
+          "@irp/auth"
+        ]
       }
     },
     {
@@ -421,31 +427,41 @@
     {
       "phase": 43,
       "title": "signed replay-resistant probe federation",
-      "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: ''); implementation cannot be mapped to tests.",
+      "disposition": "COMPLETE",
+      "justification": "Phase contract docs/phases/phase-43.md; all 3 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/api, @irp/resilience-runtime) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
       "probe": {
         "doc": "docs/phases/phase-43.md",
         "recordedStatus": "",
-        "resolvedReferences": 0,
+        "resolvedReferences": 3,
         "missingReferences": [],
-        "packages": [],
+        "packages": [
+          "@irp/api",
+          "@irp/resilience-runtime"
+        ],
         "nativeSources": [],
-        "packagesWithPassingTests": []
+        "packagesWithPassingTests": [
+          "@irp/api",
+          "@irp/resilience-runtime"
+        ]
       }
     },
     {
       "phase": 44,
       "title": "analytics summaries, trends and anomalies",
-      "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'Implementation present; final CI/runtime verification gate required before completion.'); implementation cannot be mapped to tests.",
+      "disposition": "COMPLETE",
+      "justification": "Phase contract docs/phases/phase-44.md; all 3 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/historical-analysis) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
       "probe": {
         "doc": "docs/phases/phase-44.md",
         "recordedStatus": "Implementation present; final CI/runtime verification gate required before completion.",
-        "resolvedReferences": 0,
+        "resolvedReferences": 3,
         "missingReferences": [],
-        "packages": [],
+        "packages": [
+          "@irp/historical-analysis"
+        ],
         "nativeSources": [],
-        "packagesWithPassingTests": []
+        "packagesWithPassingTests": [
+          "@irp/historical-analysis"
+        ]
       }
     },
     {
@@ -470,16 +486,20 @@
     {
       "phase": 46,
       "title": "authorized gateway inventory",
-      "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'Implementation:** complete on the phase branch.'); implementation cannot be mapped to tests.",
+      "disposition": "COMPLETE",
+      "justification": "Phase contract docs/phases/phase-46.md; all 1 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/gateway-registry) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
       "probe": {
         "doc": "docs/phases/phase-46.md",
         "recordedStatus": "Implementation:** complete on the phase branch.",
-        "resolvedReferences": 0,
+        "resolvedReferences": 1,
         "missingReferences": [],
-        "packages": [],
+        "packages": [
+          "@irp/gateway-registry"
+        ],
         "nativeSources": [],
-        "packagesWithPassingTests": []
+        "packagesWithPassingTests": [
+          "@irp/gateway-registry"
+        ]
       }
     },
     {

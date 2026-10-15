@@ -426,7 +426,7 @@ python3 docs/audits/evidence/2026-10-12-finalization/phase_matrix.py
 
 ## Remaining work
 
-Phases 1–38 evidence register is now complete for mapping. Dispositions remain PARTIAL until fresh per-phase CI evidence is attached and acceptance criteria are fully verified at HEAD.
+Phases 1–38 evidence register is complete for mapping (dispositions remain PARTIAL pending fresh CI). Additional Phase 39/43/44/46 contracts received verification anchors and were promoted to COMPLETE by the matrix probe on current HEAD (recorded tests). Remaining unmapped PARTIAL contracts still require path citations; fresh per-phase CI URLs remain pending for all PARTIAL phases.
 
 ## Regeneration
 

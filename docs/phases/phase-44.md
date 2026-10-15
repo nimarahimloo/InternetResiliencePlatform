@@ -90,3 +90,10 @@ Consumes historical/federated evidence from Phases 28–29 and 43. Feeds later d
 ## Definition of Done
 
 Implementation, shared contracts, API integration, tests, documentation, changelog/state synchronization, and final CI/runtime evidence must agree. Source presence alone is not completion evidence.
+
+
+## Verification anchors
+
+- Package: `@irp/historical-analysis`
+- Paths: `packages/historical-analysis/src/analytics.ts`, `packages/historical-analysis/src/analytics.test.ts`
+- Recorded tests: package tests passed in finalization run
