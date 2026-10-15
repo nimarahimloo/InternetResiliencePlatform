@@ -1,8 +1,8 @@
 # Phase 1–38 Acceptance Evidence Register
 
 **Issue:** #12  
-**Source SHA (this reconstruction batch):** `b25d02bcc877ed6d2ccdeb3f8f347fae55e8cbe3`  
-**Scope of this batch:** Foundation and early network track **Phases 1–15** mapped with package/path/test anchors. Phases 16–38 remain pending reconstruction in subsequent batches.
+**Source SHA (this reconstruction batch):** `ad822e66b3ddc29d7bda0194f9c6237d6bf26867`  
+**Scope of this batch:** Phases 1–38 fully mapped with package/path/test anchors. Dispositions remain PARTIAL pending fresh per-phase CI evidence.
 
 > Documentation and path presence alone never yield COMPLETE. Dispositions in `phase-1-150-status-matrix.md` change only when `phase_matrix.py` is regenerated against evidence that resolves packages/paths and recorded passing tests. No phase is promoted to COMPLETE from this register alone.
 
