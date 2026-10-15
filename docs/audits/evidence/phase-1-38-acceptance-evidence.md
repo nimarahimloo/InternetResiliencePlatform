@@ -1,10 +1,10 @@
 # Phase 1–38 Acceptance Evidence Register
 
 **Issue:** #12  
-**Source SHA (this reconstruction batch):** `b25d02bcc877ed6d2ccdeb3f8f347fae55e8cbe3`  
-**Scope of this batch:** Foundation and early network track **Phases 1–15** mapped with package/path/test anchors. Phases 16–38 remain pending reconstruction in subsequent batches.
+**Source SHA (this reconstruction):** `ad822e66b3ddc29d7bda0194f9c6237d6bf26867`  
+**Scope:** Phases 1–38 mapped with package/path/recorded-test anchors. Full register complete via PRs #24 and #25.
 
-> Documentation and path presence alone never yield COMPLETE. Dispositions in `phase-1-150-status-matrix.md` change only when `phase_matrix.py` is regenerated against evidence that resolves packages/paths and recorded passing tests. No phase is promoted to COMPLETE from this register alone.
+> Documentation and path presence alone never yield COMPLETE. Dispositions in `phase-1-150-status-matrix.md` change only when `phase_matrix.py` is regenerated against evidence that resolves packages/paths and recorded passing tests. No phase is promoted to COMPLETE from this register alone. Fresh per-phase CI workflow URLs and full acceptance-criteria verification at HEAD are still required before any disposition change beyond PARTIAL.
 
 ## How to read a row
 
@@ -87,7 +87,7 @@
 
 ---
 
-## Batch B — Network intelligence (Phases 8–15, partial)
+## Batch B — Network intelligence (Phases 8–15)
 
 ### Phase 8 — health-aware DNS selection and fallback
 
@@ -96,7 +96,7 @@
 | Packages | `@irp/dns` |
 | Paths | `packages/dns/src/` |
 | Tests | `@irp/dns` 26 passed |
-| History state | `mapped` (preliminary; full anomaly mapping pending) |
+| History state | `mapped` |
 
 ### Phase 9 — multi-source connectivity classification
 
@@ -123,7 +123,7 @@
 | Packages | `@irp/kernel`, `@irp/resilience-runtime` (policy surfaces) |
 | Paths | `packages/kernel/src/`, `packages/resilience-runtime/src/policy/` (if present) |
 | Tests | Kernel and runtime package tests |
-| History state | `mapped` (preliminary) |
+| History state | `mapped` |
 
 ### Phase 12 — connectivity provider orchestration and recovery
 
@@ -150,7 +150,7 @@
 | Packages | `@irp/dns`, `@irp/network-intelligence` |
 | Paths | `packages/dns/src/`, network-intelligence diagnostics |
 | Tests | `@irp/dns` 26 |
-| History state | `mapped` (preliminary) |
+| History state | `mapped` |
 
 ### Phase 15 — DNS/TCP/TLS/HTTP/path/MTU diagnostics
 
@@ -162,22 +162,6 @@
 | History state | `mapped` |
 
 ---
-
-## Batches not yet reconstructed (Phases 16–38)
-
-| Track | Phases | Status |
-|-------|--------|--------|
-| Failover / policies | 16–18 | pending |
-| Extensibility / access | 19–27 | pending |
-| Learning / observability | 28–38 | pending |
-
-## Regeneration
-
-```bash
-python3 docs/audits/evidence/2026-10-12-finalization/phase_matrix.py
-```
-
-**Note:** After updating `phase-history-evidence-matrix.md` to `mapped` for the above phases, re-run the generator. Justifications for phases 1–25 should reflect the presence of this register and mapped history state; dispositions remain PARTIAL until fresh per-phase CI evidence is attached and the probe confirms complete acceptance criteria satisfaction.
 
 ## Batch C — Failover, policies, extensibility and access (Phases 16–25)
 
@@ -198,7 +182,7 @@ python3 docs/audits/evidence/2026-10-12-finalization/phase_matrix.py
 | Packages | `@irp/resilience-runtime`, `@irp/failover` |
 | Paths | `packages/resilience-runtime/src/`, `packages/failover/src/` |
 | Tests | Resilience-runtime and failover suites recorded as passing |
-| History state | `mapped` (preliminary) |
+| History state | `mapped` |
 
 ### Phase 18 — context-aware workspace policies
 
@@ -207,7 +191,7 @@ python3 docs/audits/evidence/2026-10-12-finalization/phase_matrix.py
 | Packages | `@irp/resilience-runtime`, `@irp/kernel` |
 | Paths | `packages/resilience-runtime/src/policy/`, `packages/kernel/src/` |
 | Tests | Package tests in recorded TSV |
-| History state | `mapped` (preliminary) |
+| History state | `mapped` |
 
 ### Phase 19 — stable plugin SDK
 
@@ -274,23 +258,7 @@ python3 docs/audits/evidence/2026-10-12-finalization/phase_matrix.py
 
 ---
 
-## Remaining batches (Phases 26–38)
-
-| Track | Phases | Status |
-|-------|--------|--------|
-| API / hardening / learning / observability | 26–38 | pending |
-
-## Regeneration
-
-```bash
-python3 docs/audits/evidence/2026-10-12-finalization/phase_matrix.py
-```
-
-**Note:** After updating `phase-history-evidence-matrix.md` to `mapped` for the above phases, re-run the generator. Justifications for phases 1–25 should reflect the presence of this register and mapped history state; dispositions remain PARTIAL until fresh per-phase CI evidence is attached and the probe confirms complete acceptance criteria satisfaction.
-
----
-
-## Batch C — Learning / Observability / Hardening (Phases 26–38)
+## Batch D — Learning / Observability / Hardening (Phases 26–38)
 
 ### Phase 26 — authenticated controlled API
 
