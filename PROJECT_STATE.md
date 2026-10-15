@@ -5,15 +5,16 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 78 — Closed-Loop Control Foundation is implemented on `main`.
-- **Current main HEAD reviewed this run:** `19392bc72870227a7034fe69746da79b60f9d8db` (merge of PR #26: docs update project state to current SHA and fix Phase 78 matrix probe).
+- **Current main HEAD reviewed this run:** `6c1bbfd7b4a27d2336b49a1c43ba0fc14be7d372` (merge of PR #27: docs refresh project state and matrix).
 - **Issue #12 progress:** Phase 1–38 acceptance evidence register complete with package/path/test anchors; phase-history-evidence-matrix mapped; phase-1-150-status-matrix regenerated on current HEAD. Dispositions remain PARTIAL pending fresh per-phase CI evidence and full acceptance verification. No COMPLETE claimed from documentation alone.
 - **Current open issues (authoritative tracker):** #4 (post-v0.2.1 runtime/signing/production certification — largely external blockers), #12 (reconstruct per-phase acceptance evidence for Phases 1–38 / unmapped 39–78), #13 (define acceptance contracts for Phases 79–83 existing intent/policy capability), #14 (authorize contracts for Groups B–L / Phases 84–150).
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
 - **Phase 78 status:** the bounded closed-loop controller is implemented and present on `main`.
-- **Issue #13 progress (this run):** acceptance contracts for Phases 79–83 formalized and merged (PR #22). Phase matrix regenerated on current HEAD to reflect contracts; dispositions remain PARTIAL pending full verification evidence. No COMPLETE claimed from documentation alone.
+- **Issue #13 progress:** acceptance contracts for Phases 79–83 formalized and merged (PR #22). Phase matrix regenerated; dispositions remain PARTIAL pending full verification evidence. No COMPLETE claimed from documentation alone.
+- **Issue #14 progress (this run):** Phase 84 acceptance contract formalized (PR #28). Phase 85 (Intent Assurance & Drift Management) contract formalized on branch `docs/phase-85-acceptance-contract`, mapping existing `NetworkStateStore` reconciliation and scoped outcome verification. Disposition remains PARTIAL. Contracts for Phases 86–150 still required before implementation authorization.
 - **Release state:** Phase 71 release-contract evidence exists: GitHub Release [v0.2.1](https://github.com/nimarahimloo/InternetResiliencePlatform/releases/tag/v0.2.1). Production certification (roadmap Step 6) remains open.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–78, but it must not be represented as certified until its evidence exists.
-- **Post-70 roadmap:** `docs/roadmap/MASTER_ROADMAP_V2.md` remains architectural reference material for Phases 72–150. Phase 79–83 contract definition is authorized by issue #13 for existing capability mapping only. Phases 84–150 remain unauthorized for implementation until issue #14 contracts and explicit PROJECT_STATE authorization exist.
+- **Post-70 roadmap:** `docs/roadmap/MASTER_ROADMAP_V2.md` remains architectural reference material for Phases 72–150. Phase 79–83 contract definition is authorized by issue #13 for existing capability mapping only. Phase 84–85 contracts are under active formalization via issue #14; remaining Phases 86–150 remain unauthorized for implementation until contracts and explicit PROJECT_STATE authorization exist.
 
 ## Phase 78 objective
 
@@ -40,7 +41,7 @@ The Phase 71 gate is limited to the release/distribution contract defined by `do
 - Release path and blockers: `docs/release/RELEASE_GATE_ROADMAP.md`.
 - Current post-70 roadmap: `docs/roadmap/MASTER_ROADMAP_V2.md`.
 - Historical 0–70 roadmap: `ROADMAP.md`.
-- Current phase records: `docs/phases/` (including formalized Phase 79–83 contracts under issue #13).
+- Current phase records: `docs/phases/` (including formalized Phase 79–83 contracts under issue #13; Phase 84 in PR #28; Phase 85 contract on `docs/phase-85-acceptance-contract`).
 - Engineering governance: `docs/architecture/engineering-governance.md`.
 
 ## Product objective
