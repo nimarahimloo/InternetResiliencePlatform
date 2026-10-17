@@ -83,9 +83,7 @@ describe('BoundedClosedLoopController', () => {
   it('stops at a healthy outcome by default', async () => {
     const fake = runtime('degraded', 'success', 'degraded');
     const controller = new BoundedClosedLoopController(fake);
-
     const result = await controller.run({ maxCycles: 3, correlationId: 'loop' });
-
     expect(result.status).toBe('healthy');
     expect(result.stopReason).toBe('healthy');
     expect(result.cyclesCompleted).toBe(2);
@@ -95,13 +93,7 @@ describe('BoundedClosedLoopController', () => {
   it('honors the hard cycle bound when healthy stopping is disabled', async () => {
     const fake = runtime('degraded');
     const controller = new BoundedClosedLoopController(fake);
-
-    const result = await controller.run({
-      maxCycles: 3,
-      stopWhenHealthy: false,
-      correlationId: 'loop',
-    });
-
+    const result = await controller.run({ maxCycles: 3, stopWhenHealthy: false, correlationId: 'loop' });
     expect(result.status).toBe('bounded');
     expect(result.stopReason).toBe('max_cycles');
     expect(result.cyclesCompleted).toBe(3);
@@ -111,29 +103,14 @@ describe('BoundedClosedLoopController', () => {
   it('merges top-level runtime context overrides into each cycle input', async () => {
     const fake = runtime('success');
     const controller = new BoundedClosedLoopController(fake);
-
-    await controller.run({
-      maxCycles: 1,
-      mode: 'simulation',
-      runtimeId: 'loop-runtime',
-      securityContext: { trusted: true },
-    });
-
-    expect(fake.cycle).toHaveBeenCalledWith(
-      expect.objectContaining({
-        mode: 'simulation',
-        runtimeId: 'loop-runtime',
-        securityContext: { trusted: true },
-      }),
-    );
+    await controller.run({ maxCycles: 1, mode: 'simulation', runtimeId: 'loop-runtime', securityContext: { trusted: true } });
+    expect(fake.cycle).toHaveBeenCalledWith(expect.objectContaining({ mode: 'simulation', runtimeId: 'loop-runtime', securityContext: { trusted: true } }));
   });
 
   it('stops on a blocked decision instead of continuing mutation attempts', async () => {
     const fake = runtime('blocked', 'success');
     const controller = new BoundedClosedLoopController(fake);
-
     const result = await controller.run({ maxCycles: 2, correlationId: 'loop' });
-
     expect(result.status).toBe('blocked');
     expect(result.stopReason).toBe('blocked');
     expect(result.cyclesCompleted).toBe(1);
@@ -145,9 +122,7 @@ describe('BoundedClosedLoopController', () => {
     const controller = new BoundedClosedLoopController(fake);
     const abort = new AbortController();
     abort.abort();
-
     const result = await controller.run({ maxCycles: 3, signal: abort.signal });
-
     expect(result.status).toBe('aborted');
     expect(result.stopReason).toBe('aborted');
     expect(result.cyclesCompleted).toBe(0);
@@ -157,7 +132,6 @@ describe('BoundedClosedLoopController', () => {
   it('rejects unsafe loop configuration values', async () => {
     const fake = runtime('success');
     const controller = new BoundedClosedLoopController(fake);
-
     await expect(controller.run({ maxCycles: 0 })).rejects.toThrow('maxCycles');
     await expect(controller.run({ maxCycles: 11 })).rejects.toThrow('maxCycles');
     await expect(controller.run({ intervalMs: -1 })).rejects.toThrow('intervalMs');
@@ -167,16 +141,7 @@ describe('BoundedClosedLoopController', () => {
     const fake = runtime('success');
     const controller = new BoundedClosedLoopController(fake);
     const intent = baseIntent();
-
-    const result = await controller.run({
-      maxCycles: 1,
-      correlationId: 'drift-loop',
-      driftInputs: {
-        intent,
-        observed: { score: 0.5 },
-      },
-    });
-
+    const result = await controller.run({ maxCycles: 1, correlationId: 'drift-loop', driftInputs: { intent, observed: { score: 0.5 } } });
     expect(result.status).toBe('healthy');
     expect(result.driftAssessments).toHaveLength(1);
     const assessment = result.driftAssessments![0]!;
@@ -184,16 +149,45 @@ describe('BoundedClosedLoopController', () => {
     expect(assessment.severity).toBe('high');
     expect(assessment.recommendedAdmission).toBe('OBSERVE_ONLY');
     expect(assessment.effective).toBe(true);
-    // Detector and loop controller performed no mutation; runtime.cycle was still the only privileged call.
     expect(fake.cycle).toHaveBeenCalledTimes(1);
   });
 
   it('omits driftAssessments when no driftInputs are provided', async () => {
     const fake = runtime('success');
     const controller = new BoundedClosedLoopController(fake);
-
     const result = await controller.run({ maxCycles: 1 });
-
     expect(result.driftAssessments).toBeUndefined();
+  });
+
+  it('collects one observe-only drift assessment per cycle when driftInputs are supplied', async () => {
+    const controller = new BoundedClosedLoopController(runtime('success', 'success'));
+    const result = await controller.run({
+      maxCycles: 2,
+      stopWhenHealthy: false,
+      correlationId: 'multi-drift',
+      driftInputs: {
+        intent: baseIntent({ objectives: { reachability: 0.95 } }),
+        observed: { reachability: 0.4 },
+      },
+    });
+    expect(result.cyclesCompleted).toBe(2);
+    expect(result.driftAssessments).toHaveLength(2);
+    expect(result.driftAssessments!.every((a) => a.severity === 'high' && a.recommendedAdmission === 'OBSERVE_ONLY')).toBe(true);
+    expect(result.driftAssessments![0]!.intentId).toBe('intent-drift');
+  });
+
+  it('records DENY for expired intent on every cycle without affecting loop control', async () => {
+    const controller = new BoundedClosedLoopController(runtime('success'));
+    const result = await controller.run({
+      maxCycles: 1,
+      driftInputs: {
+        intent: baseIntent({ expiresAt: new Date(Date.now() - 5_000).toISOString() }),
+        observed: { reachability: 1 },
+      },
+    });
+    expect(result.status).toBe('healthy');
+    expect(result.driftAssessments).toHaveLength(1);
+    expect(result.driftAssessments![0]!.effective).toBe(false);
+    expect(result.driftAssessments![0]!.recommendedAdmission).toBe('DENY');
   });
 });
