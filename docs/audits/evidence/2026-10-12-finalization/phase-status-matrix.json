@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceSha": "bce03ba51973c5be2f47037d539a8ddf38973ff8",
+  "sourceSha": "40f6ffa5224b9559fb5355e5316e23548b66b35a",
   "summary": {
     "PARTIAL": 58,
     "COMPLETE": 30,
@@ -1229,7 +1229,7 @@
       "probe": {
         "doc": "docs/phases/phase-85.md",
         "recordedStatus": "Contract formalized and minimal observe-only drift detector implemented (issue #14).** `detectIntentDrift` reuses `isCompiledIntentEffective` and returns struct",
-        "resolvedReferences": 1,
+        "resolvedReferences": 3,
         "missingReferences": [],
         "packages": [
           "@irp/resilience-runtime"

@@ -5,7 +5,7 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 78 — Closed-Loop Control Foundation is implemented on `main`.
-- **Current main HEAD reviewed this run:** `bce03ba51973c5be2f47037d539a8ddf38973ff8` (2026-10-17, after PR #38 merge).
+- **Current main HEAD reviewed this run:** `40f6ffa5224b9559fb5355e5316e23548b66b35a` (2026-10-17, after recent dependabot and phase merges; SHA 40f6ffa).
 - **Issue #12 progress:** Phase 1–38 acceptance evidence register complete with package/path/test anchors; phase-history-evidence-matrix mapped; phase-1-150-status-matrix regenerated. Dispositions remain PARTIAL pending fresh per-phase CI evidence and full acceptance verification. No COMPLETE claimed from documentation alone.
 - **Current open issues (authoritative tracker):** #4 (post-v0.2.1 runtime/signing/production certification — largely external blockers), #12 (reconstruct per-phase acceptance evidence for Phases 1–38 / unmapped 39–78), #13 (define acceptance contracts for Phases 79–83 existing intent/policy capability), #14 (authorize contracts for Groups B–L / Phases 84–150).
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -48,3 +48,11 @@ The Phase 71 gate is limited to the release/distribution contract defined by `do
 IRP's long-term objective is a safe, observable and policy-governed Internet control plane that can continuously measure network conditions, diagnose failures, select and apply bounded changes, verify the result, recover from failure and explain decisions across supported clients and network providers.
 
 - **Issue #14 progress (2026-10-17):** Phase 86–92 contracts added (docs/phases/phase-86.md through phase-92.md). Maps existing fabric, routing, gateway, DNS, tunnel, application path, and assurance surfaces; no new runtime authority introduced. Matrix update deferred until evidence exists.
+
+## Checkpoint (this run, 2026-10-17)
+
+- Verified `main` HEAD: `40f6ffa5224b9559fb5355e5316e23548b66b35a`.
+- Regenerated phase-1-150-status-matrix.md and phase-status-matrix.json against this SHA (dispositions unchanged; still PARTIAL for 79–86 pending CI evidence).
+- Phase 85 observe-only drift detector confirmed present with unit tests; no competing control plane.
+- Next dependency-safe task: attach fresh CI evidence for Phase 79–83 / 85 or implement remaining durable-ownership e2e for intent store where authorized.
+- No COMPLETE claims advanced; external blockers for #4 remain.
