@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized and minimal observe-only drift detector implemented (issue #14).** `detectIntentDrift` reuses `isCompiledIntentEffective` and returns structured, non-mutating results. Full continuous correction remains out of scope. Disposition remains **PARTIAL** pending CI evidence on the implementing SHA. Public barrel now exports `detectIntentDrift` and related types.
+**Contract formalized; observe-only drift detector implemented and integrated into BoundedClosedLoopController (issue #14).** `detectIntentDrift` reuses `isCompiledIntentEffective` and returns structured, non-mutating results. Closed-loop now collects one advisory assessment per cycle when `driftInputs` are supplied (still never mutates or invokes privileged paths). Full continuous correction remains out of scope. Disposition remains **PARTIAL** pending fresh CI evidence on the implementing SHA.
 
 ## Objective
 
@@ -58,4 +58,4 @@ Define the contract for continuously assuring that observed network state remain
 ## Related issues
 
 - Tracking: issue #14
-- Implementation branch: `phase/85-intent-drift-detection`
+- Implementation branch: `phase/85-multi-cycle-drift-advisory`
