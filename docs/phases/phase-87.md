@@ -2,58 +2,57 @@
 
 ## Status
 
-**Contract formalized (issue #14).** Existing interface discovery, health and selection primitives in the connectivity fabric and related packages map to multi-interface awareness. Full live multi-interface orchestration and preference learning remain **PARTIAL** / **NOT STARTED** until this contract is accepted, PROJECT_STATE authorizes further implementation, and evidence is produced. Disposition **PARTIAL** pending matrix update.
+**Contract formalized (issue #14).** Maps existing multi-interface representation already present in the connectivity fabric (`FabricResource` kinds `Interface`, `Link`, `Device`) and supporting packages `@irp/connectivity` / `@irp/network`. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Net-new multi-interface intelligence beyond the mapped surface remains unauthorized until this contract is accepted and PROJECT_STATE is updated.
 
 ## Objective
 
-Provide deterministic multi-interface intelligence that discovers, scores, and prefers available network interfaces (ethernet, wifi, cellular, virtual) according to health, capacity, cost, trust and policy, feeding the unified fabric without creating a parallel selection authority.
+Provide intelligence over multiple network interfaces on a device (Wi-Fi, Ethernet, cellular, VPN, etc.) so the control plane can observe, classify, score and select among them under policy and safety constraints. Multi-interface awareness is a consumer of the canonical fabric; it must not introduce a parallel resource model or mutation authority.
 
 ## Dependencies
 
 - Phase 86 — Unified Connectivity Fabric
-- Phase 73 — Unified Network State Model
-- Phase 75 — Decision Orchestration
-- Phase 77 — Safety, Rollback & Recovery Kernel
+- Phase 78 — Closed-Loop Control Foundation
+- Existing connectivity adapters and measurement primitives
 
 ## Canonical owner
 
-- `@irp/resilience-runtime` — fabric resource kinds include `Interface`
-- `@irp/connectivity` — interface enumeration and basic health (where present)
-- Consumed by fabric selection and decision orchestration
-- Tests: existing fabric and connectivity package tests
+- `@irp/resilience-runtime` — fabric model (`Interface` / `Link` kinds, freshness, diverse selection)
+- Supporting: `@irp/connectivity`, `@irp/network`, `@irp/network-intelligence`
+- Tests: fabric lifecycle / selection suites and connectivity package tests
 
 ## Scope
 
-- Discover and represent host interfaces as `FabricResource` of kind `Interface` with health, capacity and failure-domain metadata.
-- Score and rank interfaces for selection using deterministic criteria (health, trust, cost, diversity).
-- Emit interface health changes into the fabric snapshot for closed-loop consumption.
-- Preserve the invariant that interface activation/deactivation remains a privileged mutation gated by the safety kernel.
+- Represent each physical or virtual interface as a typed fabric resource with health, capacity, cost and freshness.
+- Support observation of interface state changes and link quality signals.
+- Enable deterministic selection or ranking among interfaces for decision inputs.
+- Preserve platform-specific interface enumeration behind existing adapters.
 
 ## Non-goals
 
-- OS-specific interface configuration (ip link, NetworkManager) outside existing adapters.
-- Second interface registry or scoring engine outside the fabric.
-- Real-device multi-interface failover evidence (issue #4).
-- Application-aware or predictive multi-interface decisions (later phases).
+- Direct mutation of interface configuration from this phase.
+- Full multi-path bonding or application-aware routing (later phases).
+- Production device evidence on real multi-interface hardware (issue #4).
 
 ## Acceptance criteria
 
-1. Interfaces appear as fabric resources with the declared kind and are included in fabric snapshots.
-2. Selection logic can prefer one interface over another based on health/trust/cost without side effects.
-3. Illegal or stale interface states are rejected or quarantined by lifecycle helpers.
-4. Unit tests cover interface resource construction, scoring and fabric integration; no competing control plane is introduced.
+1. Interfaces and links are modeled exclusively as `FabricResource` instances of the closed kind set; no competing interface registry exists.
+2. Freshness and health evaluation produce deterministic results for multi-interface candidates.
+3. Capability authority can restrict selectable interfaces by platform or trust.
+4. Existing package tests that cover fabric resource lifecycle and selection pass.
+5. Architecture guards continue to treat ResilienceRuntime as the sole production control-plane authority.
 
 ## Verification boundary
 
-- Package unit tests for fabric and connectivity modules.
-- Existing CI workflows that exercise resilience-runtime and connectivity.
-- No claim of live multi-interface runtime evidence until device validation exists.
+- Local package tests for `@irp/resilience-runtime` fabric suites and `@irp/connectivity`.
+- CI workflows executing those suites.
+- Explicit non-claim of production multi-interface certification.
 
 ## Rollback considerations
 
-- Documentation-only until further implementation.
-- Interface selection remains advisory until bound to the privileged execution path; can be disabled by configuration without affecting closed-loop stop conditions.
+- Contract is documentation only; no runtime behavior change.
+- Revert the phase document if later implementation diverges.
 
 ## Related issues
 
 - Tracking: issue #14
+- External blockers remain in issue #4
