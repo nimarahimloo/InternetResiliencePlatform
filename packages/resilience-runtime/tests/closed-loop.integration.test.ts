@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { BoundedClosedLoopController } from '../src/closed-loop.js';
 import { createCapabilitySnapshot } from '../src/context/context.js';
 import { ResilienceRuntime } from '../src/runtime.js';
+import type { CompiledIntent } from '../src/domain/types.js';
 
 describe('BoundedClosedLoopController integration', () => {
   it('drives the canonical ResilienceRuntime cycle without a parallel control path', async () => {
@@ -99,13 +100,22 @@ describe('BoundedClosedLoopController integration', () => {
     const cycle = vi.spyOn(runtime, 'cycle');
     const controller = new BoundedClosedLoopController(runtime);
 
-    const intent = {
+    const intent: CompiledIntent = {
       intentId: 'intent-85',
+      version: 1,
+      priority: 'normal',
+      desiredOutcome: 'maintain expected network latency',
+      target: { destination: 'github.com' },
+      constraints: {},
       objectives: { latency: 50, reachability: 1 },
-      lifecycleStatus: 'active',
+      confidence: 0.9,
+      provenance: 'phase-85-integration-test',
+      autonomy: 'OBSERVE_ONLY',
+      scope: { destination: 'github.com' },
       effectiveFrom: new Date(Date.now() - 60_000).toISOString(),
       expiresAt: new Date(Date.now() + 60_000).toISOString(),
-    } as any;
+      compiledAt: new Date().toISOString(),
+    };
 
     const result = await controller.run({
       maxCycles: 1,
