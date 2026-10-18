@@ -183,6 +183,23 @@ describe('intent API', () => {
     expect(await store.getConflict(id, ownerB)).toBeUndefined();
   });
 
+
+  it('isolates in-memory intent put and get by owner', async () => {
+    const store = new InMemoryIntentStore();
+    const ownerA = { principalId: 'principal-a' };
+    const ownerB = { principalId: 'principal-b' };
+    const intent = createNetworkIntent({
+      id: 'owned-intent-1',
+      priority: 'high',
+      autonomy: 'SAFE_AUTOMATION',
+      spec: { outcome: 'isolated ownership test' },
+    });
+    await store.put(intent, ownerA);
+    expect(await store.get(intent.id, ownerA)).toMatchObject({ id: 'owned-intent-1' });
+    expect(await store.get(intent.id, ownerB)).toBeUndefined();
+    await expect(store.put(intent, ownerB)).rejects.toThrow(ConflictAppError);
+  });
+
   it('returns not found for an unknown conflict id', async () => {
     const app = await build();
     const response = await app.inject({ method: 'GET', url: '/api/v1/intents/conflicts/nope' });
