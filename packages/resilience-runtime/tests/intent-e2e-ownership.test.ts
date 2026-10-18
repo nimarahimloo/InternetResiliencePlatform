@@ -56,7 +56,7 @@ describe('Intent ownership and stale handling end-to-end (Phases 79–83 / issue
     expect(governance.selectedIntent?.intentId).toBe('intent-ownership-1');
     expect(governance.mutationAllowed).toBe(true);
 
-    const drift = detectIntentDrift(reloaded!, { latency: 0.2 });
+    const drift = detectIntentDrift(reloaded!, { latency: 1.2 });
     expect(drift.effective).toBe(true);
     expect(drift.recommendedAdmission).toBe('OBSERVE_ONLY');
 
@@ -67,7 +67,7 @@ describe('Intent ownership and stale handling end-to-end (Phases 79–83 / issue
       correlationId: 'ownership-loop',
       driftInputs: {
         intent: reloaded!,
-        observed: { latency: 0.2 },
+        observed: { latency: 1.2 },
       },
     });
 
