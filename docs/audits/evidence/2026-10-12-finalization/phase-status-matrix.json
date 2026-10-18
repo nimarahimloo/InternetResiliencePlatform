@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "sourceSha": "72ea75f4dad96781f5332312e25edfc8fe63f0fb",
+  "sourceSha": "2c8610ce2b3e6c7b603dbfcb575366b687886792",
   "summary": {
-    "PARTIAL": 53,
-    "COMPLETE": 27,
+    "PARTIAL": 88,
     "BLOCKED": 3,
-    "NOT STARTED": 67
+    "COMPLETE": 1,
+    "NOT STARTED": 58
   },
   "phases": [
     {
       "phase": 1,
       "title": "core infrastructure and lifecycle/config/logging contracts",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -21,7 +21,7 @@
       "phase": 2,
       "title": "quality, type, lint, test and validation baseline",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -30,7 +30,7 @@
       "phase": 3,
       "title": "reproducible CI/CD verification and release pipeline",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -39,7 +39,7 @@
       "phase": 4,
       "title": "architecture boundaries and module contracts",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -48,7 +48,7 @@
       "phase": 5,
       "title": "bounded shared scheduling/retry/cache/concurrency services",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -57,7 +57,7 @@
       "phase": 6,
       "title": "portable network primitives",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -66,7 +66,7 @@
       "phase": 7,
       "title": "canonical bounded network measurements",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -75,7 +75,7 @@
       "phase": 8,
       "title": "health-aware DNS selection and fallback",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -84,7 +84,7 @@
       "phase": 9,
       "title": "multi-source connectivity classification",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -93,7 +93,7 @@
       "phase": 10,
       "title": "destination-aware route representation",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -102,7 +102,7 @@
       "phase": 11,
       "title": "declarative policy and safety constraints",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -111,7 +111,7 @@
       "phase": 12,
       "title": "connectivity provider orchestration and recovery",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -120,7 +120,7 @@
       "phase": 13,
       "title": "ranked path candidates with apply/verify/rollback",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -129,7 +129,7 @@
       "phase": 14,
       "title": "DNS anomaly detection and explainability",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -138,7 +138,7 @@
       "phase": 15,
       "title": "DNS/TCP/TLS/HTTP/path/MTU diagnostics",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -147,7 +147,7 @@
       "phase": 16,
       "title": "bounded failover, circuit breakers and rollback",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -156,7 +156,7 @@
       "phase": 17,
       "title": "service-specific resilience policies",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -165,7 +165,7 @@
       "phase": 18,
       "title": "context-aware workspace policies",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -174,7 +174,7 @@
       "phase": 19,
       "title": "stable plugin SDK",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -183,7 +183,7 @@
       "phase": 20,
       "title": "plugin discovery, signing and compatibility",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -192,7 +192,7 @@
       "phase": 21,
       "title": "supported connectivity integrations",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -201,7 +201,7 @@
       "phase": 22,
       "title": "autonomous local access agent",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -210,7 +210,7 @@
       "phase": 23,
       "title": "continuous route scoring and anti-flapping",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -219,7 +219,7 @@
       "phase": 24,
       "title": "destination classification",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -228,7 +228,7 @@
       "phase": 25,
       "title": "service-level reachability verification",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -237,7 +237,7 @@
       "phase": 26,
       "title": "authenticated controlled API",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -246,7 +246,7 @@
       "phase": 27,
       "title": "production runtime hardening",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -255,7 +255,7 @@
       "phase": 28,
       "title": "historical observations",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -264,7 +264,7 @@
       "phase": 29,
       "title": "temporal degradation baselines",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -273,7 +273,7 @@
       "phase": 30,
       "title": "bounded predictive engine",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -282,7 +282,7 @@
       "phase": 31,
       "title": "policy-safe auto optimization",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -291,7 +291,7 @@
       "phase": 32,
       "title": "evidence-backed explainability and audit",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -300,7 +300,7 @@
       "phase": 33,
       "title": "provider/path benchmarking",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -309,7 +309,7 @@
       "phase": 34,
       "title": "canonical telemetry model",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -318,7 +318,7 @@
       "phase": 35,
       "title": "OpenTelemetry export contracts",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -327,7 +327,7 @@
       "phase": 36,
       "title": "OpenTelemetry runtime",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -336,7 +336,7 @@
       "phase": 37,
       "title": "Prometheus exposition and cardinality controls",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -345,7 +345,7 @@
       "phase": 38,
       "title": "operational diagnostics",
       "disposition": "PARTIAL",
-      "justification": "Implementation lives in the workspace packages and their tests pass, but the repository's own phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: no per-phase acceptance record maps commits and tests to this phase contract.",
+      "justification": "Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL and full acceptance-criteria verification beyond the historical reconstruction.",
       "probe": {
         "doc": null
       }
@@ -354,22 +354,26 @@
       "phase": 39,
       "title": "device identity and scoped sessions",
       "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'IMPLEMENTED / verification state inherited from current repository gates'); implementation cannot be mapped to tests.",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-39.md",
         "recordedStatus": "IMPLEMENTED / verification state inherited from current repository gates",
-        "resolvedReferences": 0,
+        "resolvedReferences": 5,
         "missingReferences": [],
-        "packages": [],
+        "packages": [
+          "@irp/auth"
+        ],
         "nativeSources": [],
-        "packagesWithPassingTests": []
+        "packagesWithPassingTests": [
+          "@irp/auth"
+        ]
       }
     },
     {
       "phase": 40,
       "title": "controlled-fault resilience validation",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-40.md; all 3 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/resilience-runtime) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-40.md",
         "recordedStatus": "IMPLEMENTED / CI VERIFICATION PENDING",
@@ -392,10 +396,8 @@
       "probe": {
         "doc": "docs/phases/phase-41.md",
         "recordedStatus": "INITIAL TOOLING IMPLEMENTED / IRANIAN VANTAGE PENDING",
-        "resolvedReferences": 1,
-        "missingReferences": [
-          ".github/workflows/regional-validation.yml"
-        ],
+        "resolvedReferences": 2,
+        "missingReferences": [],
         "packages": [],
         "nativeSources": [],
         "packagesWithPassingTests": []
@@ -404,8 +406,8 @@
     {
       "phase": 42,
       "title": "remote client enrollment and authorization lifecycle",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-42.md; all 2 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/auth) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-42.md",
         "recordedStatus": "",
@@ -424,37 +426,45 @@
       "phase": 43,
       "title": "signed replay-resistant probe federation",
       "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: ''); implementation cannot be mapped to tests.",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-43.md",
         "recordedStatus": "",
-        "resolvedReferences": 0,
+        "resolvedReferences": 3,
         "missingReferences": [],
-        "packages": [],
+        "packages": [
+          "@irp/resilience-runtime"
+        ],
         "nativeSources": [],
-        "packagesWithPassingTests": []
+        "packagesWithPassingTests": [
+          "@irp/resilience-runtime"
+        ]
       }
     },
     {
       "phase": 44,
       "title": "analytics summaries, trends and anomalies",
       "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'Implementation present; final CI/runtime verification gate required before completion.'); implementation cannot be mapped to tests.",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-44.md",
         "recordedStatus": "Implementation present; final CI/runtime verification gate required before completion.",
-        "resolvedReferences": 0,
+        "resolvedReferences": 3,
         "missingReferences": [],
-        "packages": [],
+        "packages": [
+          "@irp/historical-analysis"
+        ],
         "nativeSources": [],
-        "packagesWithPassingTests": []
+        "packagesWithPassingTests": [
+          "@irp/historical-analysis"
+        ]
       }
     },
     {
       "phase": 45,
       "title": "egress identity and destination/policy assurance",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-45.md; all 2 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/network-intelligence) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-45.md",
         "recordedStatus": "Implementation present; repository and CI verification gates remain required.",
@@ -473,22 +483,26 @@
       "phase": 46,
       "title": "authorized gateway inventory",
       "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'Implementation:** complete on the phase branch.'); implementation cannot be mapped to tests.",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-46.md",
         "recordedStatus": "Implementation:** complete on the phase branch.",
-        "resolvedReferences": 0,
+        "resolvedReferences": 3,
         "missingReferences": [],
-        "packages": [],
+        "packages": [
+          "@irp/gateway-registry"
+        ],
         "nativeSources": [],
-        "packagesWithPassingTests": []
+        "packagesWithPassingTests": [
+          "@irp/gateway-registry"
+        ]
       }
     },
     {
       "phase": 47,
       "title": "gateway discovery, health and stale handling",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-47.md; all 2 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/gateway-registry) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-47.md",
         "recordedStatus": "Implementation:** complete on `main` pending repository/CI verification.",
@@ -506,8 +520,8 @@
     {
       "phase": 48,
       "title": "provider-neutral tunnel lifecycle",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-48.md; all 9 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/gateway-registry, @irp/tunnel) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-48.md",
         "recordedStatus": "Implementation complete; CI verification is the completion gate.",
@@ -527,8 +541,8 @@
     {
       "phase": 49,
       "title": "WireGuard provider adapter",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-49.md; all 3 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/tunnel) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-49.md",
         "recordedStatus": "Implementation:** present on `main` pending CI verification.",
@@ -546,8 +560,8 @@
     {
       "phase": 50,
       "title": "additional legitimate network provider adapters",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-50.md; all 4 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/tunnel) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-50.md",
         "recordedStatus": "Implementation:** present on `main` pending CI verification.",
@@ -566,7 +580,7 @@
       "phase": 51,
       "title": "policy/health/capacity-aware gateway selection",
       "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'Complete / verified.** Implementation, repository validation, typecheck, lint, tests, coverage, build, deterministic smoke tests, production Docker runtime smok'); implementation cannot be mapped to tests.",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-51.md",
         "recordedStatus": "Complete / verified.** Implementation, repository validation, typecheck, lint, tests, coverage, build, deterministic smoke tests, production Docker runtime smok",
@@ -580,8 +594,8 @@
     {
       "phase": 52,
       "title": "automated tunnel lifecycle",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-52.md; all 4 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/tunnel) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-52.md",
         "recordedStatus": "Implementation complete; CI/runtime verification in progress.",
@@ -599,8 +613,8 @@
     {
       "phase": 53,
       "title": "multi-gateway failover",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-53.md; all 4 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/gateway-registry) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-53.md",
         "recordedStatus": "Implementation started; repository verification required.",
@@ -618,8 +632,8 @@
     {
       "phase": 54,
       "title": "gateway fleet operations",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-54.md; all 1 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/gateway-registry) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-54.md",
         "recordedStatus": "Implementation started; verification required.",
@@ -637,8 +651,8 @@
     {
       "phase": 55,
       "title": "gateway security and supply-chain hardening",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-55.md; all 3 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/gateway-registry) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-55.md",
         "recordedStatus": "Implementation complete; final CI verification in progress.",
@@ -656,8 +670,8 @@
     {
       "phase": 56,
       "title": "versioned unified capability API",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-56.md; all 3 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/api, @irp/sdk) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-56.md",
         "recordedStatus": "Implementation complete; final repository verification required.",
@@ -678,7 +692,7 @@
       "phase": 57,
       "title": "Web Control Center",
       "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'In progress.** The control-loop contract and fail-closed semantics are implemented, but the phase is not considered complete until a real live adapter, real pos'); implementation cannot be mapped to tests.",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-57.md",
         "recordedStatus": "In progress.** The control-loop contract and fail-closed semantics are implemented, but the phase is not considered complete until a real live adapter, real pos",
@@ -693,7 +707,7 @@
       "phase": 58,
       "title": "identity, RBAC and conflict-safe sync",
       "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'Implementation started; verification required.'); implementation cannot be mapped to tests.",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-58.md",
         "recordedStatus": "Implementation started; verification required.",
@@ -708,7 +722,7 @@
       "phase": 59,
       "title": "incident center and diagnostics",
       "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'Implementation started; verification required.'); implementation cannot be mapped to tests.",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-59.md",
         "recordedStatus": "Implementation started; verification required.",
@@ -723,7 +737,7 @@
       "phase": 60,
       "title": "administration, deployment, backups and migrations",
       "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: 'Started on `phase/60-administration-self-hosting`.'); implementation cannot be mapped to tests.",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-60.md",
         "recordedStatus": "Started on `phase/60-administration-self-hosting`.",
@@ -737,8 +751,8 @@
     {
       "phase": 61,
       "title": "Linux Full Client",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-61.md; all 1 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/linux-client) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-61.md",
         "recordedStatus": "Implementation started; repository/runtime verification required.",
@@ -756,8 +770,8 @@
     {
       "phase": 62,
       "title": "macOS Full Client",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-62.md; all 1 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/macos-client) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-62.md",
         "recordedStatus": "Implementation in progress; final verification evidence required.",
@@ -775,8 +789,8 @@
     {
       "phase": 63,
       "title": "Windows Full Client",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-63.md; all 1 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/windows-client) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-63.md",
         "recordedStatus": "In progress.** The platform boundary is implemented, but completion remains blocked until native Windows CI and runtime evidence demonstrate the diagnostics and",
@@ -794,8 +808,8 @@
     {
       "phase": 64,
       "title": "shared mobile client core",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-64.md; all 1 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/core) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-64.md",
         "recordedStatus": "In progress.** The shared client contract is implemented, but phase closure remains blocked until the repository gates and public runtime endpoint verification ",
@@ -814,7 +828,7 @@
       "phase": 65,
       "title": "iOS Full Client",
       "disposition": "PARTIAL",
-      "justification": "Phase contract does not cite a package, source path or symbol that can be verified at HEAD (recorded status: ''); implementation cannot be mapped to tests.",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-65.md",
         "recordedStatus": "",
@@ -828,8 +842,8 @@
     {
       "phase": 66,
       "title": "iOS Network Extension integration",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-66.md; all 3 cited packages/paths/symbols resolve at HEAD; owning package tests () passed in the recorded run and the bf73303/WP2.2 CI workflows are green. Native sources (native:clients/ios) are verified by the platform CI workflows (iOS Full Client / iOS Network Integration / Android Client); real-device smoke evidence is a Phase 70 certification item and remains pending.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-66.md",
         "recordedStatus": "",
@@ -845,8 +859,8 @@
     {
       "phase": 67,
       "title": "Android Full Client",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-67.md; all 2 cited packages/paths/symbols resolve at HEAD; owning package tests () passed in the recorded run and the bf73303/WP2.2 CI workflows are green. Native sources (native:clients/android) are verified by the platform CI workflows (iOS Full Client / iOS Network Integration / Android Client); real-device smoke evidence is a Phase 70 certification item and remains pending.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-67.md",
         "recordedStatus": "Implementation started; verification required.",
@@ -862,8 +876,8 @@
     {
       "phase": 68,
       "title": "Android-native VPN/network integration",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-68.md; all 1 cited packages/paths/symbols resolve at HEAD; owning package tests () passed in the recorded run and the bf73303/WP2.2 CI workflows are green. Native sources (native:clients/android) are verified by the platform CI workflows (iOS Full Client / iOS Network Integration / Android Client); real-device smoke evidence is a Phase 70 certification item and remains pending.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-68.md",
         "recordedStatus": "Implementation started; verification required.",
@@ -924,8 +938,8 @@
     {
       "phase": 72,
       "title": "Control-Plane Architecture Completion",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-72.md; all 9 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/api, @irp/events, @irp/network-intelligence, @irp/resilience-runtime) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-72.md",
         "recordedStatus": "Architecture contract implemented; phase completion is gated by the Phase 71 external release-certification requirement and Phase 72 verification/CI evidence.**",
@@ -949,8 +963,8 @@
     {
       "phase": 73,
       "title": "Unified Network State Model",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-73.md; all 13 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/network-intelligence, @irp/resilience-runtime) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-73.md",
         "recordedStatus": "Implementation in progress on `phase/73-unified-network-state`. This phase does not certify Phase 71 or Phase 72 completion.",
@@ -970,8 +984,8 @@
     {
       "phase": 74,
       "title": "Control-Plane Contracts",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-74.md; all 9 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/core, @irp/events, @irp/network-intelligence, @irp/resilience-runtime) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-74.md",
         "recordedStatus": "Implementation in progress on `phase/74-control-plane-contracts`. Phase 71 certification remains intentionally deferred.",
@@ -995,8 +1009,8 @@
     {
       "phase": 75,
       "title": "Decision Orchestration",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-75.md; all 9 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/network-intelligence, @irp/resilience-runtime) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-75.md",
         "recordedStatus": "Implementation in progress on `phase/75-decision-orchestration`.",
@@ -1016,8 +1030,8 @@
     {
       "phase": 76,
       "title": "Action Transaction Engine",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-76.md; all 4 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/resilience-runtime) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-76.md",
         "recordedStatus": "Implementation in progress on `phase/76-action-transaction-engine`.",
@@ -1035,8 +1049,8 @@
     {
       "phase": 77,
       "title": "Safety, Rollback & Recovery Kernel",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-77.md; all 6 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/failover, @irp/resilience-runtime) passed in the recorded run and the bf73303/WP2.2 CI workflows are green.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-77.md",
         "recordedStatus": "Implemented and merged on `main` in PR #237.** The implementation landed before the current Phase 78 branch was created. External Phase 71 release certification",
@@ -1056,18 +1070,22 @@
     {
       "phase": 78,
       "title": "Closed-Loop Control Foundation",
-      "disposition": "COMPLETE",
-      "justification": "Phase contract docs/phases/phase-78.md; all 9 cited packages/paths/symbols resolve at HEAD; owning package tests (@irp/resilience-runtime) passed in the recorded run and the bf73303/WP2.2 CI workflows are green. Integration residual: BoundedClosedLoopController is exercised against the canonical ResilienceRuntime by tests, but no production entrypoint runs the multi-cycle loop (API triggers single runCycle calls; the only non-test consumer is the deprecated NetworkAutopilot). Tracked as remaining work.",
+      "disposition": "PARTIAL",
+      "justification": "Historical path-resolution and package test-count records are inventory signals only; they do not prove phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are verified and the current implementation SHA has attached, successful CI evidence.",
       "probe": {
         "doc": "docs/phases/phase-78.md",
         "recordedStatus": "Implementation started on `phase/78-closed-loop-control` from `main` at `164c9793ac8819492939d9d59b6c3b529cc506cd`.",
-        "resolvedReferences": 9,
-        "missingReferences": [],
+        "resolvedReferences": 13,
+        "missingReferences": [
+          "RangeError"
+        ],
         "packages": [
+          "@irp/daemon",
           "@irp/resilience-runtime"
         ],
         "nativeSources": [],
         "packagesWithPassingTests": [
+          "@irp/daemon",
           "@irp/resilience-runtime"
         ]
       }
@@ -1076,7 +1094,7 @@
       "phase": 79,
       "title": "Intent Model & Lifecycle",
       "disposition": "PARTIAL",
-      "justification": "Intent model and lifecycle exist (resilience-runtime/src/intent, PostgresIntentStore, ownership migrations) with passing tests, but MASTER_ROADMAP_V2 defines no Phase 79 acceptance contract and PROJECT_STATE does not authorize the phase; cannot be COMPLETE without a contract.",
+      "justification": "Acceptance contract formalized in docs/phases/phase-79.md (issue #13). Intent model and lifecycle exist with mapped tests; disposition remains PARTIAL pending full end-to-end verification evidence and matrix regeneration on a green CI SHA.",
       "probe": {
         "doc": "docs/phases/phase-79.md",
         "recordedStatus": "Implementation started on `phase/79-intent-model-lifecycle` from the merged Phase 78 baseline.",
@@ -1097,7 +1115,7 @@
       "phase": 80,
       "title": "Intent API & Ingestion",
       "disposition": "PARTIAL",
-      "justification": "Intent API exists (apps/api/src/intent-api.ts, wired in apps/api/src/index.ts) with tests; no Phase 80 acceptance contract defined.",
+      "justification": "Acceptance contract formalized in docs/phases/phase-80.md (issue #13). Intent API exists with tests; remains PARTIAL until durable ownership e2e evidence is recorded.",
       "probe": {
         "doc": "docs/phases/phase-80.md",
         "recordedStatus": "",
@@ -1118,108 +1136,277 @@
       "phase": 81,
       "title": "Intent Translation / Compilation",
       "disposition": "PARTIAL",
-      "justification": "Intent compilation exists (resilience-runtime/src/intent/compiler.ts, used by runtime.ts); no Phase 81 acceptance contract defined.",
+      "justification": "Acceptance contract formalized in docs/phases/phase-81.md (issue #13). Compilation exists and is tested; remains PARTIAL pending contract-mapped CI evidence.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-81.md",
+        "recordedStatus": "Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7`. This phase document defi",
+        "resolvedReferences": 10,
+        "missingReferences": [],
+        "packages": [
+          "@irp/api",
+          "@irp/core",
+          "@irp/resilience-runtime"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/api",
+          "@irp/core",
+          "@irp/resilience-runtime"
+        ]
       }
     },
     {
       "phase": 82,
       "title": "Policy Decision & Enforcement Engine",
       "disposition": "PARTIAL",
-      "justification": "Policy registry/arbitration exists (src/policy, PolicyArbitrator used by runtime.executeCycle); no Phase 82 contract.",
+      "justification": "Acceptance contract formalized in docs/phases/phase-82.md (issue #13). Policy arbitration exists; remains PARTIAL.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-82.md",
+        "recordedStatus": "Contract formalized (issue #13).** Implementation fragments already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7` under intent go",
+        "resolvedReferences": 9,
+        "missingReferences": [
+          "ADVISORY"
+        ],
+        "packages": [
+          "@irp/core",
+          "@irp/resilience-runtime"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/core",
+          "@irp/resilience-runtime"
+        ]
       }
     },
     {
       "phase": 83,
       "title": "Policy Conflict Resolution",
       "disposition": "PARTIAL",
-      "justification": "Intent conflict arbitration and conflict journal exist (src/intent/arbitration.ts, migration 20261004000000_phase_274_conflict_journal); no Phase 83 contract.",
+      "justification": "Acceptance contract formalized in docs/phases/phase-83.md (issue #13). Arbitration and conflict journal exist with tests; remains PARTIAL pending full durable journal e2e certification.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-83.md",
+        "recordedStatus": "Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7` in intent arbitration and",
+        "resolvedReferences": 14,
+        "missingReferences": [],
+        "packages": [
+          "@irp/api",
+          "@irp/resilience-runtime"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/api",
+          "@irp/resilience-runtime"
+        ]
       }
     },
     {
       "phase": 84,
       "title": "Safety Constraints & Change Governance",
-      "disposition": "NOT STARTED",
-      "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization.",
+      "disposition": "PARTIAL",
+      "justification": "Acceptance contract formalized in docs/phases/phase-84.md (issue #14). Safety kernel and intent governance exist in resilience-runtime; remains PARTIAL pending full change-governance evidence and CI on implementing SHA.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-84.md",
+        "recordedStatus": "Contract formalized (issue #14).** Maps existing safety kernel and intent governance already present on `main`. Disposition remains **PARTIAL** until CI evidenc",
+        "resolvedReferences": 8,
+        "missingReferences": [
+          "ALLOW",
+          "DENY"
+        ],
+        "packages": [
+          "@irp/resilience-runtime"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/resilience-runtime"
+        ]
       }
     },
     {
       "phase": 85,
       "title": "Intent Assurance & Drift Management",
-      "disposition": "NOT STARTED",
-      "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization.",
+      "disposition": "PARTIAL",
+      "justification": "Observe-only intent drift detector implemented in packages/resilience-runtime/src/intent/drift.ts with unit tests. Contract formalized (issue #14). Disposition remains PARTIAL; continuous correction and full CI evidence on green SHA still required.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-85.md",
+        "recordedStatus": "Contract formalized and minimal observe-only drift detector implemented (issue #14).** `detectIntentDrift` reuses `isCompiledIntentEffective` and returns struct",
+        "resolvedReferences": 2,
+        "missingReferences": [
+          "DriftSignal"
+        ],
+        "packages": [
+          "@irp/resilience-runtime"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/resilience-runtime"
+        ]
       }
     },
     {
       "phase": 86,
       "title": "Unified Connectivity Fabric",
-      "disposition": "NOT STARTED",
-      "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization. Related pre-existing capability (not a phase implementation): fabric.ts / fabric-authority.ts / fabric-lifecycle.ts.",
+      "disposition": "PARTIAL",
+      "justification": "Acceptance contract formalized in docs/phases/phase-86.md (issue #14). Related fabric capability exists; remains PARTIAL pending phase-specific implementation evidence.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-86.md",
+        "recordedStatus": "Contract formalized (issue #14).** Maps the existing connectivity fabric already present in `@irp/resilience-runtime` (`src/fabric.ts`, `src/fabric-authority.ts",
+        "resolvedReferences": 10,
+        "missingReferences": [],
+        "packages": [
+          "@irp/connectivity",
+          "@irp/gateway-registry",
+          "@irp/network",
+          "@irp/resilience-runtime"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/connectivity",
+          "@irp/gateway-registry",
+          "@irp/network",
+          "@irp/resilience-runtime"
+        ]
       }
     },
     {
       "phase": 87,
       "title": "Multi-Interface Intelligence",
-      "disposition": "NOT STARTED",
-      "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization.",
+      "disposition": "PARTIAL",
+      "justification": "Acceptance contract formalized in docs/phases/phase-87.md (issue #14). Remains PARTIAL pending implementation evidence.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-87.md",
+        "recordedStatus": "Contract formalized (issue #14).** Maps existing multi-interface representation already present in the connectivity fabric (`FabricResource` kinds `Interface`, ",
+        "resolvedReferences": 5,
+        "missingReferences": [
+          "Device",
+          "Interface",
+          "Link"
+        ],
+        "packages": [
+          "@irp/connectivity",
+          "@irp/network",
+          "@irp/network-intelligence",
+          "@irp/resilience-runtime"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/connectivity",
+          "@irp/network",
+          "@irp/network-intelligence",
+          "@irp/resilience-runtime"
+        ]
       }
     },
     {
       "phase": 88,
       "title": "Multi-Path Connectivity Management",
-      "disposition": "NOT STARTED",
-      "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization.",
+      "disposition": "PARTIAL",
+      "justification": "Acceptance contract formalized in docs/phases/phase-88.md (issue #14). Remains PARTIAL pending implementation evidence.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-88.md",
+        "recordedStatus": "Contract formalized (issue #14).** Existing path representation in `@irp/routing` and fabric resource kinds (`Route`, `ApplicationPath`) provide a foundation. F",
+        "resolvedReferences": 4,
+        "missingReferences": [
+          "ApplicationPath"
+        ],
+        "packages": [
+          "@irp/resilience-runtime",
+          "@irp/routing"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/resilience-runtime",
+          "@irp/routing"
+        ]
       }
     },
     {
       "phase": 89,
       "title": "Gateway Intelligence & Selection",
-      "disposition": "NOT STARTED",
-      "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization. Related pre-existing capability (not a phase implementation): packages/gateway-registry, src/gateway/gateway-registry-plane.ts.",
+      "disposition": "PARTIAL",
+      "justification": "Acceptance contract formalized in docs/phases/phase-89.md (issue #14). Related gateway capability exists; remains PARTIAL.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-89.md",
+        "recordedStatus": "Contract formalized (issue #14).** Existing `@irp/gateway-registry` package and `packages/resilience-runtime/src/gateway/gateway-registry-plane.ts` provide regi",
+        "resolvedReferences": 3,
+        "missingReferences": [],
+        "packages": [
+          "@irp/gateway-registry",
+          "@irp/resilience-runtime"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/gateway-registry",
+          "@irp/resilience-runtime"
+        ]
       }
     },
     {
       "phase": 90,
       "title": "DNS / Tunnel / Proxy Orchestration Integration",
-      "disposition": "NOT STARTED",
-      "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization. Related pre-existing capability (not a phase implementation): packages/dns, packages/tunnel, src/tunnel/tunnel-control-plane.ts.",
+      "disposition": "PARTIAL",
+      "justification": "Acceptance contract formalized in docs/phases/phase-90.md (issue #14). Related DNS/tunnel/proxy surfaces exist; remains PARTIAL.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-90.md",
+        "recordedStatus": "Contract formalized (issue #14).** Existing DNS, tunnel, and proxy packages plus fabric resource kinds provide foundational surfaces. Full orchestration of DNS ",
+        "resolvedReferences": 3,
+        "missingReferences": [],
+        "packages": [
+          "@irp/dns",
+          "@irp/resilience-runtime",
+          "@irp/tunnel"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/dns",
+          "@irp/resilience-runtime",
+          "@irp/tunnel"
+        ]
       }
     },
     {
       "phase": 91,
       "title": "Application-Aware Path Selection",
-      "disposition": "NOT STARTED",
-      "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization.",
+      "disposition": "PARTIAL",
+      "justification": "Acceptance contract formalized in docs/phases/phase-91.md (issue #14). Remains PARTIAL pending application-aware path selection evidence.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-91.md",
+        "recordedStatus": "Contract formalized (issue #14).** Existing fabric resource kinds (ApplicationPath, Service, Endpoint, Destination) and decision orchestration provide foundatio",
+        "resolvedReferences": 3,
+        "missingReferences": [],
+        "packages": [
+          "@irp/network-intelligence",
+          "@irp/resilience-runtime",
+          "@irp/routing"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/network-intelligence",
+          "@irp/resilience-runtime",
+          "@irp/routing"
+        ]
       }
     },
     {
       "phase": 92,
       "title": "Connectivity Service Assurance",
-      "disposition": "NOT STARTED",
-      "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization.",
+      "disposition": "PARTIAL",
+      "justification": "Acceptance contract formalized in docs/phases/phase-92.md. Remains PARTIAL pending implementation mapped to acceptance tests and exact-current-SHA CI evidence.",
       "probe": {
-        "doc": null
+        "doc": "docs/phases/phase-92.md",
+        "recordedStatus": "Contract formalized (issue #14).** Existing fabric health/freshness attributes, closed-loop verification, safety kernel checkpoints, and observability surfaces ",
+        "resolvedReferences": 3,
+        "missingReferences": [],
+        "packages": [
+          "@irp/network-intelligence",
+          "@irp/resilience-runtime",
+          "@irp/telemetry"
+        ],
+        "nativeSources": [],
+        "packagesWithPassingTests": [
+          "@irp/network-intelligence",
+          "@irp/resilience-runtime",
+          "@irp/telemetry"
+        ]
       }
     },
     {

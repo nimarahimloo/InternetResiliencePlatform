@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import type { DecisionRecord } from '../src/domain/types.js';
+import type { DecisionRecord, CompiledIntent } from '../src/domain/types.js';
 import { BoundedClosedLoopController } from '../src/closed-loop.js';
 
 type Outcome = DecisionRecord['outcome'];
@@ -59,6 +59,25 @@ const runtime = (...outcomes: Outcome[]) => ({
     return record(outcomes[index - 1] ?? outcomes.at(-1)!, index);
   }),
 });
+
+const baseIntent = (overrides: Partial<CompiledIntent> = {}): CompiledIntent =>
+  ({
+    intentId: 'intent-drift',
+    version: 1,
+    priority: 'normal',
+    desiredOutcome: 'stable connectivity',
+    target: {},
+    constraints: {},
+    objectives: { score: 0.95 },
+    confidence: 0.9,
+    provenance: 'test',
+    autonomy: 'OBSERVE_ONLY',
+    scope: {},
+    effectiveFrom: new Date(Date.now() - 60_000).toISOString(),
+    expiresAt: new Date(Date.now() + 60_000).toISOString(),
+    compiledAt: new Date().toISOString(),
+    ...overrides,
+  }) as CompiledIntent;
 
 describe('BoundedClosedLoopController', () => {
   it('stops at a healthy outcome by default', async () => {
@@ -142,5 +161,101 @@ describe('BoundedClosedLoopController', () => {
     await expect(controller.run({ maxCycles: 0 })).rejects.toThrow('maxCycles');
     await expect(controller.run({ maxCycles: 11 })).rejects.toThrow('maxCycles');
     await expect(controller.run({ intervalMs: -1 })).rejects.toThrow('intervalMs');
+  });
+
+  it('attaches observe-only drift assessments when driftInputs are supplied and never mutates', async () => {
+    const fake = runtime('success');
+    const controller = new BoundedClosedLoopController(fake);
+    const intent = baseIntent();
+
+    const result = await controller.run({
+      maxCycles: 1,
+      correlationId: 'drift-loop',
+      driftInputs: {
+        intent,
+        observed: { score: 0.5 },
+      },
+    });
+
+    expect(result.status).toBe('healthy');
+    expect(result.driftAssessments).toHaveLength(1);
+    const assessment = result.driftAssessments![0]!;
+    expect(assessment.intentId).toBe('intent-drift');
+    expect(assessment.severity).toBe('high');
+    expect(assessment.recommendedAdmission).toBe('OBSERVE_ONLY');
+    expect(assessment.effective).toBe(true);
+    // Detector and loop controller performed no mutation; runtime.cycle was still the only privileged call.
+    expect(fake.cycle).toHaveBeenCalledTimes(1);
+  });
+
+  it('collects one observe-only drift assessment per completed cycle on multi-cycle runs', async () => {
+    const fake = runtime('degraded', 'degraded', 'success');
+    const controller = new BoundedClosedLoopController(fake);
+    const intent = baseIntent();
+
+    const result = await controller.run({
+      maxCycles: 3,
+      stopWhenHealthy: false,
+      correlationId: 'multi-drift',
+      driftInputs: {
+        intent,
+        observed: { score: 0.5 },
+      },
+    });
+
+    expect(result.status).toBe('bounded');
+    expect(result.cyclesCompleted).toBe(3);
+    expect(result.driftAssessments).toHaveLength(3);
+    expect(result.driftAssessments!.every((a) => a.intentId === 'intent-drift')).toBe(true);
+    expect(result.driftAssessments!.every((a) => a.recommendedAdmission === 'OBSERVE_ONLY')).toBe(true);
+    expect(fake.cycle).toHaveBeenCalledTimes(3);
+  });
+
+  it('omits driftAssessments when no driftInputs are provided', async () => {
+    const fake = runtime('success');
+    const controller = new BoundedClosedLoopController(fake);
+
+    const result = await controller.run({ maxCycles: 1 });
+
+    expect(result.driftAssessments).toBeUndefined();
+  });
+
+  it('collects one observe-only drift assessment per completed cycle', async () => {
+    const intent: CompiledIntent = {
+      intentId: 'intent-multi',
+      version: 1,
+      priority: 'normal',
+      desiredOutcome: 'stable',
+      target: {},
+      constraints: {},
+      objectives: { reachability: 0.95 },
+      confidence: 0.9,
+      provenance: 'test',
+      autonomy: 'OBSERVE_ONLY',
+      scope: {},
+      effectiveFrom: new Date(Date.now() - 60_000).toISOString(),
+      expiresAt: new Date(Date.now() + 60_000).toISOString(),
+      compiledAt: new Date().toISOString(),
+    };
+    const fake = runtime('noop');
+    const controller = new BoundedClosedLoopController(fake);
+
+    const result = await controller.run({
+      maxCycles: 3,
+      stopWhenHealthy: false,
+      correlationId: 'multi-drift',
+      driftInputs: {
+        intent,
+        observed: { reachability: 0.4 },
+      },
+    });
+
+    expect(result.cyclesCompleted).toBe(3);
+    expect(result.driftAssessments).toHaveLength(3);
+    expect(result.driftAssessments!.every((a) => a.severity === 'high')).toBe(true);
+    expect(result.driftAssessments!.every((a) => a.recommendedAdmission === 'OBSERVE_ONLY')).toBe(
+      true,
+    );
+    expect(fake.cycle).toHaveBeenCalledTimes(3);
   });
 });

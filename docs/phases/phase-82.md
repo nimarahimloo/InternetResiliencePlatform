@@ -2,50 +2,72 @@
 
 ## Status
 
-Acceptance contract defined. Implementation exists as pure functions in `@irp/resilience-runtime` (arbitration + governance) and is mapped below. Authorization recorded in `PROJECT_STATE.md`.
+**Contract formalized (issue #13).** Implementation fragments already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7` under intent governance and autonomy enforcement. This phase document defines the acceptance contract and maps existing code/tests. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and remaining policy-engine gaps (if any) are closed without creating a second authority.
 
 ## Objective
 
-Provide the canonical policy decision and enforcement boundary that evaluates compiled intents against policy snapshots, autonomy levels, and safety constraints. Decisions are pure, deterministic, and must not become a second mutation or control-plane authority.
+Decide whether a compiled intent (or set of candidates) may be admitted for planning/mutation under the current runtime mode, autonomy level and safety boundaries. Enforcement is advisory-to-gating only: it never bypasses the Phase 77 safety/rollback kernel or invents a parallel decision engine.
 
 ## Dependencies
 
 - Phase 79 — Intent Model & Lifecycle
 - Phase 81 — Intent Translation / Compilation
-- Existing policy snapshot and autonomy contracts in `@irp/core` / domain types
+- Phase 77 — Safety, Rollback & Recovery Kernel
+- Phase 78 — Closed-Loop Control Foundation
 
-## Affected packages
+## Canonical owner
 
-- `@irp/resilience-runtime` (`src/intent/arbitration.ts`, `src/intent/governance.ts`, tests in `tests/intent-governance.test.ts`)
+- `@irp/resilience-runtime` — `src/intent/governance.ts` (admission, selection, mutationAllowed)
+- Autonomy gate: `enforceAutonomy` in `src/intent/arbitration.ts` (re-exported)
+- Core autonomy predicate: `isAutonomyPermitted` from `@irp/core`
+- Tests: `packages/resilience-runtime/tests/intent-governance.test.ts`
 
-## Canonical contract
+## Scope
 
-- `arbitrateIntents(intents, now)` filters to effective intents, orders by priority/version, and reports conflicts.
-- `enforceAutonomy(intent, policy)` returns a permission decision consistent with the autonomy level model.
-- Governance functions produce bounded, explainable allow/deny/restrict outcomes.
-- All functions are pure; they consume policy snapshots and never mutate network state themselves.
-
-## Acceptance criteria
-
-- Decisions are deterministic for identical inputs and timestamps.
-- Autonomy levels (`OBSERVE_ONLY` … `HIGH_RISK_REQUIRES_APPROVAL`) are enforced; high-risk paths require explicit approval.
-- Effective-window and priority ordering match documented semantics.
-- Conflict and denial paths are covered by unit tests.
-- No parallel policy engine is introduced; the functions are the single source of truth consumed by the canonical runtime.
-- Repository gates are green on the implementing commit.
-
-## Verification boundary
-
-Unit tests prove the pure functions. End-to-end enforcement through a production entrypoint (API or daemon) that feeds the result into the ResilienceRuntime cycle is required before the phase can be marked COMPLETE. CI evidence is mandatory.
+- Admit / plan-only / require-approval / deny decisions (`IntentAdmission`).
+- Select a governed intent from candidates using priority, confidence, autonomy and scope specificity.
+- Reject stale (non-effective) intents before admission.
+- Surface `mutationAllowed` consistent with runtime mode (`live` vs non-mutating modes).
+- Fail closed when no admissible candidate exists.
 
 ## Non-goals
 
-Creating a new global policy store, performing network mutation, or replacing the Phase 77 safety kernel.
+- Full organization-wide policy language or external PDP/PEP product (later phases / Group F).
+- Conflict journal persistence beyond what Phase 83 already provides.
+- Network mutation execution (Phase 76 transaction engine remains the only mutator).
+- Second global policy registry or control-plane authority.
+
+## Acceptance criteria
+
+1. `resolveIntentGovernance` / `selectGovernedIntents` (or equivalent exported surface) produce an `IntentGovernanceDecision` with admission, selected intent, rejected set and reasons.
+2. Stale intents outside their effective window are rejected with an explicit reason.
+3. Autonomy levels `OBSERVE_ONLY` / `ADVISORY` / `HIGH_RISK_REQUIRES_APPROVAL` cannot silently grant mutation in non-live or restricted modes.
+4. Unit tests cover: allow path, plan-only, deny, stale rejection, overlapping candidate selection, and mode-gated mutationAllowed.
+5. No new top-level control-plane package is introduced; ownership stays under `@irp/resilience-runtime`.
+6. Applicable package tests and typecheck pass on the contract SHA.
+
+## Verification boundary
+
+Source presence is not completion. Phase 82 completion requires mapped paths, green tests/CI evidence on a recorded SHA, and phase-matrix update only from regenerated evidence.
+
+## Evidence map (baseline SHA `decd921`)
+
+| Criterion | Location |
+|-----------|----------|
+| Governance decision | `packages/resilience-runtime/src/intent/governance.ts` |
+| Autonomy enforcement | `packages/resilience-runtime/src/intent/arbitration.ts` (`enforceAutonomy`) |
+| Tests | `packages/resilience-runtime/tests/intent-governance.test.ts` |
+| Core autonomy helper | `@irp/core` (`isAutonomyPermitted` and related) |
+
+## Known gaps (do not hide)
+
+- A broader declarative policy language and cross-domain enforcement engine beyond intent admission is still roadmap work (see MASTER_ROADMAP_V2 Groups B/F). This phase contract covers the **intent-scoped** decision/enforcement path only.
+- End-to-end “API → runtime → Postgres ownership” certification remains part of issue #13 gap-fill and release gates, not automatic COMPLETE.
 
 ## Rollback
 
-Revert the arbitration/governance modules and their tests. Existing Phase 79/81 contracts remain usable.
+Revert governance admission changes; keep compiler and Phase 79 model. Runtime must continue to fail closed when governance is unavailable.
 
-## Known residual
+## Authorization note
 
-Durable ownership and stale-intent rejection across the API → runtime → Postgres path remain open and are not claimed here.
+Issue #13 authorizes contract definition and mapping of existing intent/policy capability for Phases 79–83. Implementation work is limited to closing verified acceptance gaps without inventing a competing policy engine.

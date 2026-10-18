@@ -5,14 +5,15 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 78 — Closed-Loop Control Foundation is implemented on `main`.
-- **Current execution gate:** GitHub issue #272 and workstreams #273–#284, plus Linux runtime gate #254. These are the active post-Phase-78 integration/evidence workstreams. Phases 79–83 now have explicit acceptance contracts and are authorized for gap-closing work (see below).
+- **Current main HEAD reviewed this run:** `2c8610ce2b3e6c7b603dbfcb575366b687886792` (2026-10-18, merge of PR #55 resolving intent scope arbitration and conflict ownership leaks, plus PR #57 correcting intent e2e ownership context/autonomy/spy and reconciling state to prior SHA).
+- **Issue #12 progress:** Phase 1–38 acceptance evidence register complete with package/path/test anchors; phase-history-evidence-matrix mapped; phase-1-150-status-matrix regenerated. Dispositions remain PARTIAL pending fresh per-phase CI evidence and full acceptance verification. No COMPLETE claimed from documentation alone.
+- **Current open issues (authoritative tracker):** #4 (post-v0.2.1 runtime/signing/production certification — largely external blockers), #12 (reconstruct per-phase acceptance evidence for Phases 1–38 / unmapped 39–78), #13 (define acceptance contracts for Phases 79–83 existing intent/policy capability), #14 (authorize contracts for Groups B–L / Phases 84–150).
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
 - **Phase 78 status:** the bounded closed-loop controller is implemented and present on `main`.
-- **Current main baseline reviewed:** `faac50bbfa7e0e728761061467b5455e3e3f6897` (2026-10-08). The ordered path to release is `docs/release/RELEASE_GATE_ROADMAP.md`.
-- **Latest implementation merge observed on this baseline:** PRs #326, #327, #328 (clean-state evidence, Phase 73 unified network state, issue 323 clean-state validation).
-- **Release state:** Phase 71 release-contract evidence now exists: GitHub Release [v0.2.1](https://github.com/nimarahimloo/InternetResiliencePlatform/releases/tag/v0.2.1) (2026-10-09, source `a2facc3`, run [37913149488](https://github.com/nimarahimloo/InternetResiliencePlatform/actions/runs/37913149488)) publishes exactly one versioned asset per platform with verified `SHA256SUMS.txt` and a green fail-closed Linux bundle smoke test; see `docs/phases/phase-71.md` and issue #1. v0.2.0 is marked prerelease (packaging defects). Production certification (roadmap Step 6) remains open.
+- **Issue #13 progress:** acceptance contracts for Phases 79–83 formalized and merged. Phase matrix reflects contracts; dispositions remain PARTIAL pending full verification evidence. No COMPLETE claimed from documentation alone. E2E ownership/stale coverage and governance contract alignment (trusted live context + SAFE_AUTOMATION, runtime.cycle spy) landed via PR #56/#57; intent scope arbitration and conflict ownership fixes merged in PR #55. Real PostgreSQL durability remains externally blocked.
+- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification (roadmap Step 6) remains open. The previously observed Release Gate failed because API typecheck failed; no passing Release Gate evidence has yet been observed for the repair branch's current SHA.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–78, but it must not be represented as certified until its evidence exists.
-- **Post-70 roadmap:** `docs/roadmap/MASTER_ROADMAP_V2.md` remains architectural reference material for Phases 72–150. Phases 79–83 are now authorized because acceptance contracts exist in `docs/phases/phase-79.md` … `phase-83.md` and existing code has been mapped. Phases 84+ remain unauthorized until contracts are written.
+- **Issue #14 progress (2026-10-18):** Phase contracts 84–92 exist; all remain PARTIAL pending implementation/acceptance evidence. Phase 85 observe-only drift detection is integrated into the closed-loop controller with per-cycle assessment collection (PR in progress). Phases 93–150 still require contracts and explicit authorization before implementation. No new runtime authority introduced.
 
 ## Phase 78 objective
 
@@ -26,128 +27,27 @@ Phase 78 formalizes a bounded observe → decide → apply → verify/recover co
 - Blocked and failed decisions terminate the loop immediately.
 - Healthy terminal outcomes stop the loop by default.
 - Cooperative cancellation prevents the next runtime cycle from starting.
+- Optional per-cycle observe-only intent drift assessments (Phase 85) are collected when `driftInputs` are supplied; they never invoke privileged mutation.
 - Dedicated tests are in `packages/resilience-runtime/tests/closed-loop.test.ts`.
 - The public runtime barrel exports the controller.
+- Observe-only Phase 85 drift assessments are optionally collected and attached without triggering mutation.
 
 ## Phase 71 certification prerequisites
 
-The Phase 71 gate is limited to the release/distribution contract defined by `docs/phases/phase-71.md`. The remaining evidence is:
-
-- repository release-gate validation (validate, typecheck, lint, tests and build evidence applicable to the release commit);
-- successful execution of the release workflow from a real semantic version tag;
-- exactly one Android debug APK, Linux bundle, macOS bundle, Windows bundle and iOS source/developer ZIP attached to the GitHub Release;
-- no unsigned iOS `.ipa` output;
-- generated `SHA256SUMS.txt` published with the release and verified before publication;
-- inspection of every published asset for naming, non-empty content, platform identity and checksum coverage;
-- verification that the human-facing download documentation matches the published artifact set.
-
-Device/runtime smoke tests or signed iOS distribution belong to the applicable downstream platform/runtime phases and are not silently substituted for Phase 71's release-contract evidence. In particular, Phase 71 intentionally publishes an iOS source/developer bundle rather than a signed installable `.ipa`.
-
-## Current architecture authority
-
-IRP is a headless Core + unified Control Plane with full-capability clients. The canonical network-control loop is:
-
-```text
-Observe → Measure → Detect → Diagnose → Decide → Policy/Safety Check
-→ Apply → Verify → Monitor → Failover/Recover → Learn → Explain
-```
-
-The immediate architectural objective is not to create a second control plane. The repository already contains substantial control-plane/runtime primitives. The current work must consolidate and prove their ownership and end-to-end execution before adding broader autonomy.
-
-### Existing ownership boundaries
-
-- `@irp/resilience-runtime` is the primary transport-agnostic runtime/control-loop authority.
-- `@irp/network-intelligence` supplies measurements, models and decision intelligence; it must not become a second independent mutation authority.
-- `@irp/gateway-registry` owns gateway inventory/discovery/health/selection/failover/fleet behavior.
-- `@irp/tunnel` owns tunnel contracts, lifecycle and concrete tunnel providers.
-- DNS, connectivity, routing, security, telemetry and plugin packages retain their domain-specific contracts behind the shared control-plane boundary.
-- `apps/api`, SDKs and clients expose/consume capabilities; UI/client layers do not own safety-critical routing or policy decisions.
-
-These are architecture directions to be verified and refined by Phase 72; they are not a claim that every cross-package boundary is already fully normalized.
-
-## Post-Phase-78 execution governance
-
-The historical/current roadmap is grouped as:
-
-- 72–78 — Unified Control Plane
-- 79–85 — Intent & Policy
-- 86–92 — Connectivity Fabric
-- 93–99 — Advanced Routing & Recovery
-- 100–106 — Telemetry & Network Intelligence
-- 107–113 — Security & Trust
-- 114–120 — Fleet & Distributed Control
-- 121–127 — Intelligence, Simulation & Production
-- 128–134 — Data Plane & Traffic Engineering
-- 135–140 — Platform APIs & Extensibility
-- 141–145 — Privacy, Governance & Compliance
-- 146–150 — Reliability, Scale & Disaster Recovery
-
-**Authorization status (2026-10-13):** Phases 79–83 have acceptance contracts (`docs/phases/phase-79.md` through `phase-83.md`) and existing implementations have been mapped to those contracts. Gap-closing work (stale-intent rejection, durable ownership end-to-end, production entrypoint consumption) is authorized under issue #13. Phases 84+ remain NOT STARTED and unauthorized until contracts are written.
-
-Dependency rules:
-
-1. Control-plane state/contracts precede broad autonomy.
-2. Intent/policy precede AI-assisted autonomous control.
-3. Safety, authorization, rollback and recovery precede broad execution authority.
-4. Telemetry and assurance are first-class autonomy dependencies.
-5. Fleet control reuses device/control contracts instead of forking them.
-6. Data-plane enforcement remains behind explicit policy and safety controls.
-7. Privacy, security and auditability are architectural requirements, not release-only cleanup.
-8. Distributed control must preserve deterministic local fallback when centralized control is unavailable.
-9. No phase may weaken least-privilege, privacy, fallback, recovery or auditability guarantees.
-
-## Parallel-agent rules
-
-- One owner per active phase.
-- One agent owns a file/package at a time.
-- Use a dedicated branch `phase/<number>-<short-name>` for phase implementation.
-- Shared contract changes require integration review before dependent implementations proceed.
-- Do not create duplicate decision engines, state registries, policy engines, event buses, provider registries or control-plane runtimes when an existing canonical component can be extended.
-- Every phase record must define scope, non-goals, dependencies, affected packages, contracts, tests, acceptance criteria and rollback considerations.
-- Phase completion requires implementation plus the verification/evidence defined by its phase contract. Documentation or source presence alone is never completion evidence.
-
-## Phase verification rules
-
-For every phase:
-
-1. inspect existing implementation before adding abstractions;
-2. preserve compatible contracts unless a breaking change is explicitly justified;
-3. test normal, boundary, invalid and failure paths as applicable;
-4. run the required repository gates: `pnpm validate`, `pnpm typecheck`, `pnpm lint`, relevant tests and builds;
-5. apply explicit security/abuse review to security-sensitive changes;
-6. verify runtime behavior for networking, process, container and platform changes;
-7. update canonical documentation and state;
-8. require green CI before declaring the phase complete.
-
-For networking automation, every mutation must be policy-checked, bounded, observable, reversible and auditable.
+The Phase 71 gate is limited to the release/distribution contract defined by `docs/phases/phase-71.md`. Remaining production certification (device smoke, regional validation, signing, security sign-off) is tracked in issue #4 and `docs/release/RELEASE_GATE_ROADMAP.md`.
 
 ## Canonical evidence locations
 
 - Current state: this file.
 - Release path and blockers: `docs/release/RELEASE_GATE_ROADMAP.md`.
 - Current post-70 roadmap: `docs/roadmap/MASTER_ROADMAP_V2.md`.
-- Historical 0–70 roadmap: `ROADMAP.md` and `docs/architecture/product-roadmap-70-phases.md`.
-- Current phase records: `docs/phases/`.
-- Historical numbering reconstruction: `docs/audits/phase-history-evidence-matrix.md`.
-- Control-plane execution baseline: `docs/audits/control-plane-execution-baseline-2026-09-03.md`.
-- API contract: `docs/api/control-plane-contract.md`.
-- Live runtime architecture: `docs/architecture/live-control-plane.md`.
+- Historical 0–70 roadmap: `ROADMAP.md`.
+- Current phase records: `docs/phases/` (including formalized Phase 79–92 contracts under issues #13/#14).
 - Engineering governance: `docs/architecture/engineering-governance.md`.
-- Parallel-agent protocol: `docs/architecture/parallel-agent-protocol.md`, `.github/AGENT_PROTOCOL.md` and `.github/ACTIVE_WORK.md`.
-
-## Known architectural findings entering the current integration backlog
-
-The repository already contains observation, state, planning, policy, decision, execution, verification, telemetry and recovery primitives. The current backlog must connect and prove these existing components rather than duplicating them.
-
-The remaining architectural risks are ownership fragmentation and contract duplication, especially around:
-
-- decision orchestration versus decision intelligence;
-- desired/observed/actual state semantics;
-- event taxonomy and event ownership;
-- cross-domain action/transaction semantics;
-- unified safety and rollback boundaries;
-- bounded repeated-cycle orchestration and explicit terminal conditions.
 
 ## Product objective
 
 IRP's long-term objective is a safe, observable and policy-governed Internet control plane that can continuously measure network conditions, diagnose failures, select and apply bounded changes, verify the result, recover from failure and explain decisions across supported clients and network providers.
+
+- **Issue #14 progress (2026-10-17):** Phase 86–92 contracts added (docs/phases/phase-86.md through phase-92.md). Maps existing fabric, routing, gateway, DNS, tunnel, application path, and assurance surfaces; no new runtime authority introduced. Matrix update deferred until evidence exists.
+- **Matrix regeneration (2026-10-17):** phase-1-150-status-matrix.md and phase-status-matrix.json regenerated from authoritative generator against verified HEAD 2a8728214bf57347049dcfbba0fdf5e367db60f7. Dispositions unchanged (Phase 85 remains PARTIAL with observe-only drift + closed-loop integration present). Regeneration against current HEAD 2c8610c is pending; dispositions do not change from documentation alone.

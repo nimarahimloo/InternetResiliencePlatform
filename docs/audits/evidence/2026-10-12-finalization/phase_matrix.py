@@ -147,11 +147,20 @@ EXTERNAL = {
     70: 'Fail-closed v1.0 certification verifier exists and reports PENDING: 15 required evidence items (security-audit, regional-evidence, chaos-soak, backup-restore, upgrade-rollback, ios/android-device-smoke, ...) are not supplied.',
 }
 PARTIAL_LATER = {
-    79: 'Intent model and lifecycle exist (resilience-runtime/src/intent, PostgresIntentStore, ownership migrations) with passing tests, but MASTER_ROADMAP_V2 defines no Phase 79 acceptance contract and PROJECT_STATE does not authorize the phase; cannot be COMPLETE without a contract.',
-    80: 'Intent API exists (apps/api/src/intent-api.ts, wired in apps/api/src/index.ts) with tests; no Phase 80 acceptance contract defined.',
-    81: 'Intent compilation exists (resilience-runtime/src/intent/compiler.ts, used by runtime.ts); no Phase 81 acceptance contract defined.',
-    82: 'Policy registry/arbitration exists (src/policy, PolicyArbitrator used by runtime.executeCycle); no Phase 82 contract.',
-    83: 'Intent conflict arbitration and conflict journal exist (src/intent/arbitration.ts, migration 20261004000000_phase_274_conflict_journal); no Phase 83 contract.',
+    79: 'Acceptance contract formalized in docs/phases/phase-79.md (issue #13). Intent model and lifecycle exist with mapped tests; disposition remains PARTIAL pending full end-to-end verification evidence and matrix regeneration on a green CI SHA.',
+    80: 'Acceptance contract formalized in docs/phases/phase-80.md (issue #13). Intent API exists with tests; remains PARTIAL until durable ownership e2e evidence is recorded.',
+    81: 'Acceptance contract formalized in docs/phases/phase-81.md (issue #13). Compilation exists and is tested; remains PARTIAL pending contract-mapped CI evidence.',
+    82: 'Acceptance contract formalized in docs/phases/phase-82.md (issue #13). Policy arbitration exists; remains PARTIAL.',
+    83: 'Acceptance contract formalized in docs/phases/phase-83.md (issue #13). Arbitration and conflict journal exist with tests; remains PARTIAL pending full durable journal e2e certification.',
+    84: 'Acceptance contract formalized in docs/phases/phase-84.md (issue #14). Safety kernel and intent governance exist in resilience-runtime; remains PARTIAL pending full change-governance evidence and CI on implementing SHA.',
+    85: 'Observe-only intent drift detector implemented in packages/resilience-runtime/src/intent/drift.ts with unit tests. Contract formalized (issue #14). Disposition remains PARTIAL; continuous correction and full CI evidence on green SHA still required.',
+    86: 'Acceptance contract formalized in docs/phases/phase-86.md (issue #14). Related fabric capability exists; remains PARTIAL pending phase-specific implementation evidence.',
+    87: 'Acceptance contract formalized in docs/phases/phase-87.md (issue #14). Remains PARTIAL pending implementation evidence.',
+    88: 'Acceptance contract formalized in docs/phases/phase-88.md (issue #14). Remains PARTIAL pending implementation evidence.',
+    89: 'Acceptance contract formalized in docs/phases/phase-89.md (issue #14). Related gateway capability exists; remains PARTIAL.',
+    90: 'Acceptance contract formalized in docs/phases/phase-90.md (issue #14). Related DNS/tunnel/proxy surfaces exist; remains PARTIAL.',
+    91: 'Acceptance contract formalized in docs/phases/phase-91.md (issue #14). Remains PARTIAL pending application-aware path selection evidence.',
+    92: 'Acceptance contract formalized in docs/phases/phase-92.md. Remains PARTIAL pending implementation mapped to acceptance tests and exact-current-SHA CI evidence.',
 }
 RELATED = {
     86: 'fabric.ts / fabric-authority.ts / fabric-lifecycle.ts',
@@ -171,13 +180,14 @@ RELATED = {
 
 rows = []
 for n in range(1, 151):
-    p = probe(n) if 39 <= n <= 80 else {'doc': None}
+    p = probe(n) if 39 <= n <= 92 else {'doc': None}
     title = titles.get(n, '(title not found)')
     if n <= 38:
         disp = 'PARTIAL'
-        why = ('Implementation lives in the workspace packages and their tests pass, but the repository\'s own '
-               'phase-history evidence matrix records this phase as historical-evidence / pending reconstruction: '
-               'no per-phase acceptance record maps commits and tests to this phase contract.')
+        why = ('Acceptance evidence register (docs/audits/evidence/phase-1-38-acceptance-evidence.md) maps '
+               'packages, paths and recorded test passes for this phase; phase-history-evidence-matrix.md records '
+               'it as mapped. Disposition remains PARTIAL pending attachment of a fresh per-phase CI workflow URL '
+               'and full acceptance-criteria verification beyond the historical reconstruction.')
     elif n in EXTERNAL:
         disp, why = 'BLOCKED', EXTERNAL[n]
     elif n == 71:
@@ -186,31 +196,10 @@ for n in range(1, 151):
                'macOS and Windows developer bundles, iOS source and SHA256SUMS. Scope caveat: macOS/Windows archives are '
                'unsigned developer bundles (single dist/index.js + service manifest), Android is a debug APK, iOS is source-only.')
     elif 39 <= n <= 78:
-        ok = p['doc'] and not p['missingReferences'] and p['resolvedReferences'] > 0 and (p['packages'] or p['nativeSources'])
-        tests_ok = set(p.get('packages', [])) <= set(p.get('packagesWithPassingTests', []))
-        if ok and tests_ok:
-            disp = 'COMPLETE'
-            why = (f"Phase contract {p['doc']}; all {p['resolvedReferences']} cited packages/paths/symbols resolve at HEAD; owning package tests ({', '.join(p['packages'])}) passed "
-                   'in the recorded run and the bf73303/WP2.2 CI workflows are green.')
-            if p.get('nativeSources'):
-                why += (f" Native sources ({', '.join(p['nativeSources'])}) are verified by the platform CI workflows "
-                        '(iOS Full Client / iOS Network Integration / Android Client); real-device smoke evidence is a Phase 70 '
-                        'certification item and remains pending.')
-            if n == 78:
-                why += (' Integration residual: BoundedClosedLoopController is exercised against the canonical ResilienceRuntime '
-                        'by tests, but no production entrypoint runs the multi-cycle loop (API triggers single runCycle calls; the '
-                        'only non-test consumer is the deprecated NetworkAutopilot). Tracked as remaining work.')
-        elif p['doc'] is None:
-            disp, why = 'PARTIAL', 'No phase contract document found; cannot verify acceptance.'
-        else:
-            disp = 'PARTIAL'
-            if p['missingReferences']:
-                why = f"Phase contract cites references that do not resolve at HEAD: {', '.join(p['missingReferences'][:6])}."
-            elif not p['packages']:
-                why = ('Phase contract does not cite a package, source path or symbol that can be verified at HEAD '
-                       f"(recorded status: '{p['recordedStatus']}'); implementation cannot be mapped to tests.")
-            else:
-                why = 'Owning package tests did not pass in the recorded run.'
+        disp = 'PARTIAL'
+        why = ('Historical path-resolution and package test-count records are inventory signals only; they do not prove '
+               'phase acceptance on the current source SHA. Keep PARTIAL until phase-specific acceptance criteria are '
+               'verified and the current implementation SHA has attached, successful CI evidence.')
     elif n in PARTIAL_LATER:
         disp, why = 'PARTIAL', PARTIAL_LATER[n]
     else:
