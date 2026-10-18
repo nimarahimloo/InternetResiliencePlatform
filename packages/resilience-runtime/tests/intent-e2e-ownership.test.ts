@@ -11,6 +11,8 @@ import type { ResilienceRuntime } from '../src/runtime.js';
 const runtime = (status: 'success' | 'blocked' | 'failed'): ResilienceRuntime =>
   ({
     cycle: vi.fn(async () => ({
+      // BoundedClosedLoopController consumes the canonical DecisionRecord outcome.
+      outcome: status === 'success' ? 'success' : status,
       status,
       decision: { outcome: status === 'success' ? 'apply' : status },
     })),
