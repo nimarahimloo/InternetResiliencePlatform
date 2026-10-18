@@ -5,15 +5,16 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 78 — Closed-Loop Control Foundation is implemented on `main`.
-- **Current main HEAD reviewed this run:** `2c8610ce2b3e6c7b603dbfcb575366b687886792` (2026-10-18, merge of PR #55 resolving intent scope arbitration and conflict ownership leaks, plus PR #57 correcting intent e2e ownership context/autonomy/spy and reconciling state to prior SHA).
+- **Current main HEAD reviewed this run:** `a34a9642e9cbf79910b9f1e515b00bc95676d6b1` (2026-10-18, merge of PR #69 adding intent arbitration tests). Note: this SHA introduced a CI-breaking duplicate drift assessment and undefined `collectOneDriftAssessment` reference in `closed-loop.ts` plus an explicit `any` in an integration test.
+- **Active repair:** PR #70 (`fix/closed-loop-drift-assessment-ci`, head `28dbb6c967f6aa9e75bbfd80b65d9cc68029e114`) removes the broken pre-cycle call, keeps observe-only post-cycle `assessDrift`, and replaces the `any` with a typed `CompiledIntent` fixture. Most workspace, architecture, runtime-lab, and client checks are green; remaining checks were still in progress at last observation. Do not merge until all required checks pass on the exact head SHA.
 - **Issue #12 progress:** Phase 1–38 acceptance evidence register complete with package/path/test anchors; phase-history-evidence-matrix mapped; phase-1-150-status-matrix regenerated. Dispositions remain PARTIAL pending fresh per-phase CI evidence and full acceptance verification. No COMPLETE claimed from documentation alone.
 - **Current open issues (authoritative tracker):** #4 (post-v0.2.1 runtime/signing/production certification — largely external blockers), #12 (reconstruct per-phase acceptance evidence for Phases 1–38 / unmapped 39–78), #13 (define acceptance contracts for Phases 79–83 existing intent/policy capability), #14 (authorize contracts for Groups B–L / Phases 84–150).
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
-- **Phase 78 status:** the bounded closed-loop controller is implemented and present on `main`.
+- **Phase 78 status:** the bounded closed-loop controller is implemented and present on `main` (repair for drift integration pending merge of PR #70).
 - **Issue #13 progress:** acceptance contracts for Phases 79–83 formalized and merged. Phase matrix reflects contracts; dispositions remain PARTIAL pending full verification evidence. No COMPLETE claimed from documentation alone. E2E ownership/stale coverage and governance contract alignment (trusted live context + SAFE_AUTOMATION, runtime.cycle spy) landed via PR #56/#57; intent scope arbitration and conflict ownership fixes merged in PR #55. Real PostgreSQL durability remains externally blocked.
 - **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification (roadmap Step 6) remains open. The previously observed Release Gate failed because API typecheck failed; no passing Release Gate evidence has yet been observed for the repair branch's current SHA.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–78, but it must not be represented as certified until its evidence exists.
-- **Issue #14 progress (2026-10-18):** Phase contracts 84–92 exist; all remain PARTIAL pending implementation/acceptance evidence. Phase 85 observe-only drift detection is integrated into the closed-loop controller with per-cycle assessment collection (PR in progress). Phases 93–150 still require contracts and explicit authorization before implementation. No new runtime authority introduced.
+- **Issue #14 progress (2026-10-18):** Phase contracts 84–92 exist; all remain PARTIAL pending implementation/acceptance evidence. Phase 85 observe-only drift detection is integrated into the closed-loop controller with per-cycle assessment collection (repair in PR #70). Phases 93–150 still require contracts and explicit authorization before implementation. No new runtime authority introduced.
 
 ## Phase 78 objective
 
@@ -50,4 +51,10 @@ The Phase 71 gate is limited to the release/distribution contract defined by `do
 IRP's long-term objective is a safe, observable and policy-governed Internet control plane that can continuously measure network conditions, diagnose failures, select and apply bounded changes, verify the result, recover from failure and explain decisions across supported clients and network providers.
 
 - **Issue #14 progress (2026-10-17):** Phase 86–92 contracts added (docs/phases/phase-86.md through phase-92.md). Maps existing fabric, routing, gateway, DNS, tunnel, application path, and assurance surfaces; no new runtime authority introduced. Matrix update deferred until evidence exists.
-- **Matrix regeneration (2026-10-17):** phase-1-150-status-matrix.md and phase-status-matrix.json regenerated from authoritative generator against verified HEAD 2a8728214bf57347049dcfbba0fdf5e367db60f7. Dispositions unchanged (Phase 85 remains PARTIAL with observe-only drift + closed-loop integration present). Regeneration against current HEAD 2c8610c is pending; dispositions do not change from documentation alone.
+- **Matrix regeneration (2026-10-17):** phase-1-150-status-matrix.md and phase-status-matrix.json regenerated from authoritative generator against verified HEAD 2a8728214bf57347049dcfbba0fdf5e367db60f7. Dispositions unchanged (Phase 85 remains PARTIAL with observe-only drift + closed-loop integration present). Regeneration against current HEAD a34a964 (or post-PR #70 SHA) is pending; dispositions do not change from documentation alone.
+
+## Checkpoint (this run)
+
+- Verified main: `a34a9642e9cbf79910b9f1e515b00bc95676d6b1`.
+- Open repair PR: https://github.com/nimarahimloo/InternetResiliencePlatform/pull/70 (head `28dbb6c967f6aa9e75bbfd80b65d9cc68029e114`).
+- Next dependency-safe task after PR #70 merges and CI is green on the merge commit: regenerate `docs/audits/phase-1-150-status-matrix.md` from the authoritative generator against the new SHA, then continue Phase 79–83 e2e / Phase 85 / Phase 84 evidence collection without introducing new runtime authority.
