@@ -83,3 +83,11 @@ For pull requests, also run the repository Docker smoke test. Phase completion r
 ## Architectural boundary
 
 The registry is an inventory/control-plane component. It must remain independent from tunnel execution and network decisioning. Later phases consume this contract rather than creating parallel gateway models.
+
+
+## Evidence anchors (reconstruction; not completion proof)
+
+- Owning package: `@irp/gateway-registry`
+- Implementation and unit tests: `packages/gateway-registry/src/index.ts`, `packages/gateway-registry/src/index.test.ts`
+- Historical package test evidence: `docs/audits/evidence/2026-10-12-finalization/test-counts.tsv`
+- Verification boundary: historical test counts and implementation presence do not prove current-SHA CI. Keep the phase PARTIAL until its acceptance tests and fresh validation evidence are verified.
