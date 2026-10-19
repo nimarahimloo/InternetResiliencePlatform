@@ -1,5 +1,5 @@
 import { createNetworkIntent, transitionIntent, type NetworkIntent } from '@irp/core';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
   InMemoryIntentStore,
   type IntentOwnership,
