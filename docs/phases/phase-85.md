@@ -25,7 +25,7 @@ Define the contract for continuously assuring that observed network state remain
 ## Scope
 
 - Evaluate whether a compiled intent remains effective given current time and lifecycle state.
-- Provide a deterministic drift signal when observed state diverges from the desired outcome of an effective intent (threshold and metric definitions to be specified in implementation).
+- Provide a deterministic drift signal when observed state diverges from an effective intent: recognized metrics use direction-aware thresholds, while unknown metrics use symmetric relative deviation (>10% is drift; >=30% of target is high severity). Unknown metrics are labelled `relative-deviation`, not assigned an invented higher/lower preference.
 - Expose drift as structured evidence consumable by the closed-loop controller and audit surfaces.
 - Require any drift-triggered correction to be re-admitted through intent governance and the safety kernel.
 
