@@ -55,6 +55,7 @@ import {
   type ObservationProvider,
 } from '@irp/resilience-runtime';
 import { registerIntentRoutes } from './intent-api.js';
+import { createOwnerScopedIntentActivator } from './intent-runtime-handoff.js';
 import { InMemoryRateLimiter, rateLimitPreHandler } from './security/rate-limit.js';
 import {
   generateSpeedInsightsScript,
@@ -763,14 +764,14 @@ data: ${JSON.stringify({ source: 'LIVE', updatedAt: snapshot.score.timestamp, me
   const runtimeResponse = <T>(request: FastifyRequest, data: T) =>
     runtimeEnvelope(data, request.headers['x-correlation-id']?.toString() ?? request.id);
 
-  registerIntentRoutes(app, {
+  const intentRoutes = registerIntentRoutes(app, {
     ...(process.env.DATABASE_URL ? { database: db } : {}),
-    onActivated: (intent) =>
-      resilienceRuntime.runIntent(intent, {
-        mode: 'simulation',
-        correlationId: `intent-${intent.id}-v${intent.version}`,
-        idempotencyKey: `intent-${intent.id}-v${intent.version}`,
-      }),
+    onActivated: createOwnerScopedIntentActivator({
+      store: {
+        list: (status, owner, limit) => intentRoutes.store.list(status, owner, limit),
+      },
+      runtime: resilienceRuntime,
+    }),
   });
 
   // The legacy /autopilot API remains a compatibility surface, but it must not
