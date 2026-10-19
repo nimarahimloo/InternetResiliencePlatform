@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceSha": "2c8610ce2b3e6c7b603dbfcb575366b687886792",
+  "sourceSha": "89e8b95d54b8a83ab69a017d89c6413bdef70744",
   "summary": {
     "PARTIAL": 88,
     "BLOCKED": 3,
@@ -358,7 +358,7 @@
       "probe": {
         "doc": "docs/phases/phase-39.md",
         "recordedStatus": "IMPLEMENTED / verification state inherited from current repository gates",
-        "resolvedReferences": 5,
+        "resolvedReferences": 6,
         "missingReferences": [],
         "packages": [
           "@irp/auth"
@@ -430,7 +430,7 @@
       "probe": {
         "doc": "docs/phases/phase-43.md",
         "recordedStatus": "",
-        "resolvedReferences": 3,
+        "resolvedReferences": 4,
         "missingReferences": [],
         "packages": [
           "@irp/resilience-runtime"
@@ -1573,7 +1573,7 @@
     },
     {
       "phase": 111,
-      "title": "Secure Agent \u2194 Control Plane Protocol",
+      "title": "Secure Agent ↔ Control Plane Protocol",
       "disposition": "NOT STARTED",
       "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization.",
       "probe": {
