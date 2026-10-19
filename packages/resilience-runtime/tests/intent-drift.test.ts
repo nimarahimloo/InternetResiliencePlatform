@@ -63,7 +63,11 @@ describe('detectIntentDrift', () => {
     const result = detectIntentDrift(intent, { score: 0.5 });
     expect(result.severity).toBe('high');
     expect(result.recommendedAdmission).toBe('OBSERVE_ONLY');
-    expect(result.observedDelta.score).toMatchObject({ target: 0.95, observed: 0.5 });
+    expect(result.observedDelta.score).toMatchObject({
+      target: 0.95,
+      observed: 0.5,
+      direction: 'relative-deviation',
+    });
   });
 
   it('does not assume unknown objectives are lower-is-better when observations are higher', () => {
@@ -71,6 +75,24 @@ describe('detectIntentDrift', () => {
     const result = detectIntentDrift(intent, { score: 0.95 });
     expect(result.severity).toBe('high');
     expect(result.recommendedAdmission).toBe('OBSERVE_ONLY');
+    expect(result.observedDelta.score).toMatchObject({
+      target: 0.5,
+      observed: 0.95,
+      direction: 'relative-deviation',
+    });
+  });
+
+  it('classifies unknown-metric high severity symmetrically above the target', () => {
+    const intent = baseIntent({ objectives: { score: 0.95 } });
+    const result = detectIntentDrift(intent, { score: 1.25 });
+
+    expect(result.severity).toBe('high');
+    expect(result.recommendedAdmission).toBe('OBSERVE_ONLY');
+    expect(result.observedDelta.score).toMatchObject({
+      target: 0.95,
+      observed: 1.25,
+      direction: 'relative-deviation',
+    });
   });
 
   it('does not false-positive when latency is below target (better)', () => {
