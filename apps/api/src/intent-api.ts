@@ -514,7 +514,7 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
 export interface IntentApiOptions {
   store?: IntentApiStore & ConflictApiStore;
   database?: Pick<DatabaseClient, '$queryRaw'>;
-  onActivated?: (intent: NetworkIntent) => Promise<unknown> | unknown;
+  onActivated?: (intent: NetworkIntent, ownership: IntentOwnership) => Promise<unknown> | unknown;
   requirePermission?: (
     request: FastifyRequest,
     permission: 'runtime.inspect' | 'runtime.execute',
@@ -647,7 +647,7 @@ export const registerIntentRoutes = (app: FastifyInstance, options: IntentApiOpt
     try {
       const updated = transitionIntent(intent, command);
       await store.put(updated, owner, { expectedVersion: intent.version });
-      if (updated.status === 'active') await options.onActivated?.(updated);
+      if (updated.status === 'active') await options.onActivated?.(updated, owner);
       return { success: true, data: updated };
     } catch (error) {
       if (error instanceof ConflictAppError) throw error;
