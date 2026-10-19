@@ -32,7 +32,7 @@ const runtimeStub = () => {
 };
 
 describe('owner-scoped intent runtime handoff', () => {
-  it('passes the owner's full effective active set without mixing other owners', async () => {
+  it("passes the owner-scoped effective active set without mixing other owners", async () => {
     const store = new InMemoryIntentStore();
     const a1 = activeIntent('owner-a-1');
     const a2 = activeIntent('owner-a-2', 'prefer lower latency');
