@@ -142,7 +142,10 @@ export const createIntentRepository = (
     return (rows as IntentRecordRow[])[0];
   },
   async list(status, ownerScopeKey, limit = 100) {
-    const bounded = Math.min(100, Math.max(1, limit));
+    // The public Intent API limits client listings to 100. Internal runtime
+    // arbitration may request 101 to detect overflow and fail closed instead
+    // of silently arbitrating only a truncated 100-row subset.
+    const bounded = Math.min(101, Math.max(1, limit));
     if (status)
       return (await client.$queryRaw`SELECT * FROM "NetworkIntentRecord" WHERE "ownerScopeKey" = ${ownerScopeKey} AND "status" = ${status} ORDER BY "updatedAt" DESC LIMIT ${bounded}`) as IntentRecordRow[];
     return (await client.$queryRaw`SELECT * FROM "NetworkIntentRecord" WHERE "ownerScopeKey" = ${ownerScopeKey} ORDER BY "updatedAt" DESC LIMIT ${bounded}`) as IntentRecordRow[];
