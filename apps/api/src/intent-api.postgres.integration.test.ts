@@ -1,5 +1,4 @@
 import Fastify from 'fastify';
-import { createNetworkIntent, transitionIntent } from '@irp/core';
 import { createCanonicalRuntime } from '@irp/resilience-runtime';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createPrismaClient } from '@irp/database';
