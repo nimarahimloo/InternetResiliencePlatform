@@ -12,6 +12,7 @@ import {
   UnauthorizedAppError,
   ValidationAppError,
   createDomainEvent,
+  isIntentEffective,
   mapErrorToHttp,
 } from '@irp/core';
 import { createLogger } from '@irp/logger';
@@ -763,14 +764,41 @@ data: ${JSON.stringify({ source: 'LIVE', updatedAt: snapshot.score.timestamp, me
   const runtimeResponse = <T>(request: FastifyRequest, data: T) =>
     runtimeEnvelope(data, request.headers['x-correlation-id']?.toString() ?? request.id);
 
-  registerIntentRoutes(app, {
+  const maxRuntimeIntentsPerOwner = 100;
+  const intentRoutes = registerIntentRoutes(app, {
     ...(process.env.DATABASE_URL ? { database: db } : {}),
-    onActivated: (intent) =>
-      resilienceRuntime.runIntent(intent, {
+    onActivated: async (intent, owner) => {
+      // Runtime arbitration must see the complete bounded active-intent set for
+      // this owner, not just the latest request and never another tenant's intents.
+      // Use the API's owner-scoped durable repository as the source of truth.
+      const activeIntents = await intentRoutes.store.list(
+        'active',
+        owner,
+        maxRuntimeIntentsPerOwner + 1,
+      );
+      if (activeIntents.length > maxRuntimeIntentsPerOwner) {
+        throw new Error(
+          `Owner has more than ${maxRuntimeIntentsPerOwner} active intents; refusing partial runtime arbitration`,
+        );
+      }
+
+      const effectiveIntents = activeIntents.filter((candidate) => isIntentEffective(candidate));
+      if (
+        !effectiveIntents.some(
+          (candidate) => candidate.id === intent.id && candidate.version === intent.version,
+        )
+      ) {
+        throw new Error(
+          `Activated intent ${intent.id}@${intent.version} was not present in the effective owner-scoped store`,
+        );
+      }
+
+      return resilienceRuntime.runIntents(effectiveIntents, {
         mode: 'simulation',
         correlationId: `intent-${intent.id}-v${intent.version}`,
         idempotencyKey: `intent-${intent.id}-v${intent.version}`,
-      }),
+      });
+    },
   });
 
   // The legacy /autopilot API remains a compatibility surface, but it must not
