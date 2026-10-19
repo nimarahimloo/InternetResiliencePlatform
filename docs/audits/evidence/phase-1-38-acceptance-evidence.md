@@ -1,8 +1,8 @@
 # Phase 1–38 Acceptance Evidence Register
 
 **Issue:** #12  
-**Source SHA (this reconstruction batch):** `b25d02bcc877ed6d2ccdeb3f8f347fae55e8cbe3`  
-**Scope of this batch:** Foundation and early network track **Phases 1–15** mapped with package/path/test anchors. Phases 16–38 remain pending reconstruction in subsequent batches.
+**Source SHA (initial reconstruction batch):** `b25d02bcc877ed6d2ccdeb3f8f347fae55e8cbe3`  
+**Register status (2026-10-19):** Phase 1–38 package/path/test anchors have been mapped across the batches below. The source SHA above identifies the initial batch, not current `main`. Historical test-count records are not fresh CI evidence for the current source SHA.
 
 > Documentation and path presence alone never yield COMPLETE. Dispositions in `phase-1-150-status-matrix.md` change only when `phase_matrix.py` is regenerated against evidence that resolves packages/paths and recorded passing tests. No phase is promoted to COMPLETE from this register alone.
 
@@ -163,22 +163,6 @@
 
 ---
 
-## Batches not yet reconstructed (Phases 16–38)
-
-| Track | Phases | Status |
-|-------|--------|--------|
-| Failover / policies | 16–18 | pending |
-| Extensibility / access | 19–27 | pending |
-| Learning / observability | 28–38 | pending |
-
-## Regeneration
-
-```bash
-python3 docs/audits/evidence/2026-10-12-finalization/phase_matrix.py
-```
-
-**Note:** After updating `phase-history-evidence-matrix.md` to `mapped` for the above phases, re-run the generator. Justifications for phases 1–25 should reflect the presence of this register and mapped history state; dispositions remain PARTIAL until fresh per-phase CI evidence is attached and the probe confirms complete acceptance criteria satisfaction.
-
 ## Batch C — Failover, policies, extensibility and access (Phases 16–25)
 
 ### Phase 16 — bounded failover, circuit breakers and rollback
@@ -274,23 +258,7 @@ python3 docs/audits/evidence/2026-10-12-finalization/phase_matrix.py
 
 ---
 
-## Remaining batches (Phases 26–38)
-
-| Track | Phases | Status |
-|-------|--------|--------|
-| API / hardening / learning / observability | 26–38 | pending |
-
-## Regeneration
-
-```bash
-python3 docs/audits/evidence/2026-10-12-finalization/phase_matrix.py
-```
-
-**Note:** After updating `phase-history-evidence-matrix.md` to `mapped` for the above phases, re-run the generator. Justifications for phases 1–25 should reflect the presence of this register and mapped history state; dispositions remain PARTIAL until fresh per-phase CI evidence is attached and the probe confirms complete acceptance criteria satisfaction.
-
----
-
-## Batch C — Learning / Observability / Hardening (Phases 26–38)
+## Batch D — Learning / Observability / Hardening (Phases 26–38)
 
 ### Phase 26 — authenticated controlled API
 
