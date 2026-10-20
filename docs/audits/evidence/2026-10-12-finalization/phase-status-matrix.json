@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceSha": "89e8b95d54b8a83ab69a017d89c6413bdef70744",
+  "sourceSha": "9259c84335e35caef57f5452576906c8a1613404",
   "summary": {
     "PARTIAL": 88,
     "BLOCKED": 3,
@@ -1573,7 +1573,7 @@
     },
     {
       "phase": 111,
-      "title": "Secure Agent ↔ Control Plane Protocol",
+      "title": "Secure Agent \u2194 Control Plane Protocol",
       "disposition": "NOT STARTED",
       "justification": "MASTER_ROADMAP_V2 lists this phase as a reference-only heading with no acceptance contract; PROJECT_STATE forbids starting it without explicit authorization.",
       "probe": {

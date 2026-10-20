@@ -58,8 +58,9 @@ const severityOf = (objective: string, observed: number, target: number): DriftS
     return ratio < 0.7 ? 'high' : 'medium';
   }
 
-  // Unknown objectives have no known direction. Use the same relative
-  // deviation threshold on both sides of the target.
+  // Unknown objectives use symmetric relative deviation in isWorse, so severity
+  // must use the same direction-independent measurement instead of assuming
+  // that a higher observed value is always worse.
   const relativeDeviation = Math.abs(observed - target) / Math.max(Math.abs(target), 1e-6);
   return relativeDeviation >= 0.3 ? 'high' : 'medium';
 };

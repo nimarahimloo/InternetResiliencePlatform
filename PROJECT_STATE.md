@@ -4,15 +4,30 @@
 
 ## Current implementation gate
 
-- **Current implementation baseline:** Phase 78 — Closed-Loop Control Foundation is implemented on `main`.
-- **Current main HEAD (inspected 2026-10-20):** `cc7ffbce36dd30498aa8b16a4f52c41d68f75c0a` (merge of PR #75 intent-owner-scoped-runtime-handoff, after PR #74 phase85-symmetric-drift-severity and PR #72 canonical-state-matrix-sync).
-- **Issue #12 progress:** Evidence register and phase-history matrix contain package/path/test anchors for Phases 1–38. Historical test-count TSV is not fresh per-phase CI evidence; all these phases remain PARTIAL pending acceptance-criterion review and current-SHA verification. PR #71 added explicit anchors for Phases 39, 43, 44 and 46; remaining Phase 39–78 mappings and exact-SHA verification still need reconciliation. Issue #12 remains open.
-- **Current open issues (authoritative tracker):** #4 (post-v0.2.1 runtime/signing/production certification — external blockers), #12 (reconstruct per-phase acceptance evidence for Phases 1–38 / verify 39–78), #13 (implement and verify remaining intent/policy gaps for Phases 79–83, especially durable ownership and stale compiled-intent fail-closed), #14 (verify Phases 84–92 and define/authorize contracts for Phases 93–150).
+- **Current implementation baseline:** Phase 79 — Intent Model & Lifecycle is implemented on `main`. NetworkIntent model, lifecycle, effective-window semantics, autonomy levels and tests are present in `@irp/core`.
+- **Current main HEAD (post upstream sync 2026-10-21):** merge of upstream Phase 79 baseline with fork advances (durable owner-scoped intent handoff, Phase 85 symmetric drift, Phase 93 contract).
+- **Issue #12 progress:** Evidence register and phase-history matrix contain package/path/test anchors for Phases 1–38. Historical test-count TSV is not fresh per-phase CI evidence; all these phases remain PARTIAL pending acceptance-criterion review and current-SHA verification. Remaining Phase 39–78 mappings and exact-SHA verification still need reconciliation. Issue #12 remains open.
+- **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence). Additional fork trackers #4/#12/#13/#14 cover certification, evidence reconstruction and intent/policy gaps.
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
-- **Phase 78 status:** the bounded closed-loop controller is implemented and present on `main`, now optionally collecting observe-only Phase 85 drift assessments.
-- **Issue #13 progress:** acceptance contracts for Phases 79–83 are merged. Recent work (PRs #55–#57, #75) addressed intent scope arbitration, conflict ownership, trusted live context/autonomy, owner-scoped runtime handoff, and e2e coverage. Remaining critical gaps: durable intent ownership through API → canonical runtime decision → PostgreSQL persistence/reload, plus full stale compiled-intent fail-closed evidence. In-memory or mocked-only evidence is insufficient; keep Issue #13 open.
-- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification (roadmap Step 6) remains open. No passing exact-SHA Release Gate has been verified for the current main SHA. Phase 71 remains a separate release-evidence gate.
-- **Issue #14 progress (2026-10-20):** Phase contracts 84–92 exist and remain PARTIAL. Phase 85 observe-only drift detector (`detectIntentDrift`) is on main with symmetric relative-deviation severity for unknown objectives (PR #74). It is integrated into `BoundedClosedLoopController` and remains advisory. Phases 93–150 remain NOT STARTED until contracts and explicit authorization exist. No new runtime authority introduced.
+- **Phase 78 status:** the bounded closed-loop controller is implemented and present on `main`, optionally collecting observe-only Phase 85 drift assessments.
+- **Phase 79 status:** NetworkIntent model, lifecycle transitions, effective-window evaluation, autonomy levels and dedicated tests are implemented and present on `main` in `packages/core/src/intent.ts` and `intent.test.ts`. Exported from the core barrel.
+- **Issue #13 progress:** acceptance contracts for Phases 79–83 are merged. Recent work addressed intent scope arbitration, conflict ownership, trusted live context/autonomy, owner-scoped runtime handoff, and e2e coverage. Remaining critical gaps: durable intent ownership through API → canonical runtime decision → PostgreSQL persistence/reload, plus full stale compiled-intent fail-closed evidence. In-memory or mocked-only evidence is insufficient; keep Issue #13 open.
+- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Exact-SHA Release Gate evidence must be verified before any stronger release claim.
+- **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–79, but it must not be represented as certified until its evidence exists.
+- **Phases 80–150:** contracts for 79–92 exist; Phase 93 contract formalized on fork. Implementation for 80+ remains partial or not started. No new runtime authority introduced. ResilienceRuntime remains the sole production mutation authority.
+
+## Phase 79 objective
+
+Phase 79 defines the canonical, typed network-intent model and deterministic lifecycle. An intent expresses a desired network outcome without embedding policy evaluation, planning or low-level execution details. The model is in `@irp/core` and must not become a parallel control plane.
+
+## Current Phase 79 implementation
+
+- `packages/core/src/intent.ts` provides `NetworkIntent`, `createNetworkIntent`, `transitionIntent`, `isIntentEffective`, `isIntentTerminal`, `isAutonomyPermitted`.
+- Lifecycle transitions are explicit and fail-closed.
+- Effective window uses half-open `[effectiveFrom, expiresAt)` semantics.
+- Autonomy levels and objective weights are validated.
+- Dedicated tests in `packages/core/src/intent.test.ts`.
+- Public exports from `packages/core/src/index.ts`.
 
 ## Phase 78 objective
 
@@ -32,7 +47,7 @@ Phase 78 formalizes a bounded observe → decide → apply → verify/recover co
 
 ## Phase 71 certification prerequisites
 
-The Phase 71 gate is limited to the release/distribution contract defined by `docs/phases/phase-71.md`. Remaining production certification (device smoke, regional validation, signing, security sign-off) is tracked in issue #4 and `docs/release/RELEASE_GATE_ROADMAP.md`.
+The Phase 71 gate is limited to the release/distribution contract defined by `docs/phases/phase-71.md`. Remaining production certification (device smoke, regional validation, signing, security sign-off) is tracked in open issues and `docs/release/RELEASE_GATE_ROADMAP.md`.
 
 ## Canonical evidence locations
 
@@ -40,11 +55,15 @@ The Phase 71 gate is limited to the release/distribution contract defined by `do
 - Release path and blockers: `docs/release/RELEASE_GATE_ROADMAP.md`.
 - Current post-70 roadmap: `docs/roadmap/MASTER_ROADMAP_V2.md`.
 - Historical 0–70 roadmap: `ROADMAP.md`.
-- Current phase records: `docs/phases/` (including formalized Phase 79–92 contracts under issues #13/#14).
+- Current phase records: `docs/phases/`.
 - Engineering governance: `docs/architecture/engineering-governance.md`.
 
 ## Product objective
 
 IRP's long-term objective is a safe, observable and policy-governed Internet control plane that can continuously measure network conditions, diagnose failures, select and apply bounded changes, verify the result, recover from failure and explain decisions across supported clients and network providers.
 
-- **Matrix reconciliation:** Generated phase matrices and PROJECT_STATE were previously desynchronized from main HEAD. Recent merges (including PR #72) and this update align the documented baseline to `cc7ffbce36dd30498aa8b16a4f52c41d68f75c0a`. Dispositions remain 1 COMPLETE, ~88 PARTIAL, 3 BLOCKED, 58 NOT STARTED. These counts do not imply product completion. The generator remains the reproducible source of truth.
+## Architecture invariants (unchanged)
+
+- ResilienceRuntime remains the canonical runtime authority.
+- Never restore NetworkAutopilot as a parallel production control plane.
+- No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
