@@ -800,15 +800,26 @@ data: ${JSON.stringify({ source: 'LIVE', updatedAt: snapshot.score.timestamp, me
     return runtimeResponse(request, await canonicalAutopilotStatus());
   });
   app.get('/api/v1/autopilot/runs', { preHandler: generalRateLimit }, async (request) => {
-    await requirePermission(request, 'autopilot.read');
+    const principal = await requirePermission(request, 'autopilot.read');
+    const ownership = { principalId: principal.id };
+    if (decisionStore) {
+      return runtimeResponse(request, await decisionStore.listByOwner(ownership));
+    }
     return runtimeResponse(request, await resilienceRuntime.decisions.list());
   });
   app.get('/api/v1/autopilot/runs/:id', { preHandler: generalRateLimit }, async (request) => {
-    await requirePermission(request, 'autopilot.read');
+    const principal = await requirePermission(request, 'autopilot.read');
     const params = z.object({ id: z.string().min(1) }).parse(request.params);
-    const run = (await resilienceRuntime.decisions.list()).find(
-      (decision) => decision.decisionId === params.id,
-    );
+    const ownership = { principalId: principal.id };
+    let run;
+    if (decisionStore) {
+      const owned = await decisionStore.listByOwner(ownership);
+      run = owned.find((d) => d.decisionId === params.id);
+    } else {
+      run = (await resilienceRuntime.decisions.list()).find(
+        (decision) => decision.decisionId === params.id,
+      );
+    }
     if (!run) throw new NotFoundAppError('autopilot run');
     return runtimeResponse(request, run);
   });
