@@ -61,6 +61,7 @@ Source presence is not completion. Phase 83 completion requires mapped paths, gr
 | API tests | `apps/api/src/intent-api.test.ts` |
 | Governance integration | `packages/resilience-runtime/src/intent/governance.ts` + tests |
 | Ownership migration | `packages/database/prisma/migrations/20260930103000_phase_274_intent_ownership` |
+| Durable runtime decision (owner-linked) | `apps/api/src/decision-store.ts`, `packages/resilience-runtime/src/stores/mirrored-decision-store.ts`, migration `20261021000000_phase_274_runtime_decisions` |
 
 ## Known gaps (do not hide)
 

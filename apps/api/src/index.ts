@@ -56,6 +56,7 @@ import {
 } from '@irp/resilience-runtime';
 import { registerIntentRoutes } from './intent-api.js';
 import { createOwnerScopedIntentActivator } from './intent-runtime-handoff.js';
+import { DatabaseDecisionStore } from './decision-store.js';
 import { InMemoryRateLimiter, rateLimitPreHandler } from './security/rate-limit.js';
 import {
   generateSpeedInsightsScript,
@@ -756,8 +757,12 @@ data: ${JSON.stringify({ source: 'LIVE', updatedAt: snapshot.score.timestamp, me
       };
     },
   };
+  // Durable decision mirror only when a database is configured; without one the
+  // runtime keeps its local in-memory decision authority exactly as before.
+  const decisionStore = process.env.DATABASE_URL ? new DatabaseDecisionStore(db) : undefined;
   const resilienceRuntime = createCanonicalRuntime({
     executionMode: 'simulation',
+    ...(decisionStore ? { decisionStore } : {}),
     observationProviders: [runtimeObservationProvider],
     runtimeId: 'api-runtime',
   }).runtime;
@@ -771,6 +776,7 @@ data: ${JSON.stringify({ source: 'LIVE', updatedAt: snapshot.score.timestamp, me
         list: (status, owner, limit) => intentRoutes.store.list(status, owner, limit),
       },
       runtime: resilienceRuntime,
+      ...(decisionStore ? { decisionOwners: decisionStore } : {}),
     }),
   });
 

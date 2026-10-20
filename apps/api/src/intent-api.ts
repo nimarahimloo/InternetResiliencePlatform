@@ -139,7 +139,7 @@ export interface ConflictApiStore {
 
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
-const ownershipKey = (ownership: IntentOwnership): string =>
+export const ownershipKey = (ownership: IntentOwnership): string =>
   ownership.organizationId
     ? `org:${ownership.organizationId}`
     : `principal:${ownership.principalId}`;
