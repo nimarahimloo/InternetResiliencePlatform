@@ -8,6 +8,7 @@ import {
   type ArbitrationConflict,
   type IntentOwnership,
 } from './intent-api.js';
+import { createOwnerScopedIntentActivator } from './intent-runtime-handoff.js';
 
 // Set DATABASE_URL to a disposable PostgreSQL database to exercise the real
 // SQL path. The max-one connection keeps temporary tables alive for this test.
@@ -58,19 +59,25 @@ postgresDescribe('PostgreSQL conflict journal integration', () => {
     await client.$disconnect();
   });
 
-  it('persists an API intent in PostgreSQL, reloads it under its owner, and runs the reloaded intent through ResilienceRuntime', async () => {
+  it('persists an API intent in PostgreSQL, reloads it under its owner, and runs the reloaded intent through ResilienceRuntime via owner-scoped handoff', async () => {
     const ownerA: IntentOwnership = { principalId: 'pg-intent-owner-a' };
     const ownerB: IntentOwnership = { principalId: 'pg-intent-owner-b' };
     const runtime = createCanonicalRuntime({
       executionMode: 'simulation',
       runtimeId: 'postgres-intent-integration',
     }).runtime;
-    const activationRecords: Awaited<ReturnType<typeof runtime.runIntent>>[] = [];
+    const activationRecords: Awaited<ReturnType<typeof runtime.runIntents>>[] = [];
     const app = Fastify();
     const id = `pg-intent-${Date.now()}`;
     const key = `pg-idempotency-${id}`;
     const effectiveFrom = new Date(Date.now() - 60_000).toISOString();
     const expiresAt = new Date(Date.now() + 30 * 60_000).toISOString();
+
+    const store = new DatabaseIntentStore(client);
+    const activator = createOwnerScopedIntentActivator({
+      store,
+      runtime,
+    });
 
     registerIntentRoutes(app, {
       database: client,
@@ -79,14 +86,8 @@ postgresDescribe('PostgreSQL conflict journal integration', () => {
         roles: ['admin'],
         scopes: ['*'],
       }),
-      onActivated: async (intent) => {
-        activationRecords.push(
-          await runtime.runIntent(intent, {
-            mode: 'simulation',
-            correlationId: `pg-intent-activation-${intent.id}-v${intent.version}`,
-            idempotencyKey: `pg-intent-activation-${intent.id}-v${intent.version}`,
-          }),
-        );
+      onActivated: async (intent, ownership) => {
+        activationRecords.push(await activator(intent, ownership));
       },
     });
 
@@ -155,6 +156,36 @@ postgresDescribe('PostgreSQL conflict journal integration', () => {
           intent.provenance === 'postgres-intent-runtime-integration',
       ),
     ).toBe(true);
+  });
+
+  it('fails closed on an expired active intent loaded from PostgreSQL', async () => {
+    const ownerA: IntentOwnership = { principalId: 'pg-stale-owner' };
+    const runtime = createCanonicalRuntime({
+      executionMode: 'simulation',
+      runtimeId: 'postgres-stale-intent',
+    }).runtime;
+    const store = new DatabaseIntentStore(client);
+    const activator = createOwnerScopedIntentActivator({ store, runtime });
+
+    const id = `pg-stale-${Date.now()}`;
+    const expiredAt = new Date(Date.now() - 60_000).toISOString();
+    // Insert a row that is status=active but already past expiresAt.
+    await client.$queryRaw`INSERT INTO "NetworkIntentRecord" (
+      "id", "version", "status", "priority", "spec", "createdAt", "updatedAt",
+      "expiresAt", "ownerPrincipalId", "ownerScopeKey"
+    ) VALUES (
+      ${id}, 2, 'active', 'normal', '{"outcome":"stale"}'::jsonb,
+      NOW(), NOW(), ${expiredAt}, ${ownerA.principalId}, ${'principal:' + ownerA.principalId}
+    )`;
+
+    const loaded = await store.get(id, ownerA);
+    expect(loaded).toBeDefined();
+    expect(loaded!.status).toBe('active');
+    expect(loaded!.expiresAt).toBe(expiredAt);
+
+    await expect(activator(loaded!, ownerA)).rejects.toThrow(
+      'not present in the effective owner-scoped store',
+    );
   });
 
   it('persists conflicts across store instances without crossing owner scopes', async () => {
