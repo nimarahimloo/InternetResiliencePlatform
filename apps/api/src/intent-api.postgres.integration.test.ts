@@ -9,6 +9,7 @@ import {
   type IntentOwnership,
 } from './intent-api.js';
 import { createOwnerScopedIntentActivator } from './intent-runtime-handoff.js';
+import { DatabaseDecisionStore } from './decision-store.js';
 
 // Set DATABASE_URL to a disposable PostgreSQL database to exercise the real
 // SQL path. The max-one connection keeps temporary tables alive for this test.
@@ -50,6 +51,15 @@ postgresDescribe('PostgreSQL conflict journal integration', () => {
       "ownerScopeKey" VARCHAR(384) NOT NULL,
       "idempotencyKey" VARCHAR(128),
       "idempotencyFingerprint" VARCHAR(64)
+    )`;
+    await client.$queryRaw`CREATE TEMP TABLE "RuntimeDecisionRecord" (
+      "decisionId" VARCHAR(128) PRIMARY KEY,
+      "runtimeId" VARCHAR(128) NOT NULL,
+      "correlationId" VARCHAR(256) NOT NULL,
+      "outcome" VARCHAR(32) NOT NULL,
+      "record" JSONB NOT NULL,
+      "ownerScopeKey" VARCHAR(384),
+      "recordedAt" TIMESTAMPTZ NOT NULL
     )`;
     await client.$queryRaw`CREATE UNIQUE INDEX "NetworkIntentRecord_ownerScopeKey_idempotencyKey_key"
       ON "NetworkIntentRecord" ("ownerScopeKey", "idempotencyKey")`;
@@ -156,6 +166,79 @@ postgresDescribe('PostgreSQL conflict journal integration', () => {
           intent.provenance === 'postgres-intent-runtime-integration',
       ),
     ).toBe(true);
+  });
+
+  it('persists the canonical runtime decision from an owner-scoped handoff and reloads it under its owner only', async () => {
+    const owner: IntentOwnership = { principalId: 'pg-decision-owner' };
+    const other: IntentOwnership = { principalId: 'pg-decision-other' };
+    const decisionStore = new DatabaseDecisionStore(client);
+    const runtime = createCanonicalRuntime({
+      executionMode: 'simulation',
+      runtimeId: 'postgres-decision-persistence',
+      decisionStore,
+    }).runtime;
+    const store = new DatabaseIntentStore(client);
+    const activator = createOwnerScopedIntentActivator({
+      store,
+      runtime,
+      decisionOwners: decisionStore,
+    });
+    const app = Fastify();
+    const id = `pg-decision-${Date.now()}`;
+    let decisionId: string | undefined;
+
+    registerIntentRoutes(app, {
+      database: client,
+      requirePermission: async () => ({ id: owner.principalId, roles: ['admin'], scopes: ['*'] }),
+      onActivated: async (intent, ownership) => {
+        const record = await activator(intent, ownership);
+        decisionId = record.decisionId;
+      },
+    });
+
+    try {
+      const created = await app.inject({
+        method: 'POST',
+        url: '/api/v1/intents',
+        headers: { 'idempotency-key': `key-${id}` },
+        payload: {
+          id,
+          priority: 'high',
+          spec: { outcome: 'Maintain stable connectivity', target: { destination: 'example.com' } },
+          effectiveFrom: new Date(Date.now() - 60_000).toISOString(),
+          expiresAt: new Date(Date.now() + 30 * 60_000).toISOString(),
+          autonomy: 'OBSERVE_ONLY',
+        },
+      });
+      expect(created.statusCode).toBe(201);
+      const activated = await app.inject({
+        method: 'POST',
+        url: `/api/v1/intents/${id}/commands`,
+        payload: { type: 'activate' },
+      });
+      expect(activated.statusCode).toBe(200);
+    } finally {
+      await app.close();
+    }
+
+    expect(decisionId).toBeTruthy();
+
+    // A fresh store instance has no runtime or in-memory state: this is a real PostgreSQL reload.
+    const reader = new DatabaseDecisionStore(client);
+    const reloaded = await reader.get(decisionId!);
+    expect(reloaded?.decisionId).toBe(decisionId);
+    expect(reloaded?.runtimeContext.correlationId).toBe(`intent-${id}-v2`);
+    expect(
+      reloaded?.runtimeContext.compiledIntents?.some((intent) => intent.intentId === id),
+    ).toBe(true);
+
+    expect((await reader.listByOwner(owner)).map((record) => record.decisionId)).toContain(
+      decisionId,
+    );
+    expect(await reader.listByOwner(other)).toHaveLength(0);
+    // An owned decision is never silently reassigned to another owner.
+    expect(await reader.attachOwner(decisionId!, other)).toBe(false);
+    expect(await reader.listByOwner(other)).toHaveLength(0);
   });
 
   it('fails closed on an expired active intent loaded from PostgreSQL', async () => {

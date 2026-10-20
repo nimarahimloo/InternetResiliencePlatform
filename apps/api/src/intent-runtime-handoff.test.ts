@@ -87,4 +87,38 @@ describe('owner-scoped intent runtime handoff', () => {
     await expect(activate(expired, ownerA)).rejects.toThrow('not present in the effective owner-scoped store');
     expect(fake.calls).toHaveLength(0);
   });
+  it('links the resulting runtime decision to its owner, and never lets a failed link fail the handoff', async () => {
+    const store = new InMemoryIntentStore();
+    const intent = activeIntent('owner-link-1');
+    await store.put(intent, ownerA);
+    const linked: { decisionId: string; principalId: string }[] = [];
+    const runtime: Pick<ResilienceRuntime, 'runIntents'> = {
+      async runIntents() {
+        return { decisionId: 'decision-1' } as Awaited<ReturnType<ResilienceRuntime['runIntents']>>;
+      },
+    };
+
+    const activate = createOwnerScopedIntentActivator({
+      store,
+      runtime,
+      decisionOwners: {
+        async attachOwner(decisionId, owner) {
+          linked.push({ decisionId, principalId: owner.principalId });
+        },
+      },
+    });
+    await activate(intent, ownerA);
+    expect(linked).toEqual([{ decisionId: 'decision-1', principalId: 'principal-a' }]);
+
+    const failingLink = createOwnerScopedIntentActivator({
+      store,
+      runtime,
+      decisionOwners: {
+        async attachOwner() {
+          throw new Error('database unavailable');
+        },
+      },
+    });
+    await expect(failingLink(intent, ownerA)).resolves.toMatchObject({ decisionId: 'decision-1' });
+  });
 });

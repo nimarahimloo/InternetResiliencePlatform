@@ -8,6 +8,14 @@ export interface OwnerScopedIntentActivatorOptions {
   readonly store: Pick<IntentApiStore, 'list'>;
   readonly runtime: Pick<ResilienceRuntime, 'runIntents'>;
   readonly maxActiveIntentsPerOwner?: number;
+  /**
+   * Optional durable ownership link for the resulting runtime decision. Failure
+   * to record the link never fails the handoff: the runtime decision itself is
+   * already the authority, this only makes it reloadable under its owner.
+   */
+  readonly decisionOwners?: {
+    attachOwner(decisionId: string, owner: IntentOwnership): Promise<unknown>;
+  };
 }
 
 /**
@@ -19,12 +27,16 @@ export const createOwnerScopedIntentActivator = ({
   store,
   runtime,
   maxActiveIntentsPerOwner = DEFAULT_MAX_ACTIVE_INTENTS_PER_OWNER,
+  decisionOwners,
 }: OwnerScopedIntentActivatorOptions) => {
   if (!Number.isInteger(maxActiveIntentsPerOwner) || maxActiveIntentsPerOwner < 1) {
     throw new RangeError('maxActiveIntentsPerOwner must be a positive integer');
   }
 
-  return async (activatedIntent: NetworkIntent, owner: IntentOwnership): Promise<unknown> => {
+  return async (
+    activatedIntent: NetworkIntent,
+    owner: IntentOwnership,
+  ): Promise<Awaited<ReturnType<ResilienceRuntime['runIntents']>>> => {
     // Fetch one extra row to detect truncation. Partial arbitration could miss a
     // higher-priority conflict, so exceeding the bound must fail closed.
     const activeIntents = await store.list('active', owner, maxActiveIntentsPerOwner + 1);
@@ -47,10 +59,18 @@ export const createOwnerScopedIntentActivator = ({
       );
     }
 
-    return runtime.runIntents(effectiveIntents, {
+    const record = await runtime.runIntents(effectiveIntents, {
       mode: 'simulation',
       correlationId: `intent-${activatedIntent.id}-v${activatedIntent.version}`,
       idempotencyKey: `intent-${activatedIntent.id}-v${activatedIntent.version}`,
     });
+    if (decisionOwners && record?.decisionId) {
+      try {
+        await decisionOwners.attachOwner(record.decisionId, owner);
+      } catch {
+        // Ownership link is best-effort durability; the decision already exists.
+      }
+    }
+    return record;
   };
 };
