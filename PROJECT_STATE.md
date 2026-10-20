@@ -5,7 +5,7 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 78 — Closed-Loop Control Foundation is implemented on `main`.
-- **Main baseline used for this reconciliation:** `973a6b96159545cfeb67fde6bc53d4689d114c37` (the `main` commit after PR #71, inspected on 2026-10-19). This records the verified input baseline rather than attempting to self-reference the future merge commit of this state update.
+- **Main baseline used for this reconciliation:** `cc7ffbce36dd30498aa8b16a4f52c41d68f75c0a` (main HEAD after merge of PR #75 owner-scoped intent handoff, inspected 2026-10-20). This records the verified input baseline rather than attempting to self-reference the future merge commit of this state update.
 - **Issue #12 progress:** The evidence register and phase-history matrix contain package/path/test anchors for Phases 1–38. The register's historical test-count TSV is not fresh per-phase CI evidence, so all these phases remain PARTIAL pending acceptance-criterion review and current-SHA verification. PR #71 added explicit implementation/test/API-boundary anchors for Phases 39, 43, 44 and 46; the remaining Phase 39–78 mappings and exact-SHA verification still need reconciliation. Issue #12 remains open.
 - **Current open issues (authoritative tracker):** #4 (post-v0.2.1 runtime/signing/production certification), #12 (reconstruct per-phase evidence for Phases 1–38 and verify mappings for 39–78), #13 (implement and verify remaining intent/policy gaps for Phases 79–83), #14 (verify Phases 84–92 and define/authorize contracts for Phases 93–150).
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
