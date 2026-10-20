@@ -4,11 +4,11 @@ Canonical coordination record for parallel agents. This file is intentionally sh
 
 ## Current baseline
 
-- Current implementation baseline: **Phase 78 — Closed-Loop Control Foundation is implemented on main**. Its bounded closed-loop controller is part of the canonical @irp/resilience-runtime path and optionally collects observe-only Phase 85 drift assessments.
+- Current implementation baseline: **Phase 79 — Intent Model & Lifecycle is implemented on main, with Phase 80 API, Phase 85 drift, and Phase 93 contract**. Its bounded closed-loop controller is part of the canonical @irp/resilience-runtime path and optionally collects observe-only Phase 85 drift assessments.
 - Current execution tracker: open issues **#4**, **#12**, **#13**, **#14**. Phase 84/85 contracts are formalized; Phase 85 observe-only drift detector (with symmetric unknown-objective severity) is on main.
 - Main branch: `main`
-- Current main commit reviewed: `cc7ffbce36dd30498aa8b16a4f52c41d68f75c0a` (2026-10-20).
-- Latest implementation merges observed: PR #75 (intent-owner-scoped runtime handoff), PR #74 (symmetric drift severity), PR #72 (canonical state matrix sync).
+- Current main commit reviewed: `92467c4cef363fb0f71debdc1f7d5775dcfaa210` (2026-10-20).
+- Latest implementation merges observed: PR #80 (phase-93 contract), prior intent ownership and drift work.
 - Phase 71 status: implementation/release contract work exists; external release certification remains open (issue #4). Published GitHub Release v0.2.1 is developer-preview evidence only.
 - Release certification must not be inferred from source presence, local tests, or architecture checks alone.
 - Current work must close source → contract → consumer → entrypoint → execution → outcome gaps without creating a second control plane or declaring completion from source presence alone.
