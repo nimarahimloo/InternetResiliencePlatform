@@ -4,6 +4,10 @@
 
 **Contract formalized (issue #14).** Maps existing safety kernel and intent governance already present on `main`. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Implementation of net-new governance workflows is unauthorized until this contract is accepted and PROJECT_STATE is updated.
 
+Evidence mapping (current main):
+- Safety kernel assessment, blast-radius rejection, checkpoint/rollback, recovery events, and no-execute invariant: `packages/resilience-runtime/src/safety/safety-kernel.ts` + `packages/resilience-runtime/tests/safety-kernel.test.ts`
+- Intent governance admission (`ALLOW` / `PLAN_ONLY` / `REQUIRE_APPROVAL` / `DENY`), autonomy enforcement, stale rejection: `packages/resilience-runtime/src/intent/governance.ts` + `packages/resilience-runtime/tests/intent-governance.test.ts`
+
 ## Objective
 
 Formalize bounded safety constraints and change-governance rules that every privileged mutation must pass before execution. The safety kernel assesses blast radius, checkpoints, and recovers; intent governance admits or denies compiled intents according to priority, autonomy, confidence and policy. Neither component executes mutations itself.
@@ -18,9 +22,9 @@ Formalize bounded safety constraints and change-governance rules that every priv
 ## Canonical owner
 
 - `@irp/resilience-runtime` — `src/safety/safety-kernel.ts` (`SafetyRollbackRecoveryKernel`, `SafetyAssessment`, `SafetyViolationError`)
-- Intent governance: `src/intent/governance.ts` (`enforceAutonomy`, admission decisions)
+- Intent governance: `src/intent/governance.ts` (`resolveIntentGovernance`, `selectGovernedIntents`, autonomy enforcement via `enforceAutonomy`)
 - Consumed by privileged mutation boundary and closed-loop controller
-- Tests: `packages/resilience-runtime/tests/` (safety and intent-governance suites)
+- Tests: `packages/resilience-runtime/tests/safety-kernel.test.ts`, `packages/resilience-runtime/tests/intent-governance.test.ts`
 
 ## Scope
 
@@ -39,11 +43,11 @@ Formalize bounded safety constraints and change-governance rules that every priv
 
 ## Acceptance criteria
 
-1. `SafetyRollbackRecoveryKernel` rejects plans whose computed blast radius exceeds the configured maximum and returns a `SafetyAssessment` with reasons.
-2. Checkpoint and rollback callbacks, when supplied, are invoked on the assessment path and produce an `ActionExecution` result suitable for recovery.
-3. `enforceAutonomy` (and related admission) returns a deterministic `IntentGovernanceDecision` that never permits mutation when autonomy or risk thresholds are violated.
-4. Unit tests covering blast-radius rejection, successful checkpoint/rollback, and admission matrix (ALLOW / DENY / REQUIRE_APPROVAL) pass in the owning package.
-5. No new mutation path is introduced that bypasses the safety kernel or intent governance.
+1. `SafetyRollbackRecoveryKernel` rejects plans whose computed blast radius exceeds the configured maximum and returns a `SafetyAssessment` with reasons. — Covered by `safety-kernel.test.ts` ("blocks excessive blast radius").
+2. Checkpoint and rollback callbacks, when supplied, are invoked on the assessment path and produce an `ActionExecution` result suitable for recovery. — Covered by `safety-kernel.test.ts` (checkpoint and rollback tests).
+3. `enforceAutonomy` / `resolveIntentGovernance` returns a deterministic `IntentGovernanceDecision` that never permits mutation when autonomy or risk thresholds are violated. — Covered by `intent-governance.test.ts` (admission matrix, untrusted deny, advisory REQUIRE_APPROVAL, stale DENY).
+4. Unit tests covering blast-radius rejection, successful checkpoint/rollback, and admission matrix (ALLOW / DENY / REQUIRE_APPROVAL) pass in the owning package. — Existing suites above.
+5. No new mutation path is introduced that bypasses the safety kernel or intent governance. — Enforced by architecture invariants and the no-execute method assertion in `safety-kernel.test.ts`.
 
 ## Verification boundary
 
