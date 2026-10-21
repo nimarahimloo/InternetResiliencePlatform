@@ -106,6 +106,35 @@ describe('arbitrateIntents — Phase 83 Policy Conflict Resolution', () => {
     expect(conflicts[0]?.resolution).toBe('supersede-b');
   });
 
+  it('resolves equal priority and version by recency (newer compiledAt supersedes)', () => {
+    const older = makeIntent({
+      intentId: 'older',
+      priority: 'high',
+      version: 1,
+      desiredOutcome: 'old-outcome',
+      compiledAt: '2026-10-21T10:00:00.000Z',
+      scope: { destination: 'github.com' },
+    });
+    const newer = makeIntent({
+      intentId: 'newer',
+      priority: 'high',
+      version: 1,
+      desiredOutcome: 'new-outcome',
+      compiledAt: '2026-10-21T11:00:00.000Z',
+      scope: { destination: 'github.com' },
+    });
+
+    const { ordered, conflicts } = arbitrateIntents([older, newer], now);
+
+    expect(ordered.map((i) => i.intentId)).toEqual(['newer', 'older']);
+    expect(conflicts).toHaveLength(1);
+    expect(conflicts[0]).toMatchObject({
+      intentA: expect.objectContaining({ intentId: 'newer' }),
+      intentB: expect.objectContaining({ intentId: 'older' }),
+      resolution: 'supersede-b',
+    });
+  });
+
   it('does not conflict on non-overlapping scopes', () => {
     const a = makeIntent({ intentId: 'a', scope: { destination: 'github.com' }, desiredOutcome: 'A' });
     const b = makeIntent({ intentId: 'b', scope: { destination: 'example.com' }, desiredOutcome: 'B' });
