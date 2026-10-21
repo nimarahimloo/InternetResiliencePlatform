@@ -4,7 +4,7 @@
 
 ## Current implementation gate
 
-- **Current implementation baseline:** Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on `main`.
+- **Current implementation baseline:** Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on `main`. Phase 83 — Policy Conflict Resolution has dedicated regression tests (`intent-arbitration.test.ts`) covering effective filtering, ordering, conflict detection and supersession; remains PARTIAL pending exact-SHA CI.
 - **Current main HEAD (2026-10-21):** `e5c6db1b8445d0e200cf066ce8a8e7da2ff46fb7` (post checkpoint merge; Phase 80-82 code present).
 - **Issue #12 progress:** Evidence register and phase-history matrix contain package/path/test anchors for Phases 1–38. Historical test-count TSV is not fresh per-phase CI evidence; all these phases remain PARTIAL pending acceptance-criterion review and current-SHA verification. Remaining Phase 39–78 mappings and exact-SHA verification still need reconciliation. Issue #12 remains open.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence). Additional fork trackers #4/#12/#13/#14 cover certification, evidence reconstruction and intent/policy gaps.

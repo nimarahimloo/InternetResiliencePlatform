@@ -4,7 +4,7 @@ Canonical coordination record for parallel agents. This file is intentionally sh
 
 ## Current baseline
 
-- Current implementation baseline: **Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on main**. NetworkIntent model, API ingestion, pure compilation, and intent-scoped admission/enforcement are part of the canonical paths. ResilienceRuntime remains the sole production mutation authority. Fork uniquely includes durable owner-scoped runtime decision persistence.
+- Current implementation baseline: **Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on main**. Phase 83 Policy Conflict Resolution has dedicated regression tests covering arbitration, effective filtering and supersession. ResilienceRuntime remains the sole production mutation authority. Fork uniquely includes durable owner-scoped runtime decision persistence.
 - Current execution tracker: open issues **#254**, **#272**, **#284**, **#323**. Fork also tracks certification/evidence gaps under #4/#12/#13/#14.
 - Main branch: `main`
 - Current main commit reviewed: `e5c6db1b8445d0e200cf066ce8a8e7da2ff46fb7` (2026-10-21).
