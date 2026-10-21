@@ -1,4 +1,4 @@
-import { deepFreeze, nextId, nowIso } from '../domain/ids.js';
+import { deepFreeze, nextId, nextUniqueId, nowIso } from '../domain/ids.js';
 import type {
   DecisionRecord,
   DecisionOutcome,
@@ -47,7 +47,7 @@ export const createDecisionRecord = (input: {
   deepFreeze(
     redact({
       id: nextId('record'),
-      decisionId: nextId('decision'),
+      decisionId: nextUniqueId('decision'),
       schemaVersion: 1,
       createdAt: nowIso(),
       correlationId: input.context.correlationId,

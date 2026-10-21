@@ -546,7 +546,7 @@ const idempotencyKey = (request: FastifyRequest): string => {
   return value.trim();
 };
 
-const ownership = (principal: Principal): IntentOwnership => ({
+export const ownershipOf = (principal: Principal): IntentOwnership => ({
   principalId: principal.id,
   ...(principal.organizationId ? { organizationId: principal.organizationId } : {}),
 });
@@ -559,7 +559,7 @@ export const registerIntentRoutes = (app: FastifyInstance, options: IntentApiOpt
 
   app.post('/api/v1/intents', async (request, reply) => {
     const principal = await authorize(request, 'runtime.execute');
-    const owner = ownership(principal);
+    const owner = ownershipOf(principal);
     const key = idempotencyKey(request);
     const input = createSchema.parse(request.body ?? {});
     const fingerprint = idempotencyFingerprint(input);
@@ -625,21 +625,21 @@ export const registerIntentRoutes = (app: FastifyInstance, options: IntentApiOpt
   app.get('/api/v1/intents', async (request) => {
     const principal = await authorize(request, 'runtime.inspect');
     const query = listQuery.parse(request.query ?? {});
-    const intents = await store.list(query.status, ownership(principal), query.limit);
+    const intents = await store.list(query.status, ownershipOf(principal), query.limit);
     return { success: true, data: intents, meta: { count: intents.length, limit: query.limit } };
   });
 
   app.get('/api/v1/intents/:id', async (request) => {
     const principal = await authorize(request, 'runtime.inspect');
     const { id } = idParams.parse(request.params ?? {});
-    const intent = await store.get(id, ownership(principal));
+    const intent = await store.get(id, ownershipOf(principal));
     if (!intent) throw new NotFoundAppError('intent');
     return { success: true, data: intent };
   });
 
   app.post('/api/v1/intents/:id/commands', async (request) => {
     const principal = await authorize(request, 'runtime.execute');
-    const owner = ownership(principal);
+    const owner = ownershipOf(principal);
     const { id } = idParams.parse(request.params ?? {});
     const intent = await store.get(id, owner);
     if (!intent) throw new NotFoundAppError('intent');
@@ -661,7 +661,7 @@ export const registerIntentRoutes = (app: FastifyInstance, options: IntentApiOpt
   app.get('/api/v1/intents/conflicts', async (request) => {
     const principal = await authorize(request, 'runtime.inspect');
     const query = conflictListQuery.parse(request.query ?? {});
-    const owner = ownership(principal);
+    const owner = ownershipOf(principal);
     const conflicts = await store.listConflicts(
       owner,
       query.limit,
@@ -683,7 +683,7 @@ export const registerIntentRoutes = (app: FastifyInstance, options: IntentApiOpt
         ownership: IntentOwnership,
       ) => Promise<ArbitrationConflict | undefined>;
     };
-    const conflict = await storeWithLookup.getConflict?.(params.id, ownership(principal));
+    const conflict = await storeWithLookup.getConflict?.(params.id, ownershipOf(principal));
     if (!conflict) throw new NotFoundAppError('conflict');
     return { success: true, data: conflict };
   });
