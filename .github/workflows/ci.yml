@@ -240,7 +240,7 @@ jobs:
       - name: Verify PostgreSQL-backed intent persistence and runtime handoff
         env:
           DATABASE_URL: postgresql://irp:irp_smoke_postgres_password@localhost:5433/irp
-        run: pnpm --filter @irp/api exec vitest run src/intent-api.postgres.integration.test.ts
+        run: pnpm --filter @irp/api exec vitest run src/intent-api.postgres.integration.test.ts src/decision-scoping.postgres.integration.test.ts
 
       - name: Test production certification and system assurance report checksums
         run: pnpm certification:test

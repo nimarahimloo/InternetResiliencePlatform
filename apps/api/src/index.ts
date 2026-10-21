@@ -54,7 +54,7 @@ import {
   type Observation,
   type ObservationProvider,
 } from '@irp/resilience-runtime';
-import { registerIntentRoutes } from './intent-api.js';
+import { ownershipOf, registerIntentRoutes } from './intent-api.js';
 import { createOwnerScopedIntentActivator } from './intent-runtime-handoff.js';
 import { DatabaseDecisionStore } from './decision-store.js';
 import { InMemoryRateLimiter, rateLimitPreHandler } from './security/rate-limit.js';
@@ -766,6 +766,13 @@ data: ${JSON.stringify({ source: 'LIVE', updatedAt: snapshot.score.timestamp, me
     observationProviders: [runtimeObservationProvider],
     runtimeId: 'api-runtime',
   }).runtime;
+  // One owner scope for every decision surface. It must be the same scope the
+  // intent handoff links decisions under (organization first, then principal),
+  // otherwise organization members would never see their own decisions.
+  const visibleDecisions = async (principal: Parameters<typeof ownershipOf>[0]) =>
+    decisionStore
+      ? decisionStore.listByOwner(ownershipOf(principal), 1000)
+      : resilienceRuntime.decisions.list();
   const runtimeResponse = <T>(request: FastifyRequest, data: T) =>
     runtimeEnvelope(data, request.headers['x-correlation-id']?.toString() ?? request.id);
 
@@ -801,30 +808,19 @@ data: ${JSON.stringify({ source: 'LIVE', updatedAt: snapshot.score.timestamp, me
   });
   app.get('/api/v1/autopilot/runs', { preHandler: generalRateLimit }, async (request) => {
     const principal = await requirePermission(request, 'autopilot.read');
-    const ownership = { principalId: principal.id };
-    if (decisionStore) {
-      return runtimeResponse(request, await decisionStore.listByOwner(ownership));
-    }
-    return runtimeResponse(request, await resilienceRuntime.decisions.list());
+    return runtimeResponse(request, await visibleDecisions(principal));
   });
   app.get('/api/v1/autopilot/runs/:id', { preHandler: generalRateLimit }, async (request) => {
     const principal = await requirePermission(request, 'autopilot.read');
     const params = z.object({ id: z.string().min(1) }).parse(request.params);
-    const ownership = { principalId: principal.id };
-    let run;
-    if (decisionStore) {
-      const owned = await decisionStore.listByOwner(ownership);
-      run = owned.find((d) => d.decisionId === params.id);
-    } else {
-      run = (await resilienceRuntime.decisions.list()).find(
-        (decision) => decision.decisionId === params.id,
-      );
-    }
+    const run = (await visibleDecisions(principal)).find(
+      (decision) => decision.decisionId === params.id,
+    );
     if (!run) throw new NotFoundAppError('autopilot run');
     return runtimeResponse(request, run);
   });
   app.post('/api/v1/autopilot/runs', { preHandler: generalRateLimit }, async (request) => {
-    await requirePermission(request, 'autopilot.execute');
+    const principal = await requirePermission(request, 'autopilot.execute');
     const body = z
       .object({
         dryRun: z.boolean().default(false),
@@ -832,14 +828,21 @@ data: ${JSON.stringify({ source: 'LIVE', updatedAt: snapshot.score.timestamp, me
         forceVerificationFailure: z.boolean().default(false),
       })
       .parse(request.body ?? {});
-    return runtimeResponse(
-      request,
-      await resilienceRuntime.runCycle({
-        mode: 'simulation',
-        correlationId: `api-autopilot-${request.id}`,
-        idempotencyKey: `api-autopilot-${request.id}-${body.dryRun ? 'dry' : 'run'}-${body.shadow ? 'shadow' : 'active'}`,
-      }),
-    );
+    const record = await resilienceRuntime.runCycle({
+      mode: 'simulation',
+      correlationId: `api-autopilot-${request.id}`,
+      idempotencyKey: `api-autopilot-${request.id}-${body.dryRun ? 'dry' : 'run'}-${body.shadow ? 'shadow' : 'active'}`,
+    });
+    // Link the run to its caller so the caller can list it again. Best-effort:
+    // the runtime decision itself is already authoritative.
+    if (decisionStore) {
+      try {
+        await decisionStore.attachOwner(record.decisionId, ownershipOf(principal));
+      } catch {
+        // Durable ownership link unavailable: degrade, never fail the run.
+      }
+    }
+    return runtimeResponse(request, record);
   });
   app.post('/api/v1/autopilot/runs/:id/cancel', { preHandler: generalRateLimit }, async (request) => {
     await requirePermission(request, 'autopilot.admin');
@@ -874,10 +877,10 @@ data: ${JSON.stringify({ source: 'LIVE', updatedAt: snapshot.score.timestamp, me
     return runtimeResponse(request, (await resilienceRuntime.getRuntimeSnapshot()).policySnapshot);
   });
   app.get('/api/v1/autopilot/actions', { preHandler: generalRateLimit }, async (request) => {
-    await requirePermission(request, 'autopilot.read');
+    const principal = await requirePermission(request, 'autopilot.read');
     return runtimeResponse(
       request,
-      (await resilienceRuntime.decisions.list()).flatMap((decision) =>
+      (await visibleDecisions(principal)).flatMap((decision) =>
         decision.selectedPlan ? [decision.selectedPlan.selectedAction] : [],
       ),
     );
@@ -934,13 +937,13 @@ data: ${JSON.stringify({ source: 'LIVE', updatedAt: snapshot.score.timestamp, me
     });
   });
   app.get('/api/v1/runtime/decisions', { preHandler: generalRateLimit }, async (request) => {
-    await requirePermission(request, 'runtime.read');
-    return runtimeResponse(request, await resilienceRuntime.decisions.list());
+    const principal = await requirePermission(request, 'runtime.read');
+    return runtimeResponse(request, await visibleDecisions(principal));
   });
   app.get('/api/v1/runtime/decisions/:id/explanation', { preHandler: generalRateLimit }, async (request) => {
-    await requirePermission(request, 'runtime.read');
+    const principal = await requirePermission(request, 'runtime.read');
     const params = z.object({ id: z.string().min(1) }).parse(request.params);
-    const decision = (await resilienceRuntime.decisions.list()).find(
+    const decision = (await visibleDecisions(principal)).find(
       (candidate) => candidate.decisionId === params.id,
     );
     if (!decision) throw new NotFoundAppError('runtime decision');
