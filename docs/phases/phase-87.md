@@ -2,57 +2,56 @@
 
 ## Status
 
-**Contract formalized (issue #14).** Maps existing multi-interface representation already present in the connectivity fabric (`FabricResource` kinds `Interface`, `Link`, `Device`) and supporting packages `@irp/connectivity` / `@irp/network`. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Net-new multi-interface intelligence beyond the mapped surface remains unauthorized until this contract is accepted and PROJECT_STATE is updated.
+**Contract formalized.** Minimal pure ranking helper implemented for interface selection advice. Disposition remains **PARTIAL** until CI evidence is recorded and full closed-loop integration is verified.
 
 ## Objective
 
-Provide intelligence over multiple network interfaces on a device (Wi-Fi, Ethernet, cellular, VPN, etc.) so the control plane can observe, classify, score and select among them under policy and safety constraints. Multi-interface awareness is a consumer of the canonical fabric; it must not introduce a parallel resource model or mutation authority.
+Provide deterministic, advisory ranking of available interfaces (and related fabric resources) based on health, trust, capacity and intent constraints. Ranking is pure and side-effect free; it never mutates network state and is consumed only by the canonical decision path inside `@irp/resilience-runtime`.
 
 ## Dependencies
 
 - Phase 86 — Unified Connectivity Fabric
-- Phase 78 — Closed-Loop Control Foundation
-- Existing connectivity adapters and measurement primitives
+- Phase 82 — Policy Decision & Enforcement Engine
+- Phase 84 — Safety Constraints & Change Governance
 
 ## Canonical owner
 
-- `@irp/resilience-runtime` — fabric model (`Interface` / `Link` kinds, freshness, diverse selection)
-- Supporting: `@irp/connectivity`, `@irp/network`, `@irp/network-intelligence`
-- Tests: fabric lifecycle / selection suites and connectivity package tests
+- `@irp/resilience-runtime` — `src/intent/interface-intelligence.ts` (`rankInterfaces`)
+- Consumes `FabricResource` of kind `Interface` from the existing fabric snapshot
+- Tests: `packages/resilience-runtime/tests/interface-intelligence.test.ts`
 
 ## Scope
 
-- Represent each physical or virtual interface as a typed fabric resource with health, capacity, cost and freshness.
-- Support observation of interface state changes and link quality signals.
-- Enable deterministic selection or ranking among interfaces for decision inputs.
-- Preserve platform-specific interface enumeration behind existing adapters.
+- Rank candidate interfaces by a weighted score of health.score, confidence, trust and inverse cost.
+- Respect optional minimum trust and required capabilities filters.
+- Return ordered candidates plus a reason string; never select or apply.
+- Keep the function pure and deterministic.
 
 ## Non-goals
 
-- Direct mutation of interface configuration from this phase.
-- Full multi-path bonding or application-aware routing (later phases).
-- Production device evidence on real multi-interface hardware (issue #4).
+- Direct mutation or path installation.
+- Second fabric or interface registry.
+- Live device evidence (tracked under external gates).
+- Full multi-path orchestration (Phase 88).
 
 ## Acceptance criteria
 
-1. Interfaces and links are modeled exclusively as `FabricResource` instances of the closed kind set; no competing interface registry exists.
-2. Freshness and health evaluation produce deterministic results for multi-interface candidates.
-3. Capability authority can restrict selectable interfaces by platform or trust.
-4. Existing package tests that cover fabric resource lifecycle and selection pass.
-5. Architecture guards continue to treat ResilienceRuntime as the sole production control-plane authority.
+1. `rankInterfaces` returns candidates ordered by the documented score, higher better.
+2. Filters for minimum trust and required capabilities are applied before ranking.
+3. Identical inputs produce identical output (determinism).
+4. Unit tests cover ranking order, filter rejection and empty-input cases.
+5. No mutation path is introduced.
 
 ## Verification boundary
 
-- Local package tests for `@irp/resilience-runtime` fabric suites and `@irp/connectivity`.
-- CI workflows executing those suites.
-- Explicit non-claim of production multi-interface certification.
+- Package unit tests.
+- Existing resilience-runtime CI.
+- Architecture invariants preserved.
 
-## Rollback considerations
+## Rollback
 
-- Contract is documentation only; no runtime behavior change.
-- Revert the phase document if later implementation diverges.
+Remove the helper and phase document; fabric selection remains unchanged.
 
 ## Related issues
 
-- Tracking: issue #14
-- External blockers remain in issue #4
+- Tracking: issue #272 / #14
