@@ -7,7 +7,7 @@ Canonical coordination record for parallel agents. This file is intentionally sh
 - Current implementation baseline: **Phase 79 — Intent Model & Lifecycle is implemented on main**. NetworkIntent model and lifecycle are part of the canonical `@irp/core` path. ResilienceRuntime remains the sole production mutation authority.
 - Current execution tracker: open issues **#254**, **#272**, **#284**, **#323**. Fork also tracks certification/evidence gaps under #4/#12/#13/#14.
 - Main branch: `main`
-- Current main commit reviewed: post-upstream-sync (2026-10-21).
+- Current main commit reviewed: `4562a92d9817b24dc7352b002301318e0d112838` (2026-10-21).
 - Phase 71 status: implementation/release contract work exists; external release certification remains open. Published GitHub Release v0.2.1 is developer-preview evidence only.
 - Release certification must not be inferred from source presence, local tests, or architecture checks alone.
 - Current work must close source → contract → consumer → entrypoint → execution → outcome gaps without creating a second control plane or declaring completion from source presence alone.
