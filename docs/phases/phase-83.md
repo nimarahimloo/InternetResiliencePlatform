@@ -60,11 +60,12 @@ Source presence is not completion. Phase 83 completion requires mapped paths, gr
 | API + ownership | `apps/api/src/intent-api.ts` (`IntentOwnership`, conflict query) |
 | API tests | `apps/api/src/intent-api.test.ts` |
 | Governance integration | `packages/resilience-runtime/src/intent/governance.ts` + tests |
+| Conflict journal (in-memory) | `packages/resilience-runtime/tests/intent-conflict-journal.test.ts` |
 | Ownership migration | `packages/database/prisma/migrations/20260930103000_phase_274_intent_ownership` |
 
 ## Known gaps (do not hide)
 
-- Full durable conflict-journal end-to-end certification under production load is part of release/integration evidence, not satisfied by unit tests alone.
+- Full durable conflict-journal end-to-end certification under production load (Postgres + live runtime) remains part of release/integration evidence. Unit coverage now includes InMemoryIntentStore.recordConflicts / listConflicts paths (see tests/intent-conflict-journal.test.ts).
 - PolicySnapshot pairwise resolution paths beyond intent-vs-intent may still be thin; expand only by extending the existing arbitration module.
 
 ## Rollback
