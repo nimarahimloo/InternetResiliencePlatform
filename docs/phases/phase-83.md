@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7` in intent arbitration and API conflict surfaces. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only.
+**Contract formalized (issue #13).** Implementation present. Expanded regression tests for `arbitrateIntents` added covering effective-window filtering, priority/version/recency ordering, overlapping different-outcome conflict detection with supersession resolution, non-overlapping scopes, and identical outcomes. Disposition remains **PARTIAL** until exact-SHA CI evidence is recorded and the phase matrix is updated from evidence only.
 
 ## Objective
 
