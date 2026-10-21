@@ -11,17 +11,21 @@ const intent = (
   id: string,
   priority: 'low' | 'normal' | 'high' | 'critical',
   autonomy: IntentAutonomyLevel = 'SAFE_AUTOMATION',
-) =>
-  compileNetworkIntent({
-    ...createNetworkIntent({
-      id,
-      priority,
-      spec: { outcome: 'reach destination', target: { destination: 'github.com' } },
-      confidence: 0.9,
-      autonomy,
-    }),
-    status: 'active' as const,
+  version = 1,
+) => {
+  const base = createNetworkIntent({
+    id,
+    priority,
+    spec: { outcome: 'reach destination', target: { destination: 'github.com' } },
+    confidence: 0.9,
+    autonomy,
   });
+  return compileNetworkIntent({
+    ...base,
+    status: 'active' as const,
+    version,
+  });
+};
 
 const candidate = (intent: CandidateAction['intent'] = 'route_change'): CandidateAction => ({
   id: 'candidate-1',
@@ -119,6 +123,40 @@ describe('intent governance', () => {
     const selected = selectGovernedIntents([intent('low', 'normal'), intent('high', 'critical')]);
     expect(selected.selectedIntent?.intentId).toBe('high');
     expect(selected.rejectedIntents.map((i) => i.intentId)).toEqual(['low']);
+  });
+
+  it('supersedes lower version on equal priority for overlapping scopes', () => {
+    const older = {
+      ...intent('older', 'high', 'SAFE_AUTOMATION', 1),
+      scope: { destination: 'github.com' },
+      desiredOutcome: 'prefer-primary',
+    };
+    const newer = {
+      ...intent('newer', 'high', 'SAFE_AUTOMATION', 2),
+      scope: { destination: 'github.com' },
+      desiredOutcome: 'prefer-secondary',
+    };
+    const result = arbitrateIntents([older, newer]);
+    expect(result.conflicts).toHaveLength(1);
+    expect(result.conflicts[0]?.resolution).toBe('supersede-a');
+    expect(result.ordered[0]?.intentId).toBe('newer');
+  });
+
+  it('excludes stale intents before conflict analysis', () => {
+    const stale = {
+      ...intent('stale', 'critical'),
+      scope: { destination: 'github.com' },
+      desiredOutcome: 'prefer-primary',
+      expiresAt: '2020-01-01T00:00:00.000Z',
+    };
+    const current = {
+      ...intent('current', 'normal'),
+      scope: { destination: 'github.com' },
+      desiredOutcome: 'prefer-secondary',
+    };
+    const result = arbitrateIntents([stale, current]);
+    expect(result.ordered.map((i) => i.intentId)).toEqual(['current']);
+    expect(result.conflicts).toHaveLength(0);
   });
 
   it('requires approval for advisory autonomy', () => {
