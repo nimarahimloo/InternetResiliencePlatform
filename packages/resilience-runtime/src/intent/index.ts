@@ -14,4 +14,5 @@ export {
 export { PostgresIntentStore, type PostgresConfig } from './postgres-store.js';
 export type { CompiledIntent } from '../domain/types.js';
 export { detectIntentDrift, type IntentDriftResult, type DriftSeverity } from './drift.js';
+export { rankInterfaces, type InterfaceRankingRequest, type InterfaceRankingResult } from './interface-intelligence.js';
 export * from './governance.js';
