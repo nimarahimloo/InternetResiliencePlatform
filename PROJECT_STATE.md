@@ -4,7 +4,7 @@
 
 ## Current implementation gate
 
-- **Current implementation baseline:** Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on `main`.
+- **Current implementation baseline:** Phase 83 — Policy Conflict Resolution is implemented on `main` (arbitration present; CI evidence pending formal recording).
 - **Current main HEAD inspected (2026-10-21):** `a35c48dccc71b8ee5b931416d3bd95ccd60a14db`.
 - **Issue #12 progress:** The Phase 1–38 evidence register is incomplete: Phases 1–15 are mapped; Phases 16–38 still need evidence reconstruction. Historical paths and test-count records for Phases 39–78 do not establish phase acceptance on the current SHA. Those phases remain PARTIAL unless a separately documented external blocker applies, pending phase-specific acceptance verification and fresh exact-SHA CI evidence.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence).
@@ -16,7 +16,8 @@
 - **Phase 82 status:** Intent-scoped Policy Decision & Enforcement is implemented on `main` via `packages/resilience-runtime/src/intent/governance.ts` and autonomy gates in arbitration. Admission decisions, stale rejection, mode-gated mutationAllowed. Tests present. Broader declarative policy language remains later roadmap work.
 - **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Current main SHA is `a35c48dccc71b8ee5b931416d3bd95ccd60a14db`; exact-SHA Release Gate evidence must be verified before any stronger release claim.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–82, but it must not be represented as certified until its evidence exists.
-- **Phases 83–150:** contracts for 79–92 exist; implementation for 83+ remains partial or not started. No new runtime authority introduced. ResilienceRuntime remains the sole production mutation authority.
+- **Phase 83 status:** Policy conflict resolution via `arbitrateIntents` in `packages/resilience-runtime/src/intent/arbitration.ts` is implemented; tests in intent-arbitration.test.ts. Disposition remains PARTIAL pending exact-SHA CI evidence recording.
+- **Phases 84–150:** contracts exist for early groups; implementation remains partial or not started. No new runtime authority introduced. ResilienceRuntime remains the sole production mutation authority.
 
 ## Phase 79–82 summary
 
