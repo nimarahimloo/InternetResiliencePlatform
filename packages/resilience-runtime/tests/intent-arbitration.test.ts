@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { arbitrateIntents } from '../src/intent/arbitration.js';
 import type { CompiledIntent } from '../src/domain/types.js';
 
-const baseIntent = (overrides: Partial<CompiledIntent> = {}): CompiledIntent => ({
+const makeIntent = (overrides: Partial<CompiledIntent> = {}): CompiledIntent => ({
   intentId: 'intent-1',
   version: 1,
   priority: 'normal',
@@ -18,82 +18,121 @@ const baseIntent = (overrides: Partial<CompiledIntent> = {}): CompiledIntent => 
   ...overrides,
 });
 
-describe('arbitrateIntents', () => {
-  const now = new Date('2026-10-14T12:00:00Z');
+describe('arbitrateIntents — Phase 83 Policy Conflict Resolution', () => {
+  const now = new Date('2026-10-21T12:00:00.000Z');
 
-  it('excludes stale intents outside the effective window', () => {
-    const stale = baseIntent({
-      intentId: 'stale',
-      effectiveFrom: '2026-10-14T10:00:00Z',
-      expiresAt: '2026-10-14T11:00:00Z', // expired before now
+  it('filters to effective intents and excludes stale ones', () => {
+    const effective = makeIntent({ intentId: 'eff', effectiveFrom: '2026-10-20T00:00:00.000Z' });
+    const expired = makeIntent({
+      intentId: 'exp',
+      expiresAt: '2026-10-20T00:00:00.000Z',
     });
-    const active = baseIntent({
-      intentId: 'active',
-      effectiveFrom: '2026-10-14T11:00:00Z',
-      expiresAt: '2026-10-14T13:00:00Z',
-    });
-    const future = baseIntent({
-      intentId: 'future',
-      effectiveFrom: '2026-10-14T13:00:00Z',
-      expiresAt: '2026-10-14T14:00:00Z',
+    const future = makeIntent({
+      intentId: 'fut',
+      effectiveFrom: '2026-10-22T00:00:00.000Z',
     });
 
-    const result = arbitrateIntents([stale, active, future], now);
+    const { ordered, conflicts } = arbitrateIntents([effective, expired, future], now);
 
-    expect(result.ordered.map((i) => i.intentId)).toEqual(['active']);
-    expect(result.conflicts).toHaveLength(0);
+    expect(ordered.map((i) => i.intentId)).toEqual(['eff']);
+    expect(conflicts).toHaveLength(0);
   });
 
-  it('orders by priority then version', () => {
-    const low = baseIntent({ intentId: 'low', priority: 'low', version: 2 });
-    const high = baseIntent({ intentId: 'high', priority: 'high', version: 1 });
-    const normalNewer = baseIntent({ intentId: 'normal-newer', priority: 'normal', version: 3 });
-
-    const result = arbitrateIntents([low, high, normalNewer], now);
-
-    expect(result.ordered.map((i) => i.intentId)).toEqual(['high', 'normal-newer', 'low']);
-  });
-
-  it('detects conflicts on overlapping scopes with different outcomes', () => {
-    const a = baseIntent({
-      intentId: 'a',
-      desiredOutcome: 'prefer dns-a',
-      scope: { destination: 'example.com' },
-      priority: 'high',
-    });
-    const b = baseIntent({
-      intentId: 'b',
-      desiredOutcome: 'prefer dns-b',
-      scope: { destination: 'example.com' },
+  it('orders by priority then version then recency', () => {
+    const low = makeIntent({ intentId: 'low', priority: 'low', version: 2 });
+    const high = makeIntent({ intentId: 'high', priority: 'high', version: 1 });
+    const normalNew = makeIntent({
+      intentId: 'normal-new',
       priority: 'normal',
+      version: 3,
+      compiledAt: '2026-10-21T11:00:00.000Z',
+    });
+    const normalOld = makeIntent({
+      intentId: 'normal-old',
+      priority: 'normal',
+      version: 3,
+      compiledAt: '2026-10-21T10:00:00.000Z',
     });
 
-    const result = arbitrateIntents([a, b], now);
+    const { ordered } = arbitrateIntents([low, high, normalNew, normalOld], now);
 
-    expect(result.ordered.map((i) => i.intentId)).toEqual(['a', 'b']);
-    expect(result.conflicts).toHaveLength(1);
-    expect(result.conflicts[0]?.resolution).toBe('supersede-b');
+    expect(ordered.map((i) => i.intentId)).toEqual(['high', 'normal-new', 'normal-old', 'low']);
   });
 
-  it('does not conflict on identical outcomes or non-overlapping scopes', () => {
-    const sameOutcome = baseIntent({
-      intentId: 'same',
-      desiredOutcome: 'reach github.com',
+  it('detects overlapping different outcomes and resolves by priority (supersede lower)', () => {
+    const critical = makeIntent({
+      intentId: 'crit',
+      priority: 'critical',
+      desiredOutcome: 'prefer tunnel',
       scope: { destination: 'github.com' },
     });
-    const other = baseIntent({
-      intentId: 'other',
-      desiredOutcome: 'reach github.com',
+    const high = makeIntent({
+      intentId: 'high',
+      priority: 'high',
+      desiredOutcome: 'prefer direct',
       scope: { destination: 'github.com' },
     });
-    const nonOverlap = baseIntent({
-      intentId: 'non',
-      desiredOutcome: 'other',
-      scope: { destination: 'other.com' },
+
+    const { ordered, conflicts } = arbitrateIntents([high, critical], now);
+
+    expect(ordered.map((i) => i.intentId)).toEqual(['crit', 'high']);
+    expect(conflicts).toHaveLength(1);
+    expect(conflicts[0]).toMatchObject({
+      intentA: expect.objectContaining({ intentId: 'crit' }),
+      intentB: expect.objectContaining({ intentId: 'high' }),
+      resolution: 'supersede-b',
+    });
+  });
+
+  it('resolves same-priority by version (newer supersedes)', () => {
+    const v1 = makeIntent({
+      intentId: 'v1',
+      priority: 'high',
+      version: 1,
+      desiredOutcome: 'old',
+      scope: { destination: 'github.com' },
+    });
+    const v2 = makeIntent({
+      intentId: 'v2',
+      priority: 'high',
+      version: 2,
+      desiredOutcome: 'new',
+      scope: { destination: 'github.com' },
     });
 
-    const result = arbitrateIntents([sameOutcome, other, nonOverlap], now);
+    const { conflicts } = arbitrateIntents([v1, v2], now);
 
-    expect(result.conflicts).toHaveLength(0);
+    expect(conflicts).toHaveLength(1);
+    expect(conflicts[0]?.resolution).toBe('supersede-b');
+  });
+
+  it('does not conflict on non-overlapping scopes', () => {
+    const a = makeIntent({ intentId: 'a', scope: { destination: 'github.com' }, desiredOutcome: 'A' });
+    const b = makeIntent({ intentId: 'b', scope: { destination: 'example.com' }, desiredOutcome: 'B' });
+
+    const { conflicts } = arbitrateIntents([a, b], now);
+    expect(conflicts).toHaveLength(0);
+  });
+
+  it('does not conflict when outcomes are identical', () => {
+    const a = makeIntent({
+      intentId: 'a',
+      scope: { destination: 'github.com' },
+      desiredOutcome: 'same',
+    });
+    const b = makeIntent({
+      intentId: 'b',
+      scope: { destination: 'github.com' },
+      desiredOutcome: 'same',
+    });
+
+    const { conflicts } = arbitrateIntents([a, b], now);
+    expect(conflicts).toHaveLength(0);
+  });
+
+  it('returns empty results for no intents', () => {
+    const { ordered, conflicts } = arbitrateIntents([], now);
+    expect(ordered).toHaveLength(0);
+    expect(conflicts).toHaveLength(0);
   });
 });
