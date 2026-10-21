@@ -135,4 +135,32 @@ describe('arbitrateIntents — Phase 83 Policy Conflict Resolution', () => {
     expect(ordered).toHaveLength(0);
     expect(conflicts).toHaveLength(0);
   });
+
+  it('detects multiple pairwise conflicts among three overlapping intents and resolves by priority', () => {
+    const critical = makeIntent({
+      intentId: 'crit',
+      priority: 'critical',
+      desiredOutcome: 'tunnel',
+      scope: { destination: 'github.com' },
+    });
+    const high = makeIntent({
+      intentId: 'high',
+      priority: 'high',
+      desiredOutcome: 'direct',
+      scope: { destination: 'github.com' },
+    });
+    const normal = makeIntent({
+      intentId: 'normal',
+      priority: 'normal',
+      desiredOutcome: 'proxy',
+      scope: { destination: 'github.com' },
+    });
+
+    const { ordered, conflicts } = arbitrateIntents([normal, high, critical], now);
+
+    expect(ordered.map((i) => i.intentId)).toEqual(['crit', 'high', 'normal']);
+    expect(conflicts).toHaveLength(3); // every pair conflicts
+    const resolutions = conflicts.map((c) => c.resolution);
+    expect(resolutions).toContain('supersede-b');
+  });
 });
