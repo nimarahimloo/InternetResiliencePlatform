@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized (issue #14).** Maps existing safety kernel and intent governance already present on `main`. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Implementation of net-new governance workflows is unauthorized until this contract is accepted and PROJECT_STATE is updated.
+**Contract formalized (issue #14).** Maps existing safety kernel and intent governance already present on `main`. Implementation and unit tests for the acceptance criteria exist in `@irp/resilience-runtime`. Disposition remains **PARTIAL** until exact-SHA CI evidence is recorded against this contract and the phase matrix is updated from evidence only.
 
 ## Objective
 
@@ -20,7 +20,7 @@ Formalize bounded safety constraints and change-governance rules that every priv
 - `@irp/resilience-runtime` — `src/safety/safety-kernel.ts` (`SafetyRollbackRecoveryKernel`, `SafetyAssessment`, `SafetyViolationError`)
 - Intent governance: `src/intent/governance.ts` (`enforceAutonomy`, admission decisions)
 - Consumed by privileged mutation boundary and closed-loop controller
-- Tests: `packages/resilience-runtime/tests/` (safety and intent-governance suites)
+- Tests: `packages/resilience-runtime/tests/safety-kernel.test.ts` and intent-governance suite
 
 ## Scope
 
@@ -44,6 +44,16 @@ Formalize bounded safety constraints and change-governance rules that every priv
 3. `enforceAutonomy` (and related admission) returns a deterministic `IntentGovernanceDecision` that never permits mutation when autonomy or risk thresholds are violated.
 4. Unit tests covering blast-radius rejection, successful checkpoint/rollback, and admission matrix (ALLOW / DENY / REQUIRE_APPROVAL) pass in the owning package.
 5. No new mutation path is introduced that bypasses the safety kernel or intent governance.
+
+## Evidence map (baseline SHA `e09a558`)
+
+| Criterion | Location |
+|-----------|----------|
+| Blast-radius rejection | `packages/resilience-runtime/tests/safety-kernel.test.ts` (`blocks excessive blast radius`) |
+| Checkpoint / rollback | same file (`captures a checkpoint...`, `rolls back a checkpoint...`) |
+| Fail-closed paths (expired, cancelled, untrusted) | same file |
+| No execute method on safety port | same file (`exposes no execution method...`) |
+| Intent admission matrix | `packages/resilience-runtime/tests/intent-governance.test.ts` |
 
 ## Verification boundary
 
