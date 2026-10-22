@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized (issue #14).** Maps existing safety kernel and intent governance already present on `main`. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Implementation of net-new governance workflows is unauthorized until this contract is accepted and PROJECT_STATE is updated.
+**Contract formalized (issue #14).** Maps existing safety kernel and intent governance already present on `main`. Disposition remains **PARTIAL** until exact-SHA CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Implementation of net-new governance workflows is unauthorized until this contract is accepted and PROJECT_STATE is updated.
 
 ## Objective
 
@@ -18,9 +18,9 @@ Formalize bounded safety constraints and change-governance rules that every priv
 ## Canonical owner
 
 - `@irp/resilience-runtime` — `src/safety/safety-kernel.ts` (`SafetyRollbackRecoveryKernel`, `SafetyAssessment`, `SafetyViolationError`)
-- Intent governance: `src/intent/governance.ts` (`enforceAutonomy`, admission decisions)
+- Intent governance: `src/intent/governance.ts` (`resolveIntentGovernance`, `selectGovernedIntents`, admission decisions)
 - Consumed by privileged mutation boundary and closed-loop controller
-- Tests: `packages/resilience-runtime/tests/` (safety and intent-governance suites)
+- Tests: `packages/resilience-runtime/tests/safety-kernel.test.ts`, `packages/resilience-runtime/tests/intent-governance.test.ts`
 
 ## Scope
 
@@ -41,9 +41,21 @@ Formalize bounded safety constraints and change-governance rules that every priv
 
 1. `SafetyRollbackRecoveryKernel` rejects plans whose computed blast radius exceeds the configured maximum and returns a `SafetyAssessment` with reasons.
 2. Checkpoint and rollback callbacks, when supplied, are invoked on the assessment path and produce an `ActionExecution` result suitable for recovery.
-3. `enforceAutonomy` (and related admission) returns a deterministic `IntentGovernanceDecision` that never permits mutation when autonomy or risk thresholds are violated.
+3. `resolveIntentGovernance` (and related admission) returns a deterministic `IntentGovernanceDecision` that never permits mutation when autonomy or risk thresholds are violated.
 4. Unit tests covering blast-radius rejection, successful checkpoint/rollback, and admission matrix (ALLOW / DENY / REQUIRE_APPROVAL) pass in the owning package.
 5. No new mutation path is introduced that bypasses the safety kernel or intent governance.
+
+## Evidence map (baseline SHA `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f`)
+
+| Criterion | Location |
+|-----------|----------|
+| Blast-radius rejection & assessment | `packages/resilience-runtime/src/safety/safety-kernel.ts` (`assess`) + `tests/safety-kernel.test.ts` ("blocks excessive blast radius") |
+| Checkpoint / rollback ports | `safety-kernel.ts` (`createCheckpoint`, `rollbackCheckpoint`) + tests ("captures a checkpoint...", "rolls back a checkpoint...") |
+| Recovery events & provider | `safety-kernel.ts` (`recover`) + tests ("delegates verification recovery...", "stamps the mutation transaction identity...") |
+| No execution method on safety port | `safety-kernel.ts` class comment + test ("exposes no execution method...") |
+| Intent admission matrix (ALLOW / PLAN_ONLY / REQUIRE_APPROVAL / DENY) | `packages/resilience-runtime/src/intent/governance.ts` (`resolveIntentGovernance`) + `tests/intent-governance.test.ts` (advisory, safe automation, untrusted, stale, mixed) |
+| Autonomy / risk bounding | `governance.ts` (maxRisk per autonomy) + tests ("bounds safe automation risk...") |
+| Architecture invariant | Safety port has no `execute`; privileged boundary remains sole live executor |
 
 ## Verification boundary
 
@@ -51,6 +63,7 @@ Formalize bounded safety constraints and change-governance rules that every priv
 - CI workflows that already execute the resilience-runtime test suite (CI, Runtime Lab).
 - Architecture guards that forbid a second control-plane authority.
 - Explicit non-claim of production certification or device behavioral evidence.
+- Exact-SHA green CI on this baseline (or a later commit that preserves the mapped paths) is still required before disposition can move beyond PARTIAL.
 
 ## Rollback considerations
 
