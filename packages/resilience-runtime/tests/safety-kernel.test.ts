@@ -131,6 +131,14 @@ describe('SafetyRollbackRecoveryKernel', () => {
     expect(assessment.blastRadius).toBe(0.9);
   });
 
+  it('respects a custom maxBlastRadius lower than the plan value', () => {
+    const kernel = make({ maxBlastRadius: 0.4 });
+    const assessment = kernel.assess(plan(0.5), context());
+    expect(assessment.allowed).toBe(false);
+    expect(assessment.reasons).toContain('blast radius 0.5 exceeds limit 0.4');
+    expect(assessment.blastRadius).toBe(0.5);
+  });
+
   it('fails closed for expired context', () => {
     const kernel = make();
     const c = { ...context(), deadline: '2000-01-01T00:00:00.000Z' };

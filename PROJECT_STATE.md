@@ -46,13 +46,13 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
 
-## Autonomous engineer checkpoint (2026-10-22)
+## Autonomous engineer checkpoint (2026-10-22 later)
 
-- Starting base SHA: `5c6839ca5a3fa0721390a8d5d8c7a301a084f9a7`
+- Starting base SHA: `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f`
 - Ending base SHA: (pending this PR)
-- Completed this run: added mixed stale+effective intent regression test to intent-governance suite, confirming fail-closed rejection of stale intents while admitting an effective one. Updated Phase 83 contract evidence mapping.
-- Branches/PRs: (this PR)
-- Actual CI: pending
+- Completed this run: strengthened Phase 84 safety-constraint evidence with a custom maxBlastRadius regression test in safety-kernel.test.ts (rejects plans exceeding a caller-supplied limit). Updated phase-84.md evidence map. ResilienceRuntime remains sole mutation authority.
+- Branches/PRs: phase/84-safety-constraint-evidence (this PR)
+- Actual CI: pending (local safety-kernel tests passed; full monorepo build limited by sandbox resources)
 - Verified merges: none this run
-- Blockers: exact-SHA Release Gate evidence; Phase 84+ implementation; Linux client verification.
-- Next prioritized tasks: Phase 84 safety constraint evidence strengthening; durable conflict journal restart tests for #13.
+- Blockers: exact-SHA Release Gate evidence; Phase 85+ continuous correction; Linux client / DNS hosting verification; durable conflict journal e2e for #13.
+- Next prioritized tasks: durable owner-scoped conflict journal restart/recovery tests; Phase 85 drift correction admission path; Linux runtime soak evidence for #254/#323.

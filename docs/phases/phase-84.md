@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized (issue #14).** Maps existing safety kernel and intent governance already present on `main`. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Implementation of net-new governance workflows is unauthorized until this contract is accepted and PROJECT_STATE is updated.
+**Contract formalized (issue #14).** Maps existing safety kernel and intent governance already present on `main`. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Implementation of net-new governance workflows is unauthorized until this contract is accepted and PROJECT_STATE is updated. Additional regression coverage for custom blast-radius limits added on branch `phase/84-safety-constraint-evidence`.
 
 ## Objective
 
@@ -61,3 +61,15 @@ Formalize bounded safety constraints and change-governance rules that every priv
 
 - Tracking: issue #14
 - External blockers remain in issue #4
+
+## Evidence map (baseline + 2026-10-22 regression)
+
+| Criterion | Location |
+|-----------|----------|
+| Blast-radius rejection (default & custom limit) | `packages/resilience-runtime/tests/safety-kernel.test.ts` |
+| Checkpoint / rollback callbacks | same file (`createCheckpoint`, `rollbackCheckpoint`) |
+| Autonomy / admission matrix | `packages/resilience-runtime/tests/intent-governance.test.ts` + `src/intent/governance.ts` |
+| No execution method on safety port | `safety-kernel.test.ts` prototype check |
+| Canonical owner | `packages/resilience-runtime/src/safety/safety-kernel.ts` |
+
+Regression added: custom `maxBlastRadius` lower than plan risk is rejected with explicit reason. Full CI evidence on the implementing SHA remains required before disposition changes.
