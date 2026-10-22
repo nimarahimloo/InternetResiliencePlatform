@@ -130,6 +130,35 @@ describe('arbitrateIntents — Phase 83 Policy Conflict Resolution', () => {
     expect(conflicts).toHaveLength(0);
   });
 
+
+  it('resolves same-priority same-version by recency (more recent supersedes)', () => {
+    const older = makeIntent({
+      intentId: 'older',
+      priority: 'high',
+      version: 2,
+      desiredOutcome: 'old-outcome',
+      compiledAt: '2026-10-21T10:00:00.000Z',
+      scope: { destination: 'github.com' },
+    });
+    const newer = makeIntent({
+      intentId: 'newer',
+      priority: 'high',
+      version: 2,
+      desiredOutcome: 'new-outcome',
+      compiledAt: '2026-10-21T11:00:00.000Z',
+      scope: { destination: 'github.com' },
+    });
+
+    const { ordered, conflicts } = arbitrateIntents([older, newer], now);
+
+    expect(ordered.map((i) => i.intentId)).toEqual(['newer', 'older']);
+    expect(conflicts).toHaveLength(1);
+    expect(conflicts[0]).toMatchObject({
+      intentA: expect.objectContaining({ intentId: 'newer' }),
+      intentB: expect.objectContaining({ intentId: 'older' }),
+      resolution: 'supersede-b',
+    });
+  });
   it('returns empty results for no intents', () => {
     const { ordered, conflicts } = arbitrateIntents([], now);
     expect(ordered).toHaveLength(0);
