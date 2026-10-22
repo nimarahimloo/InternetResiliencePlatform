@@ -59,15 +59,10 @@ export const arbitrateIntents = (
       const a = ordered[i]!;
       const b = ordered[j]!;
       if (scopesOverlap(a, b) && a.desiredOutcome !== b.desiredOutcome) {
-        // Higher priority supersedes; if same priority, newer version supersedes
-        const resolution =
-          a.priority === b.priority
-            ? a.version > b.version
-              ? 'supersede-b'
-              : 'supersede-a'
-            : (priorityOrder[a.priority] ?? 0) > (priorityOrder[b.priority] ?? 0)
-              ? 'supersede-b'
-              : 'supersede-a';
+        // Because `ordered` places the higher-ranked intent first, `a` always
+        // wins (priority, then version, then recency). Resolution is therefore
+        // always supersede-b. Equal-version recency ties are covered by the sort.
+        const resolution = 'supersede-b' as const;
         conflicts.push({
           intentA: a,
           intentB: b,
