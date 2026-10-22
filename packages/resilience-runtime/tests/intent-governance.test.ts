@@ -202,3 +202,20 @@ describe('intent governance', () => {
     );
   });
 });
+
+  it('rejects only stale intents when mixed with an effective one and admits the effective intent', () => {
+    const effective = intent('effective', 'high');
+    const stale = {
+      ...intent('stale', 'critical'),
+      expiresAt: '2020-01-01T00:00:00.000Z',
+    };
+    const decision = resolveIntentGovernance([effective, stale], trustedSimulationContext(effective));
+
+    expect(decision.admission).toBe('ALLOW');
+    expect(decision.mutationAllowed).toBe(true);
+    expect(decision.selectedIntent?.intentId).toBe('effective');
+    expect(decision.rejectedIntents.map((item) => item.intentId)).toContain('stale');
+    expect(decision.reasons).toContain(
+      'rejected 1 intent(s) outside their effective lifecycle window',
+    );
+  });
