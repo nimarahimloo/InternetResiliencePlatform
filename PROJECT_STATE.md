@@ -55,3 +55,13 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Verified merges: recent #82/#83/#84 for issue #13 durable/owner-scoped decisions; checkpoint #85.
 - Blockers: exact-SHA Release Gate / Public Runtime Lab evidence; remaining exact-SHA evidence for #13; Phase 83+ implementation not started.
 - Next prioritized tasks: merge this state update; formalize/implement Phase 83 Policy Conflict Resolution or strengthen stale-intent fail-closed tests; continue issue #14 / Linux client wiring.
+
+## Autonomous engineer checkpoint (2026-10-22)
+
+- Starting base SHA: `4fed2238b279d06e4f1914e0c0227482fcd0f835`
+- Completed this run: strengthened Phase 83 evidence by adding InMemoryIntentStore conflict-journal regression test; updated phase-83.md status to reflect expanded `intent-arbitration.test.ts` coverage (ordering, overlap, supersession, store journal). No architecture change; ResilienceRuntime remains sole authority.
+- Branches/PRs: phase/83-store-conflict-evidence (this PR).
+- Actual CI: local full suite not run (environment Node 20 vs required >=24; pnpm 11 unavailable). Changes are pure test + docs; existing package tests cover the paths.
+- Verified merges: prior #88 for arbitration regression expansion.
+- Blockers: exact-SHA CI / Public Runtime Lab for release gate; Phase 84+ implementation gaps remain; Linux client wiring (#254).
+- Next prioritized tasks: record CI evidence for Phase 83 on this SHA after merge; formalize remaining Phase 84 safety-constraint evidence or implement thin PolicySnapshot resolution paths by extending existing arbitration; continue issue #14.

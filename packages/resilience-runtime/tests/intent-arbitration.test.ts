@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { arbitrateIntents } from '../src/intent/arbitration.js';
-import type { CompiledIntent } from '../src/domain/types.js';
+import { arbitrateIntents, InMemoryIntentStore } from '../src/intent/arbitration.js';
+import type { CompiledIntent, IntentConflict } from '../src/domain/types.js';
 
 const makeIntent = (overrides: Partial<CompiledIntent> = {}): CompiledIntent => ({
   intentId: 'intent-1',
@@ -134,5 +134,28 @@ describe('arbitrateIntents — Phase 83 Policy Conflict Resolution', () => {
     const { ordered, conflicts } = arbitrateIntents([], now);
     expect(ordered).toHaveLength(0);
     expect(conflicts).toHaveLength(0);
+  });
+});
+
+describe('InMemoryIntentStore — conflict journal (Phase 83)', () => {
+  it('records and lists conflicts without affecting intent storage', async () => {
+    const store = new InMemoryIntentStore();
+    const intent = makeIntent({ intentId: 'stored' });
+    await store.put(intent);
+
+    const conflict: IntentConflict = {
+      intentA: intent,
+      intentB: makeIntent({ intentId: 'other', desiredOutcome: 'different' }),
+      reason: 'test overlap',
+      resolution: 'supersede-b',
+    };
+
+    await store.recordConflicts([conflict]);
+    const listed = await store.listConflicts();
+
+    expect(listed).toHaveLength(1);
+    expect(listed[0]).toMatchObject({ reason: 'test overlap', resolution: 'supersede-b' });
+    expect(await store.get('stored')).toEqual(intent);
+    expect(await store.getActive()).toHaveLength(1);
   });
 });
