@@ -5,7 +5,7 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on `main`.
-- **Current main HEAD (2026-10-21):** `e5c6db1b8445d0e200cf066ce8a8e7da2ff46fb7` (post checkpoint merge; Phase 80-82 code present).
+- **Current main HEAD (2026-10-21):** `4fed2238b279d06e4f1914e0c0227482fcd0f835` (fork; Phase 80-82 code present; Phase 83 arbitration tests expanded).
 - **Issue #12 progress:** Evidence register and phase-history matrix contain package/path/test anchors for Phases 1–38. Historical test-count TSV is not fresh per-phase CI evidence; all these phases remain PARTIAL pending acceptance-criterion review and current-SHA verification. Remaining Phase 39–78 mappings and exact-SHA verification still need reconciliation. Issue #12 remains open.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence). Additional fork trackers #4/#12/#13/#14 cover certification, evidence reconstruction and intent/policy gaps.
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -46,12 +46,12 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
 
-## Autonomous engineer checkpoint (2026-10-21)
+## Autonomous engineer checkpoint (2026-10-22)
 
-- Starting base SHA: `e5c6db1b8445d0e200cf066ce8a8e7da2ff46fb7`
-- Completed this run: inspected live code confirming Phase 80-82 implementations (intent-api.ts, compiler.ts, governance.ts) are present; updated state documents to match. Opened PR for the update.
-- Branches/PRs: this update PR.
-- Actual CI: prior SHA had most workflows SUCCESS; Public Runtime Lab was pending (Release Gate BLOCKED). Re-check on this SHA after merge.
-- Verified merges: recent #82/#83/#84 for issue #13 durable/owner-scoped decisions; checkpoint #85.
-- Blockers: exact-SHA Release Gate / Public Runtime Lab evidence; remaining exact-SHA evidence for #13; Phase 83+ implementation not started.
-- Next prioritized tasks: merge this state update; formalize/implement Phase 83 Policy Conflict Resolution or strengthen stale-intent fail-closed tests; continue issue #14 / Linux client wiring.
+- Starting base SHA: `4fed2238b279d06e4f1914e0c0227482fcd0f835`
+- Completed this run: strengthened Phase 83 arbitration regression tests with value-aware scope-overlap cases (partial dimension agreement, intentId exclusion). Updated phase-83.md status notes and this checkpoint. Opened PR.
+- Branches/PRs: `fix/phase-83-scope-overlap-semantics` → this PR.
+- Actual CI: not yet run on this branch head; prior fork workflows were green on recent merges.
+- Verified merges: recent phase/83 arbitration tests merge on fork.
+- Blockers: exact-SHA Release Gate / Public Runtime Lab evidence; remaining exact-SHA evidence for #13; Phase 83 remains PARTIAL pending CI on the strengthened tests.
+- Next prioritized tasks: merge this PR after CI; record exact-SHA evidence for Phase 83; continue Linux client wiring (#254) or formalize next phase contract.

@@ -130,6 +130,50 @@ describe('arbitrateIntents — Phase 83 Policy Conflict Resolution', () => {
     expect(conflicts).toHaveLength(0);
   });
 
+  it('ignores intentId when determining scope overlap', () => {
+    const a = makeIntent({
+      intentId: 'a',
+      scope: { intentId: 'shared', destination: 'github.com' },
+      desiredOutcome: 'A',
+    });
+    const b = makeIntent({
+      intentId: 'b',
+      scope: { intentId: 'shared', destination: 'example.com' },
+      desiredOutcome: 'B',
+    });
+
+    const { conflicts } = arbitrateIntents([a, b], now);
+    expect(conflicts).toHaveLength(0);
+  });
+
+  it('conflicts only when all shared non-identity dimensions agree', () => {
+    const overlapping = makeIntent({
+      intentId: 'overlap',
+      scope: { destination: 'github.com', region: 'eu' },
+      desiredOutcome: 'prefer tunnel',
+    });
+    const disjoint = makeIntent({
+      intentId: 'disjoint',
+      scope: { destination: 'github.com', region: 'us' },
+      desiredOutcome: 'prefer direct',
+    });
+    const partial = makeIntent({
+      intentId: 'partial',
+      scope: { destination: 'github.com' },
+      desiredOutcome: 'prefer direct',
+    });
+
+    const { conflicts } = arbitrateIntents([overlapping, disjoint, partial], now);
+
+    // overlapping and partial agree on the only shared dimension → conflict
+    // overlapping and disjoint disagree on region → no conflict
+    // partial and disjoint share destination with same value → conflict
+    const pairs = conflicts.map((c) => [c.intentA.intentId, c.intentB.intentId].sort().join('+'));
+    expect(pairs).toContain('overlap+partial');
+    expect(pairs).toContain('disjoint+partial');
+    expect(pairs).not.toContain('disjoint+overlap');
+  });
+
   it('returns empty results for no intents', () => {
     const { ordered, conflicts } = arbitrateIntents([], now);
     expect(ordered).toHaveLength(0);
