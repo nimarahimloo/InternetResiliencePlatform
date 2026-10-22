@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7` in intent arbitration and API conflict surfaces. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only.
+**Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7` in intent arbitration and API conflict surfaces. Disposition advanced to **IMPLEMENTED (evidence recorded)** on SHA 4fed2238b279d06e4f1914e0c0227482fcd0f835 after local package tests (693 passed in @irp/resilience-runtime including policy-274-phase4.test.ts and intent-governance.test.ts) confirmed arbitration, conflict emission, store persistence and domain resolution. Phase matrix update remains evidence-only. Full remote CI and production load still tracked in open issues.
 
 ## Objective
 
@@ -49,7 +49,7 @@ Detect and deterministically resolve conflicts between multiple effective intent
 
 ## Verification boundary
 
-Source presence is not completion. Phase 83 completion requires mapped paths, green tests/CI on a recorded SHA, and matrix update only from evidence regeneration.
+Local package tests pass on recorded SHA 4fed223. Remote CI and final matrix regeneration remain required for COMPLETE status.
 
 ## Evidence map (baseline SHA `decd921`)
 
