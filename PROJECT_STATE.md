@@ -4,8 +4,8 @@
 
 ## Current implementation gate
 
-- **Current implementation baseline:** Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on `main`.
-- **Current main HEAD (2026-10-22):** `c770436ea789ec7a8873ed2b3116230cfe720e53` (Phase 83 equal-version resolution fix merged via #89).
+- **Current implementation baseline:** Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on `main`. Phase 83 arbitration and Phase 84 safety kernel are present with tests; both remain PARTIAL pending exact-SHA evidence and matrix updates.
+- **Current main HEAD (2026-10-22):** `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f` (Phase 83 mixed-stale regression merged via #91).
 - **Issue #12 progress:** Evidence register and phase-history matrix contain package/path/test anchors for Phases 1–38. Historical test-count TSV is not fresh per-phase CI evidence; all these phases remain PARTIAL pending acceptance-criterion review and current-SHA verification. Remaining Phase 39–78 mappings and exact-SHA verification still need reconciliation. Issue #12 remains open.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence). Additional fork trackers #4/#12/#13/#14 cover certification, evidence reconstruction and intent/policy gaps.
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -48,11 +48,11 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 
 ## Autonomous engineer checkpoint (2026-10-22)
 
-- Starting base SHA: `5c6839ca5a3fa0721390a8d5d8c7a301a084f9a7`
+- Starting base SHA: `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f`
 - Ending base SHA: (pending this PR)
-- Completed this run: added mixed stale+effective intent regression test to intent-governance suite, confirming fail-closed rejection of stale intents while admitting an effective one. Updated Phase 83 contract evidence mapping.
-- Branches/PRs: (this PR)
+- Completed this run: mapped existing `safety-kernel.test.ts` coverage (blast-radius rejection, checkpoint/rollback, fail-closed paths, no-execute invariant) to Phase 84 acceptance criteria. Updated phase-84.md evidence map. No runtime change.
+- Branches/PRs: phase/84-safety-evidence (this PR)
 - Actual CI: pending
-- Verified merges: none this run
-- Blockers: exact-SHA Release Gate evidence; Phase 84+ implementation; Linux client verification.
-- Next prioritized tasks: Phase 84 safety constraint evidence strengthening; durable conflict journal restart tests for #13.
+- Verified merges: PR #91 (Phase 83 mixed-stale regression)
+- Blockers: exact-SHA Release Gate / Public Runtime Lab evidence; remaining durable conflict-journal restart evidence for #13; Phase 85+ not started.
+- Next prioritized tasks: exact-SHA CI evidence for Phases 83–84; Phase 85 Intent Assurance if authorized; Linux client wiring (#254).
