@@ -4,10 +4,10 @@ Canonical coordination record for parallel agents. This file is intentionally sh
 
 ## Current baseline
 
-- Current implementation baseline: **Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on main**. NetworkIntent model, API ingestion, pure compilation, and intent-scoped admission/enforcement are part of the canonical paths. ResilienceRuntime remains the sole production mutation authority. Fork uniquely includes durable owner-scoped runtime decision persistence.
+- Current implementation baseline: **Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on main**. Phases 83–85 have formalized contracts and partial/observe-only implementations (arbitration, safety mapping, observe-only drift). ResilienceRuntime remains the sole production mutation authority. Fork uniquely includes durable owner-scoped runtime decision persistence.
 - Current execution tracker: open issues **#254**, **#272**, **#284**, **#323**. Fork also tracks certification/evidence gaps under #4/#12/#13/#14.
 - Main branch: `main`
-- Current main commit reviewed: `e5c6db1b8445d0e200cf066ce8a8e7da2ff46fb7` (2026-10-21).
+- Current main commit reviewed: `e5c6db1b8445d0e200cf066ce8a8e7da2ff46fb7` (live tree at 4fed2238; 2026-10-22).
 - Phase 71 status: implementation/release contract work exists; external release certification remains open. Published GitHub Release v0.2.1 is developer-preview evidence only.
 - Release certification must not be inferred from source presence, local tests, or architecture checks alone.
 - Current work must close source → contract → consumer → entrypoint → execution → outcome gaps without creating a second control plane or declaring completion from source presence alone.
