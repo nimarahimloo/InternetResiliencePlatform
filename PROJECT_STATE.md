@@ -48,11 +48,11 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 
 ## Autonomous engineer checkpoint (2026-10-22)
 
-- Starting base SHA: `4fed2238b279d06e4f1914e0c0227482fcd0f835`
-- Ending base SHA: `c770436ea789ec7a8873ed2b3116230cfe720e53`
-- Completed this run: fixed Phase 83 `arbitrateIntents` equal-version conflict resolution (always supersede-b for ordered winner) and added equal-priority/equal-version recency regression test. Merged via PR #89 after Workspace test/typecheck/lint/build and architecture checks passed.
-- Branches/PRs: https://github.com/nimarahimloo/InternetResiliencePlatform/pull/89 (merged)
-- Actual CI: Workspace / test, typecheck, lint, build, Architecture contract, Linux primary device, runtime-lab, and several others PASS on the PR head; remaining platform jobs were still pending or non-blocking at merge time.
-- Verified merges: PR #89 (Phase 83 resolution fix).
-- Blockers: exact-SHA Release Gate / Public Runtime Lab evidence; remaining durable conflict-journal restart evidence for #13; Phase 84+ not started.
-- Next prioritized tasks: continue Phase 83 evidence mapping / stale-intent fail-closed strengthening; start Phase 84 Safety Constraints if authorized; Linux client wiring (#254).
+- Starting base SHA: `5c6839ca5a3fa0721390a8d5d8c7a301a084f9a7`
+- Ending base SHA: (pending this PR)
+- Completed this run: added mixed stale+effective intent regression test to intent-governance suite, confirming fail-closed rejection of stale intents while admitting an effective one. Updated Phase 83 contract evidence mapping.
+- Branches/PRs: (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA Release Gate evidence; Phase 84+ implementation; Linux client verification.
+- Next prioritized tasks: Phase 84 safety constraint evidence strengthening; durable conflict journal restart tests for #13.

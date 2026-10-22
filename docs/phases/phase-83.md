@@ -43,7 +43,7 @@ Detect and deterministically resolve conflicts between multiple effective intent
 2. Overlapping different outcomes produce a conflict; non-overlapping or identical outcomes do not false-positive.
 3. Higher priority (then newer version) determines supersession direction.
 4. Stale intents are excluded before conflict analysis (shared effective-window helper).
-5. Unit/API tests cover: no-conflict path, priority supersession, same-priority version supersession, and API conflict listing when present.
+5. Unit/API tests cover: no-conflict path, priority supersession, same-priority version supersession, stale-only fail-closed DENY, mixed stale+effective admission of the effective intent, and API conflict listing when present.
 6. Store interfaces remain optional/degradable; local autonomy survives remote DB unavailability where the architecture requires it.
 7. Applicable package and API tests pass on the contract SHA.
 

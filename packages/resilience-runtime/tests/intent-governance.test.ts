@@ -69,6 +69,33 @@ const trustedSimulationContext = (
   });
 };
 
+const trustedLiveContext = (
+  compiledIntent: ReturnType<typeof intent>,
+  compiledIntents?: ReturnType<typeof intent>[],
+) => {
+  const base = createRuntimeContext({
+    mode: 'live',
+    securityContext: { trusted: true },
+    capabilitySnapshot: {
+      ...createRuntimeContext({ mode: 'live' }).capabilitySnapshot,
+      trusted: true,
+    },
+  });
+
+  return createRuntimeContext({
+    ...base,
+    policySnapshot: {
+      ...base.policySnapshot,
+      policy: {
+        ...base.policySnapshot.policy,
+        allowedActions: ['route_change'],
+      },
+    },
+    compiledIntent,
+    ...(compiledIntents ? { compiledIntents } : {}),
+  });
+};
+
 describe('intent governance', () => {
   it('does not treat intent identity alone as an overlapping scope', () => {
     const a = {
@@ -199,6 +226,23 @@ describe('intent governance', () => {
     expect(decision.rejectedIntents.map((item) => item.intentId)).toEqual(['expired']);
     expect(decision.reasons).toContain(
       'all supplied compiled intents are outside their effective lifecycle window',
+    );
+  });
+
+  it('rejects only stale intents when mixed with an effective one and admits the effective intent', () => {
+    const effective = intent('effective', 'high');
+    const stale = {
+      ...intent('stale', 'critical'),
+      expiresAt: '2020-01-01T00:00:00.000Z',
+    };
+    const decision = resolveIntentGovernance([effective, stale], trustedLiveContext(effective));
+
+    expect(decision.admission).toBe('ALLOW');
+    expect(decision.mutationAllowed).toBe(true);
+    expect(decision.selectedIntent?.intentId).toBe('effective');
+    expect(decision.rejectedIntents.map((item) => item.intentId)).toContain('stale');
+    expect(decision.reasons).toContain(
+      'rejected 1 intent(s) outside their effective lifecycle window',
     );
   });
 });
