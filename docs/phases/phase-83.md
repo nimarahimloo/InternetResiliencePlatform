@@ -20,7 +20,7 @@ Detect and deterministically resolve conflicts between multiple effective intent
 - Durable store: `src/intent/postgres-store.ts` (`PostgresIntentStore`)
 - API conflict listing: `apps/api/src/intent-api.ts` (conflict query surface)
 - Related migration: `packages/database/prisma/migrations/20260930103000_phase_274_intent_ownership`
-- Tests: `packages/resilience-runtime/tests/intent-arbitration.test.ts` (direct arbitrateIntents coverage), `packages/resilience-runtime/tests/intent-governance.test.ts` (arbitration paths), `apps/api/src/intent-api.test.ts` (API)
+- Tests: `packages/resilience-runtime/tests/intent-arbitration.test.ts` (direct arbitrateIntents coverage + conflict journal), `packages/resilience-runtime/tests/intent-governance.test.ts` (arbitration paths), `apps/api/src/intent-api.test.ts` (API)
 
 ## Scope
 
@@ -51,22 +51,22 @@ Detect and deterministically resolve conflicts between multiple effective intent
 
 Source presence is not completion. Phase 83 completion requires mapped paths, green tests/CI on a recorded SHA, and matrix update only from evidence regeneration.
 
-## Evidence map (baseline SHA `decd921`)
+## Evidence map (baseline SHA `decd921`, updated with journal retrieval)
 
 | Criterion | Location |
 |-----------|----------|
 | Arbitration | `packages/resilience-runtime/src/intent/arbitration.ts` |
-| Postgres store | `packages/resilience-runtime/src/intent/postgres-store.ts` |
+| Postgres store + listConflicts | `packages/resilience-runtime/src/intent/postgres-store.ts` |
 | API + ownership | `apps/api/src/intent-api.ts` (`IntentOwnership`, conflict query) |
 | API tests | `apps/api/src/intent-api.test.ts` |
-| Direct arbitration tests | `packages/resilience-runtime/tests/intent-arbitration.test.ts` |
+| Direct arbitration + journal tests | `packages/resilience-runtime/tests/intent-arbitration.test.ts` |
 | Governance integration | `packages/resilience-runtime/src/intent/governance.ts` + tests |
 | Ownership migration | `packages/database/prisma/migrations/20260930103000_phase_274_intent_ownership` |
 | Durable runtime decision (owner-linked) | `apps/api/src/decision-store.ts`, `packages/resilience-runtime/src/stores/mirrored-decision-store.ts`, migration `20261021000000_phase_274_runtime_decisions` |
 
 ## Known gaps (do not hide)
 
-- Full durable conflict-journal end-to-end certification under production load is part of release/integration evidence, not satisfied by unit tests alone.
+- Full durable conflict-journal end-to-end certification under production load and real process restart against live PostgreSQL is part of release/integration evidence, not satisfied by unit tests alone. `listConflicts` now enables retrieval after restart when a durable store is present.
 - PolicySnapshot pairwise resolution paths beyond intent-vs-intent may still be thin; expand only by extending the existing arbitration module.
 
 ## Rollback
