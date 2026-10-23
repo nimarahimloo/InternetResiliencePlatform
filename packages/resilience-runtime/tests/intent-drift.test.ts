@@ -57,7 +57,6 @@ describe('detectIntentDrift', () => {
     expect(Object.keys(result.observedDelta)).toHaveLength(0);
   });
 
-
   it('classifies substantial unknown-objective deviation symmetrically', () => {
     const intent = baseIntent({ objectives: { score: 0.95 } });
     const result = detectIntentDrift(intent, { score: 0.5 });
@@ -130,5 +129,20 @@ describe('detectIntentDrift', () => {
 
     expect(result.severity).toBe('medium');
     expect(result.recommendedAdmission).toBe('OBSERVE_ONLY');
+  });
+
+  it('ignores non-numeric observed values without false drift', () => {
+    const intent = baseIntent({ objectives: { reachability: 0.95, latency: 50 } });
+    const result = detectIntentDrift(intent, { reachability: 'high', latency: null, extra: 123 });
+    expect(result.severity).toBe('none');
+    expect(result.recommendedAdmission).toBe('ALLOW');
+    expect(Object.keys(result.observedDelta)).toHaveLength(0);
+  });
+
+  it('ignores missing objective keys in observed without error', () => {
+    const intent = baseIntent({ objectives: { reachability: 0.95 } });
+    const result = detectIntentDrift(intent, {});
+    expect(result.severity).toBe('none');
+    expect(result.recommendedAdmission).toBe('ALLOW');
   });
 });
