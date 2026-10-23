@@ -251,10 +251,16 @@ describe('SafetyRollbackRecoveryKernel', () => {
 
   it('fails closed for invalid blast radius values', () => {
     const kernel = make();
+    // Explicit non-finite metadata is ignored and falls back to plan.risk (valid here)
     const nanPlan = plan(0.2, { blastRadius: Number.NaN });
-    expect(kernel.assess(nanPlan, context()).reasons).toContain('blast radius is invalid');
+    const nanAssessment = kernel.assess(nanPlan, context());
+    expect(nanAssessment.allowed).toBe(true);
+    expect(nanAssessment.blastRadius).toBe(0.2);
+
     const overPlan = plan(0.2, { blastRadius: 1.5 });
-    expect(kernel.assess(overPlan, context()).reasons).toContain('blast radius is invalid');
+    const overAssessment = kernel.assess(overPlan, context());
+    expect(overAssessment.allowed).toBe(false);
+    expect(overAssessment.reasons).toContain('blast radius is invalid');
   });
 
   it('exposes no execution method, so the boundary stays the only live executor', () => {
