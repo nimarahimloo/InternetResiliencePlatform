@@ -61,3 +61,17 @@ Formalize bounded safety constraints and change-governance rules that every priv
 
 - Tracking: issue #14
 - External blockers remain in issue #4
+
+## Evidence map (strengthened 2026-10-23)
+
+| Criterion | Location |
+|-----------|----------|
+| Blast-radius rejection (default and configured) | `packages/resilience-runtime/src/safety/safety-kernel.ts` + `tests/safety-kernel.test.ts` (`blocks excessive blast radius`, `respects a configured lower maxBlastRadius`) |
+| Invalid blast radius fail-closed | `tests/safety-kernel.test.ts` (`fails closed on an invalid blast radius value`) |
+| Policy-result denial | `tests/safety-kernel.test.ts` (`rejects when policy result is not allowed`) |
+| Checkpoint / rollback callbacks | `tests/safety-kernel.test.ts` (checkpoint and rollback cases) |
+| No execution method on safety port | `tests/safety-kernel.test.ts` (`exposes no execution method`) |
+| Autonomy / admission matrix (ALLOW / DENY / REQUIRE_APPROVAL) | `packages/resilience-runtime/src/intent/governance.ts` + `tests/intent-governance.test.ts` |
+| Safety events and recovery | `src/safety/safety-kernel.ts` + recovery tests |
+
+Disposition remains PARTIAL pending exact-SHA CI evidence on this contract and matrix update from evidence only. No new mutation authority introduced.

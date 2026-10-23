@@ -236,3 +236,32 @@ describe('SafetyRollbackRecoveryKernel', () => {
     );
   });
 });
+
+  it('respects a configured lower maxBlastRadius and rejects at the boundary', () => {
+    const kernel = make({ maxBlastRadius: 0.4 });
+    const under = kernel.assess(plan(0.2, { blastRadius: 0.39 }), context());
+    expect(under.allowed).toBe(true);
+
+    const over = kernel.assess(plan(0.2, { blastRadius: 0.41 }), context());
+    expect(over.allowed).toBe(false);
+    expect(over.reasons.join('; ')).toContain('blast radius 0.41 exceeds limit 0.4');
+    expect(over.blastRadius).toBe(0.41);
+  });
+
+  it('fails closed on an invalid blast radius value', () => {
+    const kernel = make();
+    const assessment = kernel.assess(plan(0.2, { blastRadius: 1.5 }), context());
+    expect(assessment.allowed).toBe(false);
+    expect(assessment.reasons.join('; ')).toContain('blast radius');
+  });
+
+  it('rejects when policy result is not allowed', () => {
+    const kernel = make();
+    const deniedPlan = {
+      ...plan(),
+      policyResult: { allowed: false, reasons: ['policy denied'], requiredCapabilities: [] },
+    };
+    const assessment = kernel.assess(deniedPlan, context());
+    expect(assessment.allowed).toBe(false);
+    expect(assessment.reasons).toContain('plan policy result is not allowed');
+  });
