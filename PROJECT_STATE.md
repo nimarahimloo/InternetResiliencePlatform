@@ -5,7 +5,7 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on `main`.
-- **Current main HEAD (2026-10-22):** `c770436ea789ec7a8873ed2b3116230cfe720e53` (Phase 83 equal-version resolution fix merged via #89).
+- **Current main HEAD (2026-10-23):** `7a89c1286a5185c0e333da07af33997b1d789cee` (Phase 84 safety kernel regression merged via #92).
 - **Issue #12 progress:** Evidence register and phase-history matrix contain package/path/test anchors for Phases 1–38. Historical test-count TSV is not fresh per-phase CI evidence; all these phases remain PARTIAL pending acceptance-criterion review and current-SHA verification. Remaining Phase 39–78 mappings and exact-SHA verification still need reconciliation. Issue #12 remains open.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence). Additional fork trackers #4/#12/#13/#14 cover certification, evidence reconstruction and intent/policy gaps.
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -67,3 +67,14 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Verified merges: none this run
 - Blockers: exact-SHA CI for Phase 84 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
 - Next prioritized tasks: durable conflict journal restart tests for #13; Phase 85 drift assurance evidence.
+
+## Autonomous engineer checkpoint (2026-10-23 evening)
+
+- Starting base SHA: `7a89c1286a5185c0e333da07af33997b1d789cee`
+- Ending base SHA: (pending this PR)
+- Completed this run: mapped existing Phase 85 observe-only drift detector and intent-drift.test.ts coverage to the acceptance criteria. Updated phase-85 evidence map. No runtime changes.
+- Branches/PRs: phase/85-drift-evidence-map-20261023 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence for Phase 85 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 86 fabric contract evidence or implementation gaps.
