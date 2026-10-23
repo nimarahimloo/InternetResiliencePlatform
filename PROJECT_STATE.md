@@ -46,13 +46,13 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
 
-## Autonomous engineer checkpoint (2026-10-22)
+## Autonomous engineer checkpoint (2026-10-23)
 
-- Starting base SHA: `5c6839ca5a3fa0721390a8d5d8c7a301a084f9a7`
-- Ending base SHA: (pending this PR)
-- Completed this run: added mixed stale+effective intent regression test to intent-governance suite, confirming fail-closed rejection of stale intents while admitting an effective one. Updated Phase 83 contract evidence mapping.
-- Branches/PRs: (this PR)
+- Starting base SHA: `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f`
+- Ending base SHA: pending this PR merge
+- Completed this run: strengthened Phase 84 safety kernel regression tests with blast-radius boundary (exact 0.75 allowed, just-above blocked), simulation-only policy denial in live mode, and invalid risk fail-closed. No new mutation paths or authorities introduced.
+- Branches/PRs: phase/84-blast-radius-boundary-tests (this PR)
 - Actual CI: pending
 - Verified merges: none this run
-- Blockers: exact-SHA Release Gate evidence; Phase 84+ implementation; Linux client verification.
-- Next prioritized tasks: Phase 84 safety constraint evidence strengthening; durable conflict journal restart tests for #13.
+- Blockers: exact-SHA Release Gate evidence; Phase 85+ implementation; Linux client verification; durable conflict journal restart tests for #13.
+- Next prioritized tasks: merge Phase 84 evidence PR; Phase 85 intent assurance/drift strengthening; Linux runtime wiring for #254.
