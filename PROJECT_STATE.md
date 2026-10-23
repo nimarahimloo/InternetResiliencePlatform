@@ -5,7 +5,7 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on `main`.
-- **Current main HEAD (2026-10-22):** `c770436ea789ec7a8873ed2b3116230cfe720e53` (Phase 83 equal-version resolution fix merged via #89).
+- **Current main HEAD (2026-10-23):** `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f` (Phase 83 mixed stale+effective regression merged).
 - **Issue #12 progress:** Evidence register and phase-history matrix contain package/path/test anchors for Phases 1–38. Historical test-count TSV is not fresh per-phase CI evidence; all these phases remain PARTIAL pending acceptance-criterion review and current-SHA verification. Remaining Phase 39–78 mappings and exact-SHA verification still need reconciliation. Issue #12 remains open.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence). Additional fork trackers #4/#12/#13/#14 cover certification, evidence reconstruction and intent/policy gaps.
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -17,7 +17,7 @@
 - **Issue #13 progress:** acceptance contracts for Phases 79–83 are merged. Recent work addressed intent scope arbitration, conflict ownership, trusted live context/autonomy, owner-scoped runtime handoff, and e2e coverage. The runtime decision produced by the owner-scoped handoff is now persisted to PostgreSQL (`RuntimeDecisionRecord`, optional `decisionStore` on `ResilienceRuntime`, local in-memory authority retained, durable failure counted as degraded) and reloaded under its owner scope; this is verified against a real PostgreSQL in `apps/api/src/intent-api.postgres.integration.test.ts`. The legacy `/api/v1/autopilot/runs` and `/api/v1/autopilot/runs/:id` listing surfaces now use `DatabaseDecisionStore.listByOwner` when a durable store is present (falling back to the in-memory authority otherwise), so owner-scoped decision retrieval is available. A follow-up hardened this: every decision surface (`/autopilot/runs`, `/autopilot/runs/:id`, `/autopilot/actions`, `/runtime/decisions`, `/runtime/decisions/:id/explanation`) now resolves the same owner scope as the intent handoff (organization first, then principal), `POST /autopilot/runs` links its decision to the caller, and decision ids are unique across restarts (`nextUniqueId`; the process-local counter would reissue persisted ids after a restart and the durable insert would silently drop the new decision). Remaining gaps: exact-SHA CI evidence for this path and broader stale compiled-intent fail-closed evidence. In-memory or mocked-only evidence is insufficient; keep Issue #13 open.
 - **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Exact-SHA Release Gate evidence must be verified before any stronger release claim. On prior SHA the Release Gate was FAIL/BLOCKED pending Public Runtime Lab; re-verify on current HEAD.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–82, but it must not be represented as certified until its evidence exists.
-- **Phases 83–150:** contracts for 79–92 exist; Phase 93 contract formalized on fork. Implementation for 83+ remains partial or not started. No new runtime authority introduced. ResilienceRuntime remains the sole production mutation authority.
+- **Phases 83–150:** contracts for 79–92 exist; Phase 93 contract formalized on fork. Implementation for 83+ remains partial or not started. Phase 84 evidence mapping added (still PARTIAL). No new runtime authority introduced. ResilienceRuntime remains the sole production mutation authority.
 
 ## Phase 79–82 summary
 
@@ -46,13 +46,13 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
 
-## Autonomous engineer checkpoint (2026-10-22)
+## Autonomous engineer checkpoint (2026-10-23)
 
-- Starting base SHA: `5c6839ca5a3fa0721390a8d5d8c7a301a084f9a7`
+- Starting base SHA: `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f`
 - Ending base SHA: (pending this PR)
-- Completed this run: added mixed stale+effective intent regression test to intent-governance suite, confirming fail-closed rejection of stale intents while admitting an effective one. Updated Phase 83 contract evidence mapping.
-- Branches/PRs: (this PR)
+- Completed this run: mapped Phase 84 acceptance criteria to existing safety-kernel and intent-governance tests. Added explicit evidence table in phase-84.md. No runtime change.
+- Branches/PRs: phase/84-safety-constraints-evidence-20261023 (this PR)
 - Actual CI: pending
 - Verified merges: none this run
-- Blockers: exact-SHA Release Gate evidence; Phase 84+ implementation; Linux client verification.
-- Next prioritized tasks: Phase 84 safety constraint evidence strengthening; durable conflict journal restart tests for #13.
+- Blockers: exact-SHA Release Gate evidence; durable conflict-journal restart coverage for #13; Linux client verification; Phase 85+ implementation.
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 85 intent assurance evidence; continue Phase 84 CI evidence recording after green.

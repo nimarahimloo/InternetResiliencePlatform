@@ -52,6 +52,19 @@ Formalize bounded safety constraints and change-governance rules that every priv
 - Architecture guards that forbid a second control-plane authority.
 - Explicit non-claim of production certification or device behavioral evidence.
 
+## Evidence map (baseline SHA `e09a558`)
+
+| Criterion | Location | Notes |
+|-----------|----------|-------|
+| 1. Blast-radius rejection | `packages/resilience-runtime/tests/safety-kernel.test.ts` (`blocks excessive blast radius`) | Explicit metadata blastRadius > max; assessment.allowed false + reason |
+| 2. Checkpoint / rollback | same file (`captures a checkpoint...`, `rolls back a checkpoint...`) | Callbacks invoked; ActionExecution returned; noop skips checkpoint |
+| 3. Admission / autonomy | `packages/resilience-runtime/tests/intent-governance.test.ts` (`requires approval for advisory autonomy`, `bounds safe automation risk...`) | REQUIRE_APPROVAL, DENY, mutationAllowed false on thresholds |
+| 4. Unit coverage | both suites above | Blast radius, checkpoint/rollback, admission matrix present |
+| 5. No bypass execute | `safety-kernel.test.ts` (`exposes no execution method...`) | Prototype has no execute; architecture invariants test guards parallel authority |
+| Safety events / recovery | `safety-kernel.test.ts` (`delegates verification recovery...`, `stamps the mutation transaction identity...`) | Structured events emitted; recovery delegated |
+
+Disposition remains PARTIAL pending exact-SHA CI green evidence and matrix regeneration. No production certification claimed.
+
 ## Rollback considerations
 
 - Contract is documentation only; no runtime behavior change.
