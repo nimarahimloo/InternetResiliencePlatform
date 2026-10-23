@@ -60,3 +60,17 @@ Provide a single, canonical connectivity fabric that normalizes devices, interfa
 
 - Tracking: issue #14
 - External blockers remain in issue #4
+
+## Evidence map (current main SHA 216b26ffa67a00da7c106552bac02052edf0eaff)
+
+| Criterion | Location |
+|-----------|----------|
+| Canonical model (`FabricResource`, kinds, states) | `packages/resilience-runtime/src/fabric.ts` |
+| State transition assertions (fail-closed) | `packages/resilience-runtime/src/fabric-lifecycle.ts` (`assertFabricStateTransition`) |
+| Freshness evaluation & partition | `packages/resilience-runtime/src/fabric-lifecycle.ts` (`evaluateFabricFreshness`, `partitionByFreshness`) |
+| Diverse selection | `packages/resilience-runtime/src/fabric-lifecycle.ts` (`selectDiverseResources`) |
+| Capability authority | `packages/resilience-runtime/src/fabric-authority.ts` (`FabricCapabilityAuthority`) |
+| Discovery, selection, ownership | `packages/resilience-runtime/src/fabric.ts` (`ProgrammableConnectivityFabric`) |
+| Tests | `packages/resilience-runtime/tests/fabric*.test.ts` |
+
+Disposition remains PARTIAL pending exact-SHA CI evidence for the fabric test suite. No new runtime authority introduced.

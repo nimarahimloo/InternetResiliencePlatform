@@ -78,3 +78,14 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Verified merges: none this run
 - Blockers: exact-SHA CI evidence for Phase 85 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
 - Next prioritized tasks: durable conflict journal restart tests for #13; Phase 86 fabric contract evidence or implementation gaps.
+
+## Autonomous engineer checkpoint (2026-10-24)
+
+- Starting base SHA: `216b26ffa67a00da7c106552bac02052edf0eaff`
+- Ending base SHA: (pending this PR)
+- Completed this run: mapped existing Phase 86 Unified Connectivity Fabric implementation (`ProgrammableConnectivityFabric`, lifecycle, authority) in `@irp/resilience-runtime` to the phase acceptance criteria. Updated phase-86.md evidence map. No runtime changes.
+- Branches/PRs: phase/86-fabric-evidence-map-20261024 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence for fabric tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 87 multi-interface intelligence evidence or gaps.
