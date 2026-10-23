@@ -5,14 +5,15 @@ export function verifyPreviewPublication({ image, sourceSha, tags }) {
   if (!/^[a-f0-9]{40}$/.test(sourceSha ?? '')) {
     throw new Error('An exact full source commit SHA is required.');
   }
-  if (!/^ghcr\.io\/[a-z0-9_.-]+\/[a-z0-9_.-]+$/.test(image ?? '')) {
+  const normalizedImage = (image ?? '').toLowerCase();
+  if (!/^ghcr\.io\/[a-z0-9_.-]+\/[a-z0-9_.-]+$/.test(normalizedImage)) {
     throw new Error('A lowercase GitHub Container Registry image is required.');
   }
   const published = (tags ?? '')
     .split('\n')
     .map((tag) => tag.trim())
     .filter(Boolean);
-  const expected = `${image}:sha-${sourceSha.slice(0, 7)}`;
+  const expected = `${normalizedImage}:sha-${sourceSha.slice(0, 7)}`;
   if (published.length !== 1 || published[0] !== expected) {
     throw new Error(
       `Only developer-preview tag ${expected} is allowed. ` +
