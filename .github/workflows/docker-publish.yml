@@ -102,7 +102,11 @@ jobs:
             org.opencontainers.image.revision=${{ steps.source.outputs.sha }}
 
       - name: Enforce developer-preview tag policy
-        run: node scripts/docker-publication-policy.mjs ${{ steps.meta.outputs.tags }}
+        env:
+          IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SOURCE_SHA: ${{ steps.source.outputs.sha }}
+          TAGS: ${{ steps.meta.outputs.tags }}
+        run: node scripts/docker-publication-policy.mjs
 
       - name: Build and push Docker image
         id: build
