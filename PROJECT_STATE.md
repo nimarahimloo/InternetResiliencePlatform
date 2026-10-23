@@ -67,3 +67,14 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Verified merges: none this run
 - Blockers: exact-SHA CI for Phase 84 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
 - Next prioritized tasks: durable conflict journal restart tests for #13; Phase 85 drift assurance evidence.
+
+## Autonomous engineer checkpoint (2026-10-23b)
+
+- Starting base SHA: `7a89c1286a5185c0e333da07af33997b1d789cee`
+- Ending base SHA: (pending this PR)
+- Completed this run: added `listConflicts` to `PostgresIntentStore` and a regression test that records arbitration conflicts on one store instance then reads them back from a second instance (simulated process restart). This supplies durable conflict-journal restart evidence for issue #13.
+- Branches/PRs: phase/13-durable-conflict-journal-restart-20261023 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence; remaining Phase 85+ implementation and Linux runtime soak.
+- Next prioritized tasks: Phase 85 drift assurance evidence strengthening; exact-SHA CI for conflict journal.

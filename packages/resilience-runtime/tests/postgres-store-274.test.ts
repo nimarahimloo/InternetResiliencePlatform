@@ -95,6 +95,52 @@ describe('PostgresIntentStore (Phase 2: Persistence)', () => {
     );
   });
 
+  it('lists recorded conflicts after simulated process restart', async () => {
+    // First store records a conflict
+    mockPool.query.mockResolvedValueOnce({ rows: [] });
+    await store.recordConflicts([
+      {
+        intentA: { intentId: 'intent-A' },
+        intentB: { intentId: 'intent-B' },
+        reason: 'overlapping scopes',
+        resolution: 'supersede-b',
+      } as never,
+    ]);
+
+    // Simulate process restart: new store instance against the same durable store
+    const restarted = new PostgresIntentStore({
+      host: 'localhost',
+      port: 5432,
+      database: 'test',
+      user: 'test',
+      password: 'test',
+    });
+    restarted['pool'] = mockPool;
+
+    // Mock the SELECT that listConflicts issues
+    mockPool.query.mockResolvedValueOnce({
+      rows: [
+        {
+          intent_a_id: 'intent-A',
+          intent_b_id: 'intent-B',
+          reason: 'overlapping scopes',
+          resolution: 'supersede-b',
+        },
+      ],
+    });
+
+    const listed = await restarted.listConflicts();
+    expect(listed).toHaveLength(1);
+    expect(listed[0]).toMatchObject({
+      intentA: { intentId: 'intent-A' },
+      intentB: { intentId: 'intent-B' },
+      reason: 'overlapping scopes',
+      resolution: 'supersede-b',
+    });
+
+    await restarted.close();
+  });
+
   it('upserts intent with correct fields', async () => {
     const now = new Date();
     const draftIntent = createNetworkIntent({

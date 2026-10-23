@@ -109,6 +109,13 @@ const DELETE_SQL = `
 DELETE FROM intents WHERE intent_id = $1
 `;
 
+const LIST_CONFLICTS_SQL = `
+SELECT intent_a_id, intent_b_id, reason, resolution
+FROM intent_conflicts
+ORDER BY recorded_at DESC
+LIMIT $1
+`;
+
 export class PostgresIntentStore implements IntentStore {
   private pool: unknown;
 
@@ -221,6 +228,25 @@ export class PostgresIntentStore implements IntentStore {
         ],
       );
     }
+  }
+
+  /**
+   * Lists recorded arbitration conflicts from the durable journal.
+   * Returns minimal IntentConflict shapes (intent stubs) sufficient for
+   * restart evidence and audit. Full intent objects are not reconstructed
+   * because the journal stores only identity and resolution.
+   */
+  async listConflicts(limit = 100): Promise<readonly IntentConflict[]> {
+    const pool = this.pool as pg.Pool;
+    const result = await pool.query(LIST_CONFLICTS_SQL, [limit]);
+    return Object.freeze(
+      result.rows.map((row) => ({
+        intentA: { intentId: row.intent_a_id } as CompiledIntent,
+        intentB: { intentId: row.intent_b_id } as CompiledIntent,
+        reason: row.reason as string,
+        resolution: row.resolution as IntentConflict['resolution'],
+      })),
+    );
   }
 
   async close(): Promise<void> {
