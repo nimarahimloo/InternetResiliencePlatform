@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized (issue #14).** Maps the existing connectivity fabric already present in `@irp/resilience-runtime` (`src/fabric.ts`, `src/fabric-authority.ts`, `src/fabric-lifecycle.ts`) and supporting connectivity packages. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Net-new fabric capabilities beyond the mapped surface remain unauthorized until this contract is accepted and PROJECT_STATE is updated.
+**Contract formalized (issue #14).** Maps the existing connectivity fabric already present in `@irp/resilience-runtime` (`src/fabric.ts`, `src/fabric-authority.ts`, `src/fabric-lifecycle.ts`) and supporting connectivity packages. Disposition remains **PARTIAL** until exact-SHA CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Net-new fabric capabilities beyond the mapped surface remain unauthorized until this contract is accepted and PROJECT_STATE is updated.
 
 ## Objective
 
@@ -18,7 +18,7 @@ Provide a single, canonical connectivity fabric that normalizes devices, interfa
 
 - `@irp/resilience-runtime` — `src/fabric.ts` (`FabricResource`, `FABRIC_RESOURCE_KINDS`, resource state machine), `src/fabric-authority.ts` (`FabricCapabilityAuthority`), `src/fabric-lifecycle.ts` (freshness, diverse selection, state transitions)
 - Supporting: `@irp/connectivity`, `@irp/gateway-registry`, `@irp/network`
-- Tests: `packages/resilience-runtime/tests/fabric*.test.ts`
+- Tests: `packages/resilience-runtime/tests/fabric.test.ts`, `fabric-275.test.ts`, `fabric-production-wiring.test.ts`
 
 ## Scope
 
@@ -43,6 +43,17 @@ Provide a single, canonical connectivity fabric that normalizes devices, interfa
 4. Capability authority rejects unauthorized or incompatible resources before selection.
 5. Package tests covering resource lifecycle, freshness, authority and selection pass in the owning package.
 6. Architecture guards continue to treat `ResilienceRuntime` as the sole production control-plane authority.
+
+## Evidence map (baseline SHA `216b26ffa67a00da7c106552bac02052edf0eaff`)
+
+| Criterion | Location |
+|-----------|----------|
+| Canonical FabricResource / kinds / states | `packages/resilience-runtime/src/fabric.ts` |
+| State transition assertions | `packages/resilience-runtime/src/fabric-lifecycle.ts` + `fabric.test.ts` |
+| Freshness + diverse selection | `fabric-lifecycle.ts`, `fabric.ts` (`select`, `pruneExpired`), `fabric-275.test.ts` |
+| Capability authority | `fabric-authority.ts`, `fabric.ts` (`select` capability checks), `fabric-275.test.ts` |
+| Package tests | `packages/resilience-runtime/tests/fabric.test.ts`, `fabric-275.test.ts`, `fabric-production-wiring.test.ts` |
+| Architecture guards | `packages/resilience-runtime/tests/architecture-invariants.test.ts` |
 
 ## Verification boundary
 
