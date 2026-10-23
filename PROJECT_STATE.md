@@ -45,3 +45,14 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - ResilienceRuntime remains the canonical runtime authority.
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
+
+## Autonomous engineer checkpoint (2026-10-23 Phase 84)
+
+- Starting base SHA: `d4fd35f078ba8f2bfec19459a82742cf2f02f9b8`
+- Ending base SHA: (pending this PR)
+- Completed this run: strengthened Phase 84 safety-kernel regression coverage on upstream baseline with configurable maxBlastRadius boundary rejection, invalid plan risk fail-closed, and missing required-capability denial. Updated Phase 84 evidence map.
+- Branches/PRs: phase/84-safety-kernel-regression-upstream (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence for the strengthened tests; durable conflict-journal e2e for Phase 83; Linux runtime soak (#323).
+- Next prioritized tasks: verify CI on this PR; Phase 85 drift assurance evidence; continue Phase 84+ governance completeness.

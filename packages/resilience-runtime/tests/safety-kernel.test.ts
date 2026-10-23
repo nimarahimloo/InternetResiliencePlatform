@@ -236,3 +236,38 @@ describe('SafetyRollbackRecoveryKernel', () => {
     );
   });
 });
+
+  it('honors a configured maxBlastRadius below the default and rejects at the boundary', () => {
+    const kernel = make({ maxBlastRadius: 0.4 });
+    const under = kernel.assess(plan(0.3), context());
+    expect(under.allowed).toBe(true);
+    const over = kernel.assess(plan(0.5), context());
+    expect(over.allowed).toBe(false);
+    expect(over.reasons).toContain('blast radius 0.5 exceeds limit 0.4');
+  });
+
+  it('fails closed on invalid plan risk', () => {
+    const kernel = make();
+    const invalid = kernel.assess({ ...plan(), risk: NaN }, context());
+    expect(invalid.allowed).toBe(false);
+    expect(invalid.reasons).toContain('plan risk is invalid');
+    const negative = kernel.assess({ ...plan(), risk: -0.1 }, context());
+    expect(negative.allowed).toBe(false);
+    expect(negative.reasons).toContain('plan risk is invalid');
+  });
+
+  it('rejects a mutating plan missing a required capability', () => {
+    const kernel = make();
+    const missing = {
+      ...plan(),
+      selectedAction: {
+        ...plan().selectedAction,
+        requiredCapabilities: ['route.write', 'dns.write'],
+      },
+    };
+    const assessment = kernel.assess(missing, context());
+    expect(assessment.allowed).toBe(false);
+    expect(assessment.reasons).toContain(
+      'required capability is not present in the trusted capability snapshot',
+    );
+  });

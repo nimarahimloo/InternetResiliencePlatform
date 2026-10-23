@@ -61,3 +61,16 @@ Formalize bounded safety constraints and change-governance rules that every priv
 
 - Tracking: issue #14
 - External blockers remain in issue #4
+
+## Evidence map (strengthened 2026-10-23)
+
+| Criterion | Location |
+|-----------|----------|
+| Blast-radius rejection (default and configurable max) | `packages/resilience-runtime/tests/safety-kernel.test.ts` (blocks excessive, honors configured maxBlastRadius) |
+| Invalid risk fail-closed | same test file (fails closed on invalid plan risk) |
+| Missing required capability denial | same test file (rejects mutating plan missing capability) |
+| Checkpoint / rollback / recovery | same test file + `src/safety/safety-kernel.ts` |
+| No execution method on safety port | same test file (exposes no execution method) |
+| Intent governance admission | `packages/resilience-runtime/tests/intent-governance.test.ts` |
+
+Disposition remains PARTIAL pending exact-SHA CI evidence on the owning package tests.
