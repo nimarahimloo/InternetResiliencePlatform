@@ -131,6 +131,21 @@ describe('SafetyRollbackRecoveryKernel', () => {
     expect(assessment.blastRadius).toBe(0.9);
   });
 
+  it('allows blast radius exactly at the default maximum of 0.75', () => {
+    const kernel = make();
+    const assessment = kernel.assess(plan(0.2, { blastRadius: 0.75 }), context());
+    expect(assessment.allowed).toBe(true);
+    expect(assessment.reasons).toEqual([]);
+    expect(assessment.blastRadius).toBe(0.75);
+  });
+
+  it('blocks blast radius just above the default maximum', () => {
+    const kernel = make();
+    const assessment = kernel.assess(plan(0.2, { blastRadius: 0.7501 }), context());
+    expect(assessment.allowed).toBe(false);
+    expect(assessment.reasons.join('; ')).toContain('blast radius');
+  });
+
   it('fails closed for expired context', () => {
     const kernel = make();
     const c = { ...context(), deadline: '2000-01-01T00:00:00.000Z' };
@@ -153,6 +168,23 @@ describe('SafetyRollbackRecoveryKernel', () => {
     });
     expect(assessment.allowed).toBe(false);
     expect(assessment.reasons).toContain('trusted authorization is required for mutation');
+  });
+
+  it('fails closed for simulation-only policy in live mode', () => {
+    const kernel = make();
+    const assessment = kernel.assess(plan(), {
+      ...context(),
+      mode: 'live',
+    });
+    expect(assessment.allowed).toBe(false);
+    expect(assessment.reasons).toContain('policy is simulation-only');
+  });
+
+  it('fails closed for invalid plan risk', () => {
+    const kernel = make();
+    const assessment = kernel.assess(plan(NaN), context());
+    expect(assessment.allowed).toBe(false);
+    expect(assessment.reasons).toContain('plan risk is invalid');
   });
 
   it('allows a bounded, trusted, permitted plan', () => {
