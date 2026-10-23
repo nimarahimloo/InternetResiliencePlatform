@@ -4,6 +4,17 @@
 
 **Contract formalized and observe-only drift detector implemented (issue #14).** `detectIntentDrift` reuses `isCompiledIntentEffective` and returns structured, non-mutating results. The `BoundedClosedLoopController` collects one observe-only assessment per cycle when `driftInputs` are supplied; results never invoke privileged mutation and must be re-admitted through governance. Full continuous correction remains out of scope. Disposition remains **PARTIAL** pending CI evidence on the implementing SHA.
 
+
+## Evidence map (SHA `7a89c1286a5185c0e333da07af33997b1d789cee`)
+
+| Criterion | Location |
+|-----------|----------|
+| Effective-window / expired classification | `packages/resilience-runtime/tests/intent-drift.test.ts` (`classifies expired intents...`) |
+| Structured drift result (identity, delta, severity, admission) | same suite (`reports high drift when higher-is-better...`, `reports high drift when lower-is-better...`) |
+| No direct mutation (OBSERVE_ONLY / ALLOW) | same suite and `src/intent/drift.ts` (returns recommendedAdmission, never mutates) |
+| Synthetic drift scenarios + unknown metric symmetry | same suite (higher/lower/unknown cases, moderate/high severity) |
+| Architecture guards | existing architecture-invariants and closed-loop tests |
+
 ## Objective
 
 Define the contract for continuously assuring that observed network state remains within the bounds of effective intents and for detecting and reporting drift. Assurance is observational and advisory by default; any corrective action must still pass the safety kernel, intent governance, and privileged mutation boundary.
