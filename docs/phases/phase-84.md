@@ -45,7 +45,17 @@ Formalize bounded safety constraints and change-governance rules that every priv
 4. Unit tests covering blast-radius rejection, successful checkpoint/rollback, and admission matrix (ALLOW / DENY / REQUIRE_APPROVAL) pass in the owning package.
 5. No new mutation path is introduced that bypasses the safety kernel or intent governance.
 
-## Verification boundary
+## Evidence map (current main)
+
+| Criterion | Location |
+|-----------|----------|
+| Blast-radius assessment & rejection | `packages/resilience-runtime/src/safety/safety-kernel.ts` (`assess`) + `tests/safety-kernel.test.ts` |
+| Checkpoint / rollback ports | same kernel + tests for createCheckpoint / rollbackCheckpoint |
+| Intent admission / autonomy gates | `packages/resilience-runtime/src/intent/governance.ts` + `tests/intent-governance.test.ts` |
+| No-execute invariant | safety-kernel.test.ts ("exposes no execution method") |
+| Additional fail-closed cases (capability, simulation-only, invalid radius) | tests/safety-kernel.test.ts |
+
+Disposition remains PARTIAL pending fresh exact-SHA CI evidence on the implementing commit and phase-matrix regeneration.
 
 - Local package tests for `@irp/resilience-runtime`.
 - CI workflows that already execute the resilience-runtime test suite (CI, Runtime Lab).

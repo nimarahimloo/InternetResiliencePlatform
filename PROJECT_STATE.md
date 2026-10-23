@@ -5,7 +5,7 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on `main`.
-- **Current main HEAD (2026-10-22):** `c770436ea789ec7a8873ed2b3116230cfe720e53` (Phase 83 equal-version resolution fix merged via #89).
+- **Current main HEAD (2026-10-22):** `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f` (mixed stale+effective governance regression for Phase 83).
 - **Issue #12 progress:** Evidence register and phase-history matrix contain package/path/test anchors for Phases 1–38. Historical test-count TSV is not fresh per-phase CI evidence; all these phases remain PARTIAL pending acceptance-criterion review and current-SHA verification. Remaining Phase 39–78 mappings and exact-SHA verification still need reconciliation. Issue #12 remains open.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence). Additional fork trackers #4/#12/#13/#14 cover certification, evidence reconstruction and intent/policy gaps.
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -48,21 +48,11 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 
 ## Autonomous engineer checkpoint (2026-10-22)
 
-- Starting base SHA: `5c6839ca5a3fa0721390a8d5d8c7a301a084f9a7`
-- Ending base SHA: (pending this PR)
-- Completed this run: added mixed stale+effective intent regression test to intent-governance suite, confirming fail-closed rejection of stale intents while admitting an effective one. Updated Phase 83 contract evidence mapping.
-- Branches/PRs: (this PR)
-- Actual CI: pending
-- Verified merges: none this run
-- Blockers: exact-SHA Release Gate evidence; Phase 84+ implementation; Linux client verification.
-- Next prioritized tasks: Phase 84 safety constraint evidence strengthening; durable conflict journal restart tests for #13.
-
-## Autonomous engineer checkpoint (2026-10-23)
-
 - Starting base SHA: `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f`
-- Completed this run: strengthened Phase 84 safety constraint evidence with additional regression tests (configurable maxBlastRadius boundary, invalid blast radius fail-closed, policy-result denial). Updated Phase 84 contract evidence map.
+- Ending base SHA: (pending this PR)
+- Completed this run: strengthened Phase 84 safety-constraint evidence with additional fail-closed regressions (missing capability, simulation-only live mutation, invalid blast-radius values). Added explicit evidence map to `docs/phases/phase-84.md`.
 - Branches/PRs: phase/84-safety-evidence-strengthening (this PR)
-- Actual CI: pending on PR
+- Actual CI: pending
 - Verified merges: none this run
 - Blockers: exact-SHA Release Gate evidence; durable conflict journal restart tests under real Postgres for #13; Phase 85+ implementation.
 - Next prioritized tasks: durable conflict journal process-restart coverage for issue #13; Phase 85 intent assurance/drift evidence; Linux client runtime verification.

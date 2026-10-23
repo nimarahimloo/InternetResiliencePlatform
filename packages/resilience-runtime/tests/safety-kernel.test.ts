@@ -228,6 +228,35 @@ describe('SafetyRollbackRecoveryKernel', () => {
     }
   });
 
+  it('fails closed when required capability is missing from the snapshot', () => {
+    const kernel = make();
+    const c = {
+      ...context(),
+      capabilitySnapshot: { ...context().capabilitySnapshot, capabilities: [] },
+    };
+    const assessment = kernel.assess(plan(), c);
+    expect(assessment.allowed).toBe(false);
+    expect(assessment.reasons).toContain(
+      'required capability is not present in the trusted capability snapshot',
+    );
+  });
+
+  it('fails closed for simulation-only policy when mode is live and action mutates', () => {
+    const kernel = make();
+    const c = { ...context(), mode: 'live' as const };
+    const assessment = kernel.assess(plan(), c);
+    expect(assessment.allowed).toBe(false);
+    expect(assessment.reasons).toContain('policy is simulation-only');
+  });
+
+  it('fails closed for invalid blast radius values', () => {
+    const kernel = make();
+    const nanPlan = plan(0.2, { blastRadius: Number.NaN });
+    expect(kernel.assess(nanPlan, context()).reasons).toContain('blast radius is invalid');
+    const overPlan = plan(0.2, { blastRadius: 1.5 });
+    expect(kernel.assess(overPlan, context()).reasons).toContain('blast radius is invalid');
+  });
+
   it('exposes no execution method, so the boundary stays the only live executor', () => {
     const kernel = make();
     expect((kernel as unknown as Record<string, unknown>).execute).toBeUndefined();
@@ -235,7 +264,6 @@ describe('SafetyRollbackRecoveryKernel', () => {
       'execute',
     );
   });
-});
 
   it('respects a configured lower maxBlastRadius and rejects at the boundary', () => {
     const kernel = make({ maxBlastRadius: 0.4 });
@@ -248,13 +276,6 @@ describe('SafetyRollbackRecoveryKernel', () => {
     expect(over.blastRadius).toBe(0.41);
   });
 
-  it('fails closed on an invalid blast radius value', () => {
-    const kernel = make();
-    const assessment = kernel.assess(plan(0.2, { blastRadius: 1.5 }), context());
-    expect(assessment.allowed).toBe(false);
-    expect(assessment.reasons.join('; ')).toContain('blast radius');
-  });
-
   it('rejects when policy result is not allowed', () => {
     const kernel = make();
     const deniedPlan = {
@@ -265,3 +286,4 @@ describe('SafetyRollbackRecoveryKernel', () => {
     expect(assessment.allowed).toBe(false);
     expect(assessment.reasons).toContain('plan policy result is not allowed');
   });
+});
