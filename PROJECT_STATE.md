@@ -56,3 +56,14 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Verified merges: none this run
 - Blockers: exact-SHA Release Gate evidence; Phase 84+ implementation; Linux client verification.
 - Next prioritized tasks: Phase 84 safety constraint evidence strengthening; durable conflict journal restart tests for #13.
+
+## Autonomous engineer checkpoint (2026-10-23)
+
+- Starting base SHA: `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f`
+- Ending base SHA: (pending this PR)
+- Completed this run: strengthened Phase 84 safety-kernel regression coverage with configurable maxBlastRadius, invalid risk fail-closed, and missing required-capability denial tests. Updated Phase 84 evidence map.
+- Branches/PRs: phase/84-safety-kernel-regression-20261023 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI for Phase 84 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 85 drift assurance evidence.
