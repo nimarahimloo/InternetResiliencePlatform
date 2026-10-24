@@ -46,7 +46,7 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
 
-## Autonomous engineer checkpoint (2026-10-24)
+## Autonomous engineer checkpoint (2026-10-24 evening)
 
 - Starting base SHA: d4fd35f078ba8f2bfec19459a82742cf2f02f9b8 (upstream/main)
 - Ending base SHA: (pending this PR)
@@ -56,3 +56,14 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Verified merges: none this run
 - Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
 - Next prioritized tasks: durable conflict journal restart tests; Phase 87 multi-interface evidence or gaps; continue roadmap to Phase 150.
+
+## Autonomous engineer checkpoint (2026-10-24 late)
+
+- Starting base SHA: 216b26ffa67a00da7c106552bac02052edf0eaff (fork/main) merged with upstream 80ee01f7d8f2dc1d087e844881d91799af9e41a5
+- Ending base SHA: pending this PR
+- Completed this run: synced fork to upstream (Phase 86 evidence included), added PostgresIntentStore restart recovery regression that verifies getActive returns previously persisted intents after a new store instance and confirms conflict journal INSERT was issued. No runtime authority changes.
+- Branches/PRs: phase/83-durable-journal-restart-evidence (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence on current head; Linux runtime soak (#254/#323).
+- Next prioritized tasks: Phase 87 multi-interface evidence mapping or gaps; continue to Phase 150 acceptance.
