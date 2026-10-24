@@ -5,7 +5,7 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 82 — Policy Decision & Enforcement Engine (intent-scoped) is implemented on `main`.
-- **Current main HEAD (2026-10-23):** `7a89c1286a5185c0e333da07af33997b1d789cee` (Phase 84 safety kernel regression merged via #92).
+- **Current main HEAD (2026-10-24):** `216b26ffa67a00da7c106552bac02052edf0eaff` (Phase 85 drift evidence map merged).
 - **Issue #12 progress:** Evidence register and phase-history matrix contain package/path/test anchors for Phases 1–38. Historical test-count TSV is not fresh per-phase CI evidence; all these phases remain PARTIAL pending acceptance-criterion review and current-SHA verification. Remaining Phase 39–78 mappings and exact-SHA verification still need reconciliation. Issue #12 remains open.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence). Additional fork trackers #4/#12/#13/#14 cover certification, evidence reconstruction and intent/policy gaps.
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -49,32 +49,43 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 ## Autonomous engineer checkpoint (2026-10-22)
 
 - Starting base SHA: `5c6839ca5a3fa0721390a8d5d8c7a301a084f9a7`
-- Ending base SHA: (pending this PR)
+- Ending base SHA: `c770436ea789ec7a8873ed2b3116230cfe720e53` (merged)
 - Completed this run: added mixed stale+effective intent regression test to intent-governance suite, confirming fail-closed rejection of stale intents while admitting an effective one. Updated Phase 83 contract evidence mapping.
-- Branches/PRs: (this PR)
-- Actual CI: pending
-- Verified merges: none this run
+- Branches/PRs: PR #91
+- Actual CI: passed on merge
+- Verified merges: PR #91
 - Blockers: exact-SHA Release Gate evidence; Phase 84+ implementation; Linux client verification.
 - Next prioritized tasks: Phase 84 safety constraint evidence strengthening; durable conflict journal restart tests for #13.
 
 ## Autonomous engineer checkpoint (2026-10-23)
 
 - Starting base SHA: `e09a558ddc8e10d3c9448f027b2b5a38d3f8b75f`
-- Ending base SHA: (pending this PR)
+- Ending base SHA: `7a89c1286a5185c0e333da07af33997b1d789cee` (merged)
 - Completed this run: strengthened Phase 84 safety-kernel regression coverage with configurable maxBlastRadius, invalid risk fail-closed, and missing required-capability denial tests. Updated Phase 84 evidence map.
-- Branches/PRs: phase/84-safety-kernel-regression-20261023 (this PR)
-- Actual CI: pending
-- Verified merges: none this run
+- Branches/PRs: PR #92
+- Actual CI: passed on merge
+- Verified merges: PR #92
 - Blockers: exact-SHA CI for Phase 84 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
 - Next prioritized tasks: durable conflict journal restart tests for #13; Phase 85 drift assurance evidence.
 
 ## Autonomous engineer checkpoint (2026-10-23 evening)
 
 - Starting base SHA: `7a89c1286a5185c0e333da07af33997b1d789cee`
-- Ending base SHA: (pending this PR)
+- Ending base SHA: `216b26ffa67a00da7c106552bac02052edf0eaff` (merged)
 - Completed this run: mapped existing Phase 85 observe-only drift detector and intent-drift.test.ts coverage to the acceptance criteria. Updated phase-85 evidence map. No runtime changes.
-- Branches/PRs: phase/85-drift-evidence-map-20261023 (this PR)
-- Actual CI: pending
-- Verified merges: none this run
+- Branches/PRs: PR #94
+- Actual CI: passed on merge
+- Verified merges: PR #94
 - Blockers: exact-SHA CI evidence for Phase 85 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
 - Next prioritized tasks: durable conflict journal restart tests for #13; Phase 86 fabric contract evidence or implementation gaps.
+
+## Autonomous engineer checkpoint (2026-10-24)
+
+- Starting base SHA: `216b26ffa67a00da7c106552bac02052edf0eaff`
+- Ending base SHA: (pending this PR)
+- Completed this run: mapped existing Phase 86 unified connectivity fabric (fabric.ts, fabric-lifecycle, fabric-authority) and fabric*.test.ts coverage to the acceptance criteria. Updated phase-86 evidence map. No runtime changes.
+- Branches/PRs: docs/phase-86-fabric-evidence-20261024 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence for Phase 86 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 87 multi-path or next fabric gaps.
