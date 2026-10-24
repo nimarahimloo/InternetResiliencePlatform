@@ -130,7 +130,6 @@ describe('arbitrateIntents — Phase 83 Policy Conflict Resolution', () => {
     expect(conflicts).toHaveLength(0);
   });
 
-
   it('resolves same-priority same-version by recency (more recent supersedes)', () => {
     const older = makeIntent({
       intentId: 'older',
@@ -159,6 +158,7 @@ describe('arbitrateIntents — Phase 83 Policy Conflict Resolution', () => {
       resolution: 'supersede-b',
     });
   });
+
   it('returns empty results for no intents', () => {
     const { ordered, conflicts } = arbitrateIntents([], now);
     expect(ordered).toHaveLength(0);
