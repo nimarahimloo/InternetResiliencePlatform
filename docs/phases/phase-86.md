@@ -2,7 +2,20 @@
 
 ## Status
 
-**Contract formalized (issue #14).** Maps the existing connectivity fabric already present in `@irp/resilience-runtime` (`src/fabric.ts`, `src/fabric-authority.ts`, `src/fabric-lifecycle.ts`) and supporting connectivity packages. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Net-new fabric capabilities beyond the mapped surface remain unauthorized until this contract is accepted and PROJECT_STATE is updated.
+**Contract formalized and existing fabric implementation mapped (issue #14).** The connectivity fabric is present in `@irp/resilience-runtime` (`src/fabric.ts`, `src/fabric-authority.ts`, `src/fabric-lifecycle.ts`). Disposition remains **PARTIAL** pending exact-SHA CI evidence on the implementing commit and phase-matrix update from evidence only. Net-new fabric capabilities beyond the mapped surface remain unauthorized until this contract is accepted and PROJECT_STATE is updated.
+
+## Evidence map (SHA `216b26ffa67a00da7c106552bac02052edf0eaff`)
+
+| Criterion | Location |
+|-----------|----------|
+| Canonical `FabricResource` / kinds / states | `src/fabric.ts` (`FABRIC_RESOURCE_KINDS`, `FABRIC_RESOURCE_STATES`, `FabricResource`) |
+| State transitions fail closed | `src/fabric-lifecycle.ts` (`assertFabricStateTransition`); exercised in discovery path |
+| Freshness evaluation + stale rejection | `src/fabric-lifecycle.ts` (`evaluateFabricFreshness`, `partitionByFreshness`); `tests/fabric.test.ts` (`rejects stale resources...`) |
+| Capability authority rejects unauthorized | `src/fabric-authority.ts` (`FabricCapabilityAuthority`); `tests/fabric.test.ts` (capability registration + selection with requiredCapabilities) |
+| Diverse selection deterministic | `src/fabric-lifecycle.ts` (`selectDiverseResources`); used by `select` in `src/fabric.ts` |
+| Ownership conflict fail-closed | `src/fabric.ts` (discover / reconcile); `tests/fabric.test.ts` (`rejects ... conflicting ownership`) |
+| Package tests pass | `packages/resilience-runtime/tests/fabric.test.ts`, `fabric-275.test.ts`, `fabric-production-wiring.test.ts` |
+| Architecture guards | existing architecture-invariants tests |
 
 ## Objective
 
