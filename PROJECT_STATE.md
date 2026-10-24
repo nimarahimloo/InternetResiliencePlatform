@@ -78,3 +78,14 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Verified merges: none this run
 - Blockers: exact-SHA CI evidence for Phase 85 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
 - Next prioritized tasks: durable conflict journal restart tests for #13; Phase 86 fabric contract evidence or implementation gaps.
+
+## Autonomous engineer checkpoint (2026-10-24)
+
+- Starting base SHA: 216b26ffa67a00da7c106552bac02052edf0eaff (fork/main)
+- Ending base SHA: (pending this PR)
+- Completed this run: added Phase 87 multi-interface regression tests covering Interface kind modeling in closed set, deterministic freshness for multiple interface candidates, and capability authority platform restriction. Updated phase-87 evidence map. No runtime authority changes.
+- Branches/PRs: phase/87-multi-interface-regression-20261024 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323); fork/upstream divergence.
+- Next prioritized tasks: sync fork with upstream; durable conflict journal restart tests; Phase 88 multi-path evidence or gaps; continue roadmap to Phase 150.
