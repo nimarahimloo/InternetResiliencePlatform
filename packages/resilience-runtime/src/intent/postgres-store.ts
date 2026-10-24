@@ -223,6 +223,34 @@ export class PostgresIntentStore implements IntentStore {
     }
   }
 
+  /**
+   * Read the durable arbitration-conflict journal. Used to prove that recorded
+   * conflicts survive process restart (new store instance against the same DB).
+   * Returns lightweight projections; full CompiledIntent objects are not reconstructed.
+   */
+  async listConflicts(limit = 100): Promise<readonly IntentConflict[]> {
+    const pool = this.pool as pg.Pool;
+    const bounded = Math.min(Math.max(1, limit), 1000);
+    const result = await pool.query(
+      `SELECT intent_a_id, intent_b_id, reason, resolution, recorded_at
+       FROM intent_conflicts
+       ORDER BY recorded_at DESC
+       LIMIT $1`,
+      [bounded],
+    );
+    return Object.freeze(
+      result.rows.map(
+        (row) =>
+          ({
+            intentA: { intentId: row.intent_a_id },
+            intentB: { intentId: row.intent_b_id },
+            reason: row.reason,
+            resolution: row.resolution,
+          }) as IntentConflict,
+      ),
+    );
+  }
+
   async close(): Promise<void> {
     const pool = this.pool as pg.Pool;
     await pool.end();

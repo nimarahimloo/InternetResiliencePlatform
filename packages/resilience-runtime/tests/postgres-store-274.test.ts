@@ -95,6 +95,54 @@ describe('PostgresIntentStore (Phase 2: Persistence)', () => {
     );
   });
 
+  it('survives restart: recorded conflicts are readable from a new store instance', async () => {
+    // Simulate a durable journal that outlives the store process.
+    const journal: Array<{ intent_a_id: string; intent_b_id: string; reason: string; resolution: string }> = [];
+    mockPool.query.mockImplementation(async (sql: string, params?: unknown[]) => {
+      if (typeof sql === 'string' && sql.includes('INSERT INTO intent_conflicts')) {
+        journal.push({
+          intent_a_id: params?.[1] as string,
+          intent_b_id: params?.[2] as string,
+          reason: params?.[3] as string,
+          resolution: params?.[4] as string,
+        });
+        return { rows: [] };
+      }
+      if (typeof sql === 'string' && sql.includes('FROM intent_conflicts')) {
+        return { rows: journal };
+      }
+      return { rows: [] };
+    });
+
+    const conflict = {
+      intentA: { intentId: 'intent-a' },
+      intentB: { intentId: 'intent-b' },
+      reason: 'overlapping scope',
+      resolution: 'supersede-b',
+    } as never;
+
+    await store.recordConflicts([conflict]);
+
+    // Restart: new store instance against the same (mocked) durable journal.
+    const restarted = new PostgresIntentStore({
+      host: 'localhost',
+      port: 5432,
+      database: 'test',
+      user: 'test',
+      password: 'test',
+    });
+    restarted['pool'] = mockPool;
+
+    const listed = await restarted.listConflicts();
+    expect(listed).toHaveLength(1);
+    expect(listed[0]?.intentA.intentId).toBe('intent-a');
+    expect(listed[0]?.intentB.intentId).toBe('intent-b');
+    expect(listed[0]?.reason).toBe('overlapping scope');
+    expect(listed[0]?.resolution).toBe('supersede-b');
+
+    await restarted.close();
+  });
+
   it('upserts intent with correct fields', async () => {
     const now = new Date();
     const draftIntent = createNetworkIntent({
