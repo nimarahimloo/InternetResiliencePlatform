@@ -4,6 +4,15 @@
 
 **Contract formalized (issue #14).** Maps existing multi-interface representation already present in the connectivity fabric (`FabricResource` kinds `Interface`, `Link`, `Device`) and supporting packages `@irp/connectivity` / `@irp/network`. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Net-new multi-interface intelligence beyond the mapped surface remains unauthorized until this contract is accepted and PROJECT_STATE is updated.
 
+## Evidence map (2026-10-24)
+
+- `packages/resilience-runtime/tests/phase-87-multi-interface-regression.test.ts` covers:
+  - Interfaces modeled exclusively as `FabricResource` of kind `Interface` (closed kind set)
+  - Deterministic freshness classification for multiple interface candidates (fresh vs expired)
+  - Capability authority restricts selectable interfaces by platform (mismatch rejection, matching runtime-authority acceptance)
+- Broader fabric selection and lifecycle suites continue to cover ranking and diversity.
+- No new mutation authority; ResilienceRuntime remains sole production control plane.
+
 ## Objective
 
 Provide intelligence over multiple network interfaces on a device (Wi-Fi, Ethernet, cellular, VPN, etc.) so the control plane can observe, classify, score and select among them under policy and safety constraints. Multi-interface awareness is a consumer of the canonical fabric; it must not introduce a parallel resource model or mutation authority.
