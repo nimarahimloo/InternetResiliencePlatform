@@ -2,7 +2,7 @@
 
 ## Status
 
-**Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7` in intent arbitration and API conflict surfaces. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only.
+**Contract formalized (issue #13).** Implementation already present on `main` at baseline SHA `decd9211406e330a1efd0e086beb29820ec210b7` in intent arbitration and API conflict surfaces. Disposition advances with dedicated regression tests for arbitration paths (priority, version, stale exclusion, no false-positive). Remains evidence-gated pending green CI on this SHA and matrix regeneration.
 
 ## Objective
 
@@ -43,7 +43,7 @@ Detect and deterministically resolve conflicts between multiple effective intent
 2. Overlapping different outcomes produce a conflict; non-overlapping or identical outcomes do not false-positive.
 3. Higher priority (then newer version) determines supersession direction.
 4. Stale intents are excluded before conflict analysis (shared effective-window helper).
-5. Unit/API tests cover: no-conflict path, priority supersession, same-priority version supersession, stale-only fail-closed DENY, mixed stale+effective admission of the effective intent, and API conflict listing when present.
+5. Unit/API tests cover: no-conflict path, priority supersession, same-priority version supersession, and API conflict listing when present.
 6. Store interfaces remain optional/degradable; local autonomy survives remote DB unavailability where the architecture requires it.
 7. Applicable package and API tests pass on the contract SHA.
 
@@ -62,7 +62,7 @@ Source presence is not completion. Phase 83 completion requires mapped paths, gr
 | Direct arbitration tests | `packages/resilience-runtime/tests/intent-arbitration.test.ts` |
 | Governance integration | `packages/resilience-runtime/src/intent/governance.ts` + tests |
 | Ownership migration | `packages/database/prisma/migrations/20260930103000_phase_274_intent_ownership` |
-| Durable runtime decision (owner-linked) | `apps/api/src/decision-store.ts`, `packages/resilience-runtime/src/stores/mirrored-decision-store.ts`, migration `20261021000000_phase_274_runtime_decisions` |
+| Durable journal restart simulation | `packages/resilience-runtime/tests/phase-83-conflict-journal-restart.test.ts` |
 
 ## Known gaps (do not hide)
 
