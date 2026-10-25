@@ -60,9 +60,10 @@ Source presence is not completion. Phase 83 completion requires mapped paths, gr
 | API + ownership | `apps/api/src/intent-api.ts` (`IntentOwnership`, conflict query) |
 | API tests | `apps/api/src/intent-api.test.ts` |
 | Direct arbitration tests | `packages/resilience-runtime/tests/intent-arbitration.test.ts` |
-| Durable conflict journal + restart | `packages/resilience-runtime/src/intent/postgres-store.ts` (`listConflicts`) + `tests/postgres-store-274.test.ts` |
 | Governance integration | `packages/resilience-runtime/src/intent/governance.ts` + tests |
 | Ownership migration | `packages/database/prisma/migrations/20260930103000_phase_274_intent_ownership` |
+| Durable runtime decision (owner-linked) | `apps/api/src/decision-store.ts`, `packages/resilience-runtime/src/stores/mirrored-decision-store.ts`, migration `20261021000000_phase_274_runtime_decisions` |
+| Durable conflict journal listing + restart | `packages/resilience-runtime/src/intent/postgres-store.ts` (`listConflicts`), `packages/resilience-runtime/tests/postgres-store-274.test.ts` |
 
 ## Known gaps (do not hide)
 

@@ -93,10 +93,13 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=false
           tags: |
-            type=sha,prefix=sha-,format=short
+            type=raw,value=sha-${{ steps.source.outputs.short_sha }}
           labels: |
             io.irp.publication.class=developer-preview
+            org.opencontainers.image.revision=${{ steps.source.outputs.sha }}
 
       - name: Enforce developer-preview tag policy
         run: node scripts/docker-publication-policy.mjs ${{ steps.meta.outputs.tags }}
