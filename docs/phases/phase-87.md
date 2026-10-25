@@ -37,10 +37,9 @@ Provide intelligence over multiple network interfaces on a device (Wi-Fi, Ethern
 
 | Criterion | Location |
 |-----------|----------|
-| Interface / Link modeled as FabricResource | `packages/resilience-runtime/tests/phase-87-multi-interface-regression.test.ts` |
-| Freshness partition for multi-interface candidates | same |
-| Diverse selection across failure-domain-disjoint interfaces | same |
-| Capability authority platform restriction | same |
+| Diverse failure-domain-disjoint interface selection | `packages/resilience-runtime/tests/phase-87-multi-interface-regression.test.ts` |
+| Insufficient diversity fallback | same |
+| Interface freshness classification | same |
 | Existing fabric suites | `packages/resilience-runtime/tests/fabric*.test.ts` |
 
 ## Acceptance criteria
