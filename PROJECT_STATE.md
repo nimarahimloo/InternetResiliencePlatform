@@ -83,9 +83,9 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 
 - Starting base SHA: `216b26ffa67a00da7c106552bac02052edf0eaff`
 - Ending base SHA: (pending this PR)
-- Completed this run: added Phase 87 multi-interface intelligence regression tests covering health ranking, platform capability restriction, freshness fail-closed, and trust ranking among Interface resources. Updated phase-87 evidence map. No runtime authority changes.
-- Branches/PRs: phase/87-multi-interface-regression-20261025 (this PR)
+- Completed this run: added `listConflicts` to `PostgresIntentStore` and the `IntentStore` contract so the durable arbitration-conflict journal can be listed after restart. Added regression test simulating process restart that records then lists the journaled conflict. Updated Phase 83 evidence map. No new runtime authority.
+- Branches/PRs: phase/83-durable-conflict-journal-listing-20261025 (this PR)
 - Actual CI: pending
 - Verified merges: none this run
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323); sync with upstream Phase 86+ advances.
-- Next prioritized tasks: sync fork with upstream main (Phase 86 evidence, dependabot); durable conflict journal restart tests; Phase 88 multi-path evidence or gaps; continue roadmap to Phase 150.
+- Blockers: exact-SHA CI evidence; remaining durable e2e under production load for #13; Linux runtime soak.
+- Next prioritized tasks: Phase 86 fabric regression evidence or gaps; continue toward Phase 150 contracts/implementation.
