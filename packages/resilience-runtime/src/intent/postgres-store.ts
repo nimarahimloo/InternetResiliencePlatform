@@ -223,6 +223,25 @@ export class PostgresIntentStore implements IntentStore {
     }
   }
 
+  async listConflicts(): Promise<readonly IntentConflict[]> {
+    const pool = this.pool as pg.Pool;
+    const result = await pool.query(
+      `SELECT intent_a_id, intent_b_id, reason, resolution, recorded_at
+       FROM intent_conflicts
+       ORDER BY recorded_at DESC`,
+    );
+    return Object.freeze(
+      result.rows.map((row) =>
+        Object.freeze({
+          intentA: { intentId: row.intent_a_id } as CompiledIntent,
+          intentB: { intentId: row.intent_b_id } as CompiledIntent,
+          reason: row.reason as string,
+          resolution: row.resolution as IntentConflict['resolution'],
+        }),
+      ),
+    );
+  }
+
   async close(): Promise<void> {
     const pool = this.pool as pg.Pool;
     await pool.end();
