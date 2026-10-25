@@ -312,3 +312,14 @@ model IntentConflictRecord {
   recordedAt  DateTime
   @@index([ownerScopeKey, recordedAt])
 }
+model RuntimeDecisionRecord {
+  decisionId    String   @id @db.VarChar(128)
+  runtimeId     String   @db.VarChar(128)
+  correlationId String   @db.VarChar(256)
+  outcome       String   @db.VarChar(32)
+  record        Json
+  ownerScopeKey String?  @db.VarChar(384)
+  recordedAt    DateTime
+  @@index([ownerScopeKey, recordedAt])
+  @@index([correlationId])
+}

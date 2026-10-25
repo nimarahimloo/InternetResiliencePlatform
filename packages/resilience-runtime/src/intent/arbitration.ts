@@ -59,9 +59,10 @@ export const arbitrateIntents = (
       const a = ordered[i]!;
       const b = ordered[j]!;
       if (scopesOverlap(a, b) && a.desiredOutcome !== b.desiredOutcome) {
-        // A is always the preferred intent (higher priority / version / recency).
-        // 'supersede-b' means the lower-ranked B is superseded by A.
-        const resolution = 'supersede-b';
+        // Because `ordered` places the higher-ranked intent first, `a` always
+        // wins (priority, then version, then recency). Resolution is therefore
+        // always supersede-b. Equal-version recency ties are covered by the sort.
+        const resolution = 'supersede-b' as const;
         conflicts.push({
           intentA: a,
           intentB: b,
@@ -76,9 +77,17 @@ export const arbitrateIntents = (
 };
 
 const scopesOverlap = (a: CompiledIntent, b: CompiledIntent): boolean => {
-  const aEntries = Object.entries(a.scope).filter(([key]) => key !== 'intentId');
-  const bScope = new Map(Object.entries(b.scope));
-  return aEntries.some(([key, value]) => bScope.get(key) === value);
+  // intentId identifies a record; it is not a network scope dimension.
+  const identityKeys = new Set(['intentId']);
+  const aScope = Object.entries(a.scope).filter(([key]) => !identityKeys.has(key));
+  const bScope = new Map(
+    Object.entries(b.scope).filter(([key]) => !identityKeys.has(key)),
+  );
+  const shared = aScope.filter(([key]) => bScope.has(key));
+
+  // No shared dimensions means the scopes are unrelated. Any disagreement on
+  // a shared dimension makes them disjoint; otherwise the scopes overlap.
+  return shared.length > 0 && shared.every(([key, value]) => bScope.get(key) === value);
 };
 
 /**
@@ -136,6 +145,11 @@ export interface IntentStore {
    * persisted wherever the runtime persists intents.
    */
   readonly recordConflicts?: (conflicts: readonly IntentConflict[]) => Promise<void>;
+  /**
+   * List previously journaled conflicts. Optional; used for restart evidence
+   * and API surfaces that need to surface the durable journal.
+   */
+  readonly listConflicts?: () => Promise<readonly IntentConflict[]>;
 }
 
 /**

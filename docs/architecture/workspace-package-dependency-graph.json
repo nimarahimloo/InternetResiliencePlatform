@@ -1,0 +1,830 @@
+{
+  "schemaVersion": 1,
+  "title": "IRP workspace package dependency graph (manifest-derived)",
+  "repository": "nimarahimloo/InternetResiliencePlatform",
+  "generatedAt": "2026-10-21",
+  "scope": "Exact @irp workspace references observed in package.json dependencies and selected devDependencies. This graph is not a source import/call graph and does not prove runtime reachability or feature completeness.",
+  "authorityInvariant": "@irp/resilience-runtime remains the only canonical production runtime/control authority; dependency edges do not grant orchestration authority.",
+  "nodeCount": 43,
+  "runtimeDependencyEdgeCount": 98,
+  "developmentDependencyEdgeCount": 1,
+  "nodes": [
+    {
+      "id": "@irp/api",
+      "path": "apps/api/package.json",
+      "kind": "application"
+    },
+    {
+      "id": "@irp/cli",
+      "path": "apps/cli/package.json",
+      "kind": "application"
+    },
+    {
+      "id": "@irp/daemon",
+      "path": "apps/daemon/package.json",
+      "kind": "application"
+    },
+    {
+      "id": "@irp/auth",
+      "path": "packages/auth/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/auto-optimization",
+      "path": "packages/auto-optimization/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/config",
+      "path": "packages/config/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/connectivity",
+      "path": "packages/connectivity/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/core",
+      "path": "packages/core/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/database",
+      "path": "packages/database/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/dns",
+      "path": "packages/dns/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/events",
+      "path": "packages/events/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/failover",
+      "path": "packages/failover/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/gateway-registry",
+      "path": "packages/gateway-registry/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/historical-analysis",
+      "path": "packages/historical-analysis/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/internet-intelligence-agent",
+      "path": "packages/internet-intelligence-agent/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/kernel",
+      "path": "packages/kernel/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/linux-client",
+      "path": "packages/linux-client/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/logger",
+      "path": "packages/logger/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/macos-client",
+      "path": "packages/macos-client/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/metrics",
+      "path": "packages/metrics/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/network-intelligence",
+      "path": "packages/network-intelligence/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/network",
+      "path": "packages/network/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/plugin-api",
+      "path": "packages/plugin-api/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/plugin-config",
+      "path": "packages/plugin-config/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/plugin-events",
+      "path": "packages/plugin-events/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/plugin-loader",
+      "path": "packages/plugin-loader/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/plugin-manager",
+      "path": "packages/plugin-manager/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/plugin-registry",
+      "path": "packages/plugin-registry/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/plugin-runtime",
+      "path": "packages/plugin-runtime/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/plugin-samples",
+      "path": "packages/plugin-samples/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/plugin-sandbox",
+      "path": "packages/plugin-sandbox/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/plugin-sdk",
+      "path": "packages/plugin-sdk/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/queue",
+      "path": "packages/queue/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/resilience-runtime",
+      "path": "packages/resilience-runtime/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/routing",
+      "path": "packages/routing/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/sdk",
+      "path": "packages/sdk/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/security",
+      "path": "packages/security/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/shared",
+      "path": "packages/shared/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/telemetry",
+      "path": "packages/telemetry/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/tunnel",
+      "path": "packages/tunnel/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/types",
+      "path": "packages/types/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/utils",
+      "path": "packages/utils/package.json",
+      "kind": "package"
+    },
+    {
+      "id": "@irp/windows-client",
+      "path": "packages/windows-client/package.json",
+      "kind": "package"
+    }
+  ],
+  "edges": [
+    {
+      "from": "@irp/api",
+      "to": "@irp/auth",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/auth"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/config",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/config"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/core",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/core"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/database",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/database"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/dns",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/dns"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/events",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/events"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/historical-analysis",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/historical-analysis"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/logger",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/logger"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/metrics",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/metrics"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/network",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/network"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/queue",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/queue"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/resilience-runtime",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/resilience-runtime"
+    },
+    {
+      "from": "@irp/api",
+      "to": "@irp/telemetry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/api/package.json → dependencies.@irp/telemetry"
+    },
+    {
+      "from": "@irp/cli",
+      "to": "@irp/config",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/cli/package.json → dependencies.@irp/config"
+    },
+    {
+      "from": "@irp/cli",
+      "to": "@irp/core",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/cli/package.json → dependencies.@irp/core"
+    },
+    {
+      "from": "@irp/cli",
+      "to": "@irp/logger",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/cli/package.json → dependencies.@irp/logger"
+    },
+    {
+      "from": "@irp/cli",
+      "to": "@irp/network",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/cli/package.json → dependencies.@irp/network"
+    },
+    {
+      "from": "@irp/cli",
+      "to": "@irp/telemetry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/cli/package.json → dependencies.@irp/telemetry"
+    },
+    {
+      "from": "@irp/cli",
+      "to": "@irp/dns",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/cli/package.json → dependencies.@irp/dns"
+    },
+    {
+      "from": "@irp/cli",
+      "to": "@irp/resilience-runtime",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/cli/package.json → dependencies.@irp/resilience-runtime"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/auto-optimization",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/auto-optimization"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/config",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/config"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/connectivity",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/connectivity"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/core",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/core"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/logger",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/logger"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/plugin-manager",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/plugin-manager"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/plugin-sdk",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/plugin-sdk"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/network",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/network"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/resilience-runtime",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/resilience-runtime"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/routing",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/routing"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/security",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/security"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/tunnel",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "apps/daemon/package.json → dependencies.@irp/tunnel"
+    },
+    {
+      "from": "@irp/auth",
+      "to": "@irp/shared",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/auth/package.json → dependencies.@irp/shared"
+    },
+    {
+      "from": "@irp/auto-optimization",
+      "to": "@irp/resilience-runtime",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/auto-optimization/package.json → dependencies.@irp/resilience-runtime"
+    },
+    {
+      "from": "@irp/connectivity",
+      "to": "@irp/events",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/connectivity/package.json → dependencies.@irp/events"
+    },
+    {
+      "from": "@irp/connectivity",
+      "to": "@irp/kernel",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/connectivity/package.json → dependencies.@irp/kernel"
+    },
+    {
+      "from": "@irp/connectivity",
+      "to": "@irp/network",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/connectivity/package.json → dependencies.@irp/network"
+    },
+    {
+      "from": "@irp/connectivity",
+      "to": "@irp/telemetry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/connectivity/package.json → dependencies.@irp/telemetry"
+    },
+    {
+      "from": "@irp/connectivity",
+      "to": "@irp/shared",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/connectivity/package.json → dependencies.@irp/shared"
+    },
+    {
+      "from": "@irp/core",
+      "to": "@irp/config",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/core/package.json → dependencies.@irp/config"
+    },
+    {
+      "from": "@irp/core",
+      "to": "@irp/logger",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/core/package.json → dependencies.@irp/logger"
+    },
+    {
+      "from": "@irp/core",
+      "to": "@irp/dns",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/core/package.json → dependencies.@irp/dns"
+    },
+    {
+      "from": "@irp/events",
+      "to": "@irp/shared",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/events/package.json → dependencies.@irp/shared"
+    },
+    {
+      "from": "@irp/historical-analysis",
+      "to": "@irp/database",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/historical-analysis/package.json → dependencies.@irp/database"
+    },
+    {
+      "from": "@irp/linux-client",
+      "to": "@irp/connectivity",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/linux-client/package.json → dependencies.@irp/connectivity"
+    },
+    {
+      "from": "@irp/linux-client",
+      "to": "@irp/kernel",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/linux-client/package.json → dependencies.@irp/kernel"
+    },
+    {
+      "from": "@irp/linux-client",
+      "to": "@irp/resilience-runtime",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/linux-client/package.json → dependencies.@irp/resilience-runtime"
+    },
+    {
+      "from": "@irp/linux-client",
+      "to": "@irp/routing",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/linux-client/package.json → dependencies.@irp/routing"
+    },
+    {
+      "from": "@irp/linux-client",
+      "to": "@irp/telemetry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/linux-client/package.json → dependencies.@irp/telemetry"
+    },
+    {
+      "from": "@irp/plugin-api",
+      "to": "@irp/plugin-sdk",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-api/package.json → dependencies.@irp/plugin-sdk"
+    },
+    {
+      "from": "@irp/plugin-api",
+      "to": "@irp/security",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-api/package.json → dependencies.@irp/security"
+    },
+    {
+      "from": "@irp/plugin-config",
+      "to": "@irp/plugin-sdk",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-config/package.json → dependencies.@irp/plugin-sdk"
+    },
+    {
+      "from": "@irp/plugin-config",
+      "to": "@irp/security",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-config/package.json → dependencies.@irp/security"
+    },
+    {
+      "from": "@irp/plugin-events",
+      "to": "@irp/plugin-sdk",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-events/package.json → dependencies.@irp/plugin-sdk"
+    },
+    {
+      "from": "@irp/plugin-loader",
+      "to": "@irp/plugin-sdk",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-loader/package.json → dependencies.@irp/plugin-sdk"
+    },
+    {
+      "from": "@irp/plugin-loader",
+      "to": "@irp/plugin-registry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-loader/package.json → dependencies.@irp/plugin-registry"
+    },
+    {
+      "from": "@irp/plugin-manager",
+      "to": "@irp/plugin-runtime",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-manager/package.json → dependencies.@irp/plugin-runtime"
+    },
+    {
+      "from": "@irp/plugin-manager",
+      "to": "@irp/plugin-loader",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-manager/package.json → dependencies.@irp/plugin-loader"
+    },
+    {
+      "from": "@irp/plugin-manager",
+      "to": "@irp/plugin-registry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-manager/package.json → dependencies.@irp/plugin-registry"
+    },
+    {
+      "from": "@irp/plugin-manager",
+      "to": "@irp/plugin-sdk",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-manager/package.json → dependencies.@irp/plugin-sdk"
+    },
+    {
+      "from": "@irp/plugin-manager",
+      "to": "@irp/plugin-samples",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-manager/package.json → dependencies.@irp/plugin-samples"
+    },
+    {
+      "from": "@irp/plugin-registry",
+      "to": "@irp/plugin-sdk",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-registry/package.json → dependencies.@irp/plugin-sdk"
+    },
+    {
+      "from": "@irp/plugin-runtime",
+      "to": "@irp/plugin-sdk",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-runtime/package.json → dependencies.@irp/plugin-sdk"
+    },
+    {
+      "from": "@irp/plugin-runtime",
+      "to": "@irp/plugin-api",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-runtime/package.json → dependencies.@irp/plugin-api"
+    },
+    {
+      "from": "@irp/plugin-runtime",
+      "to": "@irp/plugin-config",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-runtime/package.json → dependencies.@irp/plugin-config"
+    },
+    {
+      "from": "@irp/plugin-runtime",
+      "to": "@irp/plugin-events",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-runtime/package.json → dependencies.@irp/plugin-events"
+    },
+    {
+      "from": "@irp/plugin-runtime",
+      "to": "@irp/plugin-registry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-runtime/package.json → dependencies.@irp/plugin-registry"
+    },
+    {
+      "from": "@irp/plugin-runtime",
+      "to": "@irp/plugin-sandbox",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-runtime/package.json → dependencies.@irp/plugin-sandbox"
+    },
+    {
+      "from": "@irp/plugin-samples",
+      "to": "@irp/plugin-sdk",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-samples/package.json → dependencies.@irp/plugin-sdk"
+    },
+    {
+      "from": "@irp/plugin-sandbox",
+      "to": "@irp/plugin-sdk",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-sandbox/package.json → dependencies.@irp/plugin-sdk"
+    },
+    {
+      "from": "@irp/plugin-sandbox",
+      "to": "@irp/security",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-sandbox/package.json → dependencies.@irp/security"
+    },
+    {
+      "from": "@irp/plugin-sandbox",
+      "to": "@irp/plugin-samples",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/plugin-sandbox/package.json → dependencies.@irp/plugin-samples"
+    },
+    {
+      "from": "@irp/queue",
+      "to": "@irp/shared",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/queue/package.json → dependencies.@irp/shared"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/connectivity",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/connectivity"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/core",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/core"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/events",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/events"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/failover",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/failover"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/gateway-registry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/gateway-registry"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/historical-analysis",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/historical-analysis"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/internet-intelligence-agent",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/internet-intelligence-agent"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/network-intelligence",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/network-intelligence"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/routing",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/routing"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/telemetry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/telemetry"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/tunnel",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/tunnel"
+    },
+    {
+      "from": "@irp/resilience-runtime",
+      "to": "@irp/utils",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/resilience-runtime/package.json → dependencies.@irp/utils"
+    },
+    {
+      "from": "@irp/routing",
+      "to": "@irp/connectivity",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/routing/package.json → dependencies.@irp/connectivity"
+    },
+    {
+      "from": "@irp/routing",
+      "to": "@irp/events",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/routing/package.json → dependencies.@irp/events"
+    },
+    {
+      "from": "@irp/routing",
+      "to": "@irp/kernel",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/routing/package.json → dependencies.@irp/kernel"
+    },
+    {
+      "from": "@irp/routing",
+      "to": "@irp/shared",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/routing/package.json → dependencies.@irp/shared"
+    },
+    {
+      "from": "@irp/routing",
+      "to": "@irp/telemetry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/routing/package.json → dependencies.@irp/telemetry"
+    },
+    {
+      "from": "@irp/sdk",
+      "to": "@irp/kernel",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/sdk/package.json → dependencies.@irp/kernel"
+    },
+    {
+      "from": "@irp/security",
+      "to": "@irp/auth",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/security/package.json → dependencies.@irp/auth"
+    },
+    {
+      "from": "@irp/security",
+      "to": "@irp/shared",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/security/package.json → dependencies.@irp/shared"
+    },
+    {
+      "from": "@irp/telemetry",
+      "to": "@irp/metrics",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/telemetry/package.json → dependencies.@irp/metrics"
+    },
+    {
+      "from": "@irp/telemetry",
+      "to": "@irp/types",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/telemetry/package.json → dependencies.@irp/types"
+    },
+    {
+      "from": "@irp/tunnel",
+      "to": "@irp/events",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/tunnel/package.json → dependencies.@irp/events"
+    },
+    {
+      "from": "@irp/tunnel",
+      "to": "@irp/shared",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/tunnel/package.json → dependencies.@irp/shared"
+    },
+    {
+      "from": "@irp/tunnel",
+      "to": "@irp/telemetry",
+      "kind": "workspace-runtime-dependency",
+      "evidence": "packages/tunnel/package.json → dependencies.@irp/telemetry"
+    },
+    {
+      "from": "@irp/daemon",
+      "to": "@irp/plugin-samples",
+      "kind": "workspace-development-dependency",
+      "evidence": "apps/daemon/package.json → devDependencies.@irp/plugin-samples"
+    }
+  ],
+  "omissions": [
+    "External npm dependencies are omitted.",
+    "TypeScript/JavaScript import edges and actual call paths are not extracted by this artifact.",
+    "Optional peer dependencies and references not declared as workspace dependencies are not represented.",
+    "Package presence and manifest dependency do not prove production integration."
+  ]
+}
