@@ -42,6 +42,18 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 
 ## Architecture invariants (unchanged)
 
+## Autonomous engineer checkpoint (2026-10-25)
+
+- Starting base SHA: 216b26ffa67a00da7c106552bac02052edf0eaff
+- Ending base SHA: (pending this PR)
+- Completed this run: added evidence map to Phase 86 Unified Connectivity Fabric contract, linking acceptance criteria to existing fabric.ts / fabric-lifecycle.ts / fabric-authority.ts and fabric*.test.ts coverage (illegal transitions fail-closed, freshness, capability authority). Updated phase-86.md. No runtime changes.
+- Branches/PRs: phase/86-fabric-evidence-map-20261025 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 87 multi-interface evidence or gaps; continue roadmap to Phase 150.
+
+
 - ResilienceRuntime remains the canonical runtime authority.
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.

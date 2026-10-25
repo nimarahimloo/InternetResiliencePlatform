@@ -4,6 +4,17 @@
 
 **Contract formalized (issue #14).** Maps the existing connectivity fabric already present in `@irp/resilience-runtime` (`src/fabric.ts`, `src/fabric-authority.ts`, `src/fabric-lifecycle.ts`) and supporting connectivity packages. Disposition remains **PARTIAL** until CI evidence is recorded against this contract and the phase matrix is updated from evidence only. Net-new fabric capabilities beyond the mapped surface remain unauthorized until this contract is accepted and PROJECT_STATE is updated.
 
+## Evidence map (SHA `216b26ffa67a00da7c106552bac02052edf0eaff`)
+
+| Criterion | Location |
+|-----------|----------|
+| Canonical FabricResource model and closed kinds/states | `src/fabric.ts` (`FabricResource`, `FABRIC_RESOURCE_KINDS`, `FABRIC_RESOURCE_STATES`); `tests/fabric.test.ts` discovery and selection |
+| Legal/illegal state transitions fail-closed | `src/fabric-lifecycle.ts` (`FABRIC_STATE_TRANSITIONS`, `isLegalFabricTransition`, `assertFabricStateTransition`, `IllegalFabricStateTransitionError`); `tests/fabric-275.test.ts` (legal and illegal transition assertions, including FAILED→HEALTHY rejection) |
+| Freshness evaluation and diverse selection | `src/fabric-lifecycle.ts` freshness helpers; `tests/fabric.test.ts` (rejects stale resources); `tests/fabric-275.test.ts` diversity and selection cases |
+| Capability authority rejects unauthorized/incompatible | `src/fabric-authority.ts`; `tests/fabric.test.ts` capability registration and selection filtering |
+| Package tests for lifecycle/freshness/authority/selection | `tests/fabric.test.ts`, `tests/fabric-275.test.ts`, `tests/fabric-production-wiring.test.ts` |
+| Architecture guards (ResilienceRuntime sole authority) | existing architecture-invariants tests; fabric is consumed, not a parallel control plane |
+
 ## Objective
 
 Provide a single, canonical connectivity fabric that normalizes devices, interfaces, links, providers, gateways, tunnels, resolvers and egress resources into a consistent resource model with lifecycle, health, freshness and capability authority. The fabric is the sole source of selectable connectivity resources for decision and execution paths; it must not become a second control plane.
