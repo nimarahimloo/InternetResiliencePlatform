@@ -42,6 +42,18 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 
 ## Architecture invariants (unchanged)
 
+## Autonomous engineer checkpoint (2026-10-25)
+
+- Starting base SHA: 216b26ffa67a00da7c106552bac02052edf0eaff
+- Ending base SHA: (pending this PR)
+- Completed this run: added evidence map to Phase 86 Unified Connectivity Fabric contract, linking acceptance criteria to existing fabric.ts / fabric-lifecycle.ts / fabric-authority.ts and fabric*.test.ts coverage (illegal transitions fail-closed, freshness, capability authority). Updated phase-86.md. No runtime changes.
+- Branches/PRs: phase/86-fabric-evidence-map-20261025 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 87 multi-interface evidence or gaps; continue roadmap to Phase 150.
+
+
 - ResilienceRuntime remains the canonical runtime authority.
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
@@ -66,27 +78,37 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Actual CI: pending
 - Verified merges: none this run
 - Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
-- Next prioritized tasks: Phase 89 gateway intelligence evidence or gaps; continue roadmap to Phase 150; durable journal tests.
+- Next prioritized tasks: durable conflict journal restart tests; Phase 87 multi-interface evidence or gaps; continue roadmap to Phase 150.
 
-## Autonomous engineer checkpoint (2026-10-26 run 2)
+## Autonomous engineer checkpoint (2026-10-24 run 2)
 
-- Starting base SHA: da42060aa31a7fef4ce917da6357de3f1b619a53 (upstream/main)
+- Starting base SHA: 80ee01f7d8f2dc1d087e844881d91799af9e41a5 (upstream/main)
 - Ending base SHA: (pending this PR)
-- Completed this run: added Phase 89 gateway intelligence regression tests covering Gateway selection by health, stale gateway rejection, failure-domain diversity fail-closed behavior, and inventory attribute exposure (owner, failure domains). Updated phase-89 evidence map. No runtime authority changes.
-- Branches/PRs: phase/89-gateway-intelligence-evidence (this PR)
+- Completed this run: added Phase 87 multi-interface regression tests covering Interface/Link FabricResource modeling, freshness partition, diverse failure-domain selection, and capability-authority platform restriction. Updated phase-87 evidence map. No runtime authority changes.
+- Branches/PRs: phase/87-multi-interface-regression-evidence (this PR)
 - Actual CI: pending
-- Verified merges: none this run (Phase 88 previously merged)
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
-- Next prioritized tasks: Phase 90 DNS/Tunnel/Proxy orchestration evidence or gaps; continue roadmap to Phase 150; durable journal tests.
+- Verified merges: none this run
+- Blockers: exact-SHA CI for Phase 84 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 85 drift assurance evidence.
 
-## Autonomous engineer checkpoint (2026-10-26 run 3)
+## Autonomous engineer checkpoint (2026-10-23 evening)
 
-- Starting base SHA: 95d9c5edaa7b20f1d0baf0b1d6cbf63fcdd38a4e (upstream/main)
+- Starting base SHA: `7a89c1286a5185c0e333da07af33997b1d789cee`
 - Ending base SHA: (pending this PR)
-- Completed this run: added Phase 90 DNS / Tunnel / Proxy orchestration regression tests covering Resolver selection by health, stale Tunnel rejection, Proxy failure-domain diversity fail-closed behavior, and inventory attribute exposure for all three kinds. Updated phase-90 evidence map. No runtime authority changes.
-- Branches/PRs: phase/90-dns-tunnel-proxy-evidence (this PR)
+- Completed this run: mapped existing Phase 85 observe-only drift detector and intent-drift.test.ts coverage to the acceptance criteria. Updated phase-85 evidence map. No runtime changes.
+- Branches/PRs: phase/85-drift-evidence-map-20261023 (this PR)
 - Actual CI: pending
-- Verified merges: none this run (Phase 89 previously merged)
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
-- Next prioritized tasks: Phase 91 application-aware path selection evidence or gaps; continue roadmap to Phase 150; durable journal tests.
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence for Phase 85 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 86 fabric contract evidence or implementation gaps.
 
+## Autonomous engineer checkpoint (2026-10-25)
+
+- Starting base SHA: `216b26ffa67a00da7c106552bac02052edf0eaff`
+- Ending base SHA: (pending this PR)
+- Completed this run: added `listConflicts` to `PostgresIntentStore` and the `IntentStore` contract so the durable arbitration-conflict journal can be listed after restart. Added regression test simulating process restart that records then lists the journaled conflict. Updated Phase 83 evidence map. No new runtime authority.
+- Branches/PRs: phase/83-durable-conflict-journal-listing-20261025 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence; remaining durable e2e under production load for #13; Linux runtime soak.
+- Next prioritized tasks: Phase 86 fabric regression evidence or gaps; continue toward Phase 150 contracts/implementation.

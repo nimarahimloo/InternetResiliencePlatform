@@ -142,7 +142,10 @@ export const createIntentRepository = (
     return (rows as IntentRecordRow[])[0];
   },
   async list(status, ownerScopeKey, limit = 100) {
-    const bounded = Math.min(100, Math.max(1, limit));
+    // The public Intent API limits client listings to 100. Internal runtime
+    // arbitration may request 101 to detect overflow and fail closed instead
+    // of silently arbitrating only a truncated 100-row subset.
+    const bounded = Math.min(101, Math.max(1, limit));
     if (status)
       return (await client.$queryRaw`SELECT * FROM "NetworkIntentRecord" WHERE "ownerScopeKey" = ${ownerScopeKey} AND "status" = ${status} ORDER BY "updatedAt" DESC LIMIT ${bounded}`) as IntentRecordRow[];
     return (await client.$queryRaw`SELECT * FROM "NetworkIntentRecord" WHERE "ownerScopeKey" = ${ownerScopeKey} ORDER BY "updatedAt" DESC LIMIT ${bounded}`) as IntentRecordRow[];
@@ -178,5 +181,53 @@ export const createIntentRepository = (
     const rows =
       await client.$queryRaw`SELECT * FROM "IntentConflictRecord" WHERE "id" = ${id} AND "ownerScopeKey" = ${ownerScopeKey} LIMIT 1`;
     return (rows as IntentConflictRow[])[0];
+  },
+});
+
+export interface RuntimeDecisionRow {
+  decisionId: string;
+  runtimeId: string;
+  correlationId: string;
+  outcome: string;
+  /** Full canonical DecisionRecord, stored as JSON. */
+  record: unknown;
+  /** Set only when a decision was produced for an owner-scoped intent handoff. */
+  ownerScopeKey?: string | null;
+  recordedAt: Date | string;
+}
+
+export interface RuntimeDecisionRepository {
+  put(row: RuntimeDecisionRow): Promise<void>;
+  get(decisionId: string): Promise<RuntimeDecisionRow | undefined>;
+  list(limit?: number): Promise<readonly RuntimeDecisionRow[]>;
+  /** Associate an existing decision with an owner scope. Never reassigns an owned decision. */
+  attachOwner(decisionId: string, ownerScopeKey: string): Promise<boolean>;
+  listByOwner(ownerScopeKey: string, limit?: number): Promise<readonly RuntimeDecisionRow[]>;
+}
+
+export const createRuntimeDecisionRepository = (
+  client: Pick<DatabaseClient, '$queryRaw'>,
+): RuntimeDecisionRepository => ({
+  async put(row) {
+    // Decisions are immutable audit records: a repeated put of the same id is a no-op.
+    await client.$queryRaw`INSERT INTO "RuntimeDecisionRecord" ("decisionId","runtimeId","correlationId","outcome","record","ownerScopeKey","recordedAt") VALUES (${row.decisionId},${row.runtimeId},${row.correlationId},${row.outcome},${jsonValue(row.record)}::jsonb,${row.ownerScopeKey ?? null},${row.recordedAt}) ON CONFLICT ("decisionId") DO NOTHING`;
+  },
+  async get(decisionId) {
+    const rows =
+      await client.$queryRaw`SELECT * FROM "RuntimeDecisionRecord" WHERE "decisionId" = ${decisionId} LIMIT 1`;
+    return (rows as RuntimeDecisionRow[])[0];
+  },
+  async list(limit = 100) {
+    const bounded = Math.min(1000, Math.max(1, limit));
+    return (await client.$queryRaw`SELECT * FROM "RuntimeDecisionRecord" ORDER BY "recordedAt" DESC LIMIT ${bounded}`) as RuntimeDecisionRow[];
+  },
+  async attachOwner(decisionId, ownerScopeKey) {
+    const updated =
+      await client.$queryRaw`UPDATE "RuntimeDecisionRecord" SET "ownerScopeKey" = ${ownerScopeKey} WHERE "decisionId" = ${decisionId} AND "ownerScopeKey" IS NULL RETURNING "decisionId"`;
+    return Array.isArray(updated) && updated.length > 0;
+  },
+  async listByOwner(ownerScopeKey, limit = 100) {
+    const bounded = Math.min(1000, Math.max(1, limit));
+    return (await client.$queryRaw`SELECT * FROM "RuntimeDecisionRecord" WHERE "ownerScopeKey" = ${ownerScopeKey} ORDER BY "recordedAt" DESC LIMIT ${bounded}`) as RuntimeDecisionRow[];
   },
 });

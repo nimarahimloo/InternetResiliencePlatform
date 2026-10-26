@@ -139,7 +139,7 @@ export interface ConflictApiStore {
 
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
-const ownershipKey = (ownership: IntentOwnership): string =>
+export const ownershipKey = (ownership: IntentOwnership): string =>
   ownership.organizationId
     ? `org:${ownership.organizationId}`
     : `principal:${ownership.principalId}`;
@@ -172,15 +172,23 @@ export class InMemoryIntentStore implements IntentApiStore, ConflictApiStore {
       idempotencyFingerprint?: string;
     }
   >();
-  private readonly conflicts: ArbitrationConflict[] = [];
+  private readonly conflicts: { conflict: ArbitrationConflict; ownerScopeKey: string }[] = [];
 
-  recordConflict(_conflict: ArbitrationConflict): void {
-    this.conflicts.push(_conflict);
+  recordConflict(
+    conflict: ArbitrationConflict,
+    ownership: IntentOwnership = { principalId: 'unknown' },
+  ): void {
+    this.conflicts.push({ conflict: clone(conflict), ownerScopeKey: ownershipKey(ownership) });
   }
 
-  async getConflict(id: string): Promise<ArbitrationConflict | undefined> {
-    return this.conflicts.find(
-      (conflict) =>
+  async getConflict(
+    id: string,
+    ownership: IntentOwnership,
+  ): Promise<ArbitrationConflict | undefined> {
+    const scopeKey = ownershipKey(ownership);
+    const entry = this.conflicts.find(
+      ({ conflict, ownerScopeKey }) =>
+        ownerScopeKey === scopeKey &&
         createHash('sha256')
           .update(
             JSON.stringify([
@@ -189,10 +197,12 @@ export class InMemoryIntentStore implements IntentApiStore, ConflictApiStore {
               conflict.reason,
               conflict.resolution,
               conflict.timestamp,
+              ownershipKey(ownership),
             ]),
           )
           .digest('hex') === id,
     );
+    return entry ? clone(entry.conflict) : undefined;
   }
 
   async listConflicts(
@@ -200,11 +210,13 @@ export class InMemoryIntentStore implements IntentApiStore, ConflictApiStore {
     limit: number,
     since?: Date,
   ): Promise<readonly ArbitrationConflict[]> {
-    let conflicts = this.conflicts;
+    let conflicts = this.conflicts
+      .filter((entry) => entry.ownerScopeKey === ownershipKey(ownership))
+      .map((entry) => entry.conflict);
     if (since) {
-      conflicts = conflicts.filter((c) => new Date(c.timestamp) > since);
+      conflicts = conflicts.filter((conflict) => new Date(conflict.timestamp) > since);
     }
-    return Object.freeze(conflicts.slice(-limit));
+    return Object.freeze(conflicts.slice(-limit).map(clone));
   }
 
   async get(id: string, ownership: IntentOwnership): Promise<NetworkIntent | undefined> {
@@ -327,7 +339,7 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
     this.repository = createIntentRepository(client);
   }
 
-  private conflictId(conflict: ArbitrationConflict): string {
+  private conflictId(conflict: ArbitrationConflict, ownerScopeKey: string): string {
     return createHash('sha256')
       .update(
         JSON.stringify([
@@ -336,6 +348,7 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
           conflict.reason,
           conflict.resolution,
           conflict.timestamp,
+          ownerScopeKey,
         ]),
       )
       .digest('hex');
@@ -351,7 +364,7 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
     while (this.conflictMirror.length > 1000) this.conflictMirror.shift();
     try {
       await this.repository.recordConflict({
-        id: this.conflictId(conflict),
+        id: this.conflictId(conflict, scopeKey),
         intentAId: conflict.intentA.intentId,
         intentBId: conflict.intentB.intentId,
         reason: conflict.reason,
@@ -361,7 +374,7 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
       });
     } catch {
       // Database unavailable: retain locally and retry on the next read.
-      await this.conflictPending.set(this.conflictId(conflict), entry);
+      await this.conflictPending.set(this.conflictId(conflict, scopeKey), entry);
     }
   }
 
@@ -370,6 +383,7 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
     intentBId: string;
     reason: string;
     resolution: string;
+    recordedAt?: Date | string;
   }): ArbitrationConflict | undefined {
     const base = { intentId: '', desiredOutcome: '', priority: 'normal' as const, version: 1 };
     if (typeof row.intentAId !== 'string' || typeof row.intentBId !== 'string') return undefined;
@@ -384,7 +398,7 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
         row.resolution === 'merge'
           ? row.resolution
           : 'queue-b',
-      timestamp: new Date().toISOString(),
+      timestamp: row.recordedAt ? new Date(row.recordedAt).toISOString() : new Date().toISOString(),
     };
   }
 
@@ -395,7 +409,7 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
     const scopeKey = ownershipKey(ownership);
     const mirrored = this.conflictMirror.find(
       (entry) =>
-        entry.ownerScopeKey === scopeKey && this.conflictId(entry.conflict) === id,
+        entry.ownerScopeKey === scopeKey && this.conflictId(entry.conflict, entry.ownerScopeKey) === id,
     );
     if (mirrored) return clone(mirrored.conflict);
     try {
@@ -421,7 +435,7 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
       if (!entry) continue;
       try {
         await this.repository.recordConflict({
-          id: this.conflictId(entry.conflict),
+          id: this.conflictId(entry.conflict, entry.ownerScopeKey),
           intentAId: entry.conflict.intentA.intentId,
           intentBId: entry.conflict.intentB.intentId,
           reason: entry.conflict.reason,
@@ -446,11 +460,11 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
       const fromDb = rows
         .map((row) => this.toArbitrationConflict(row as never))
         .filter((conflict): conflict is ArbitrationConflict => conflict !== undefined);
-      const seen = new Set(conflicts.map((conflict) => this.conflictId(conflict)));
+      const seen = new Set(conflicts.map((conflict) => this.conflictId(conflict, scopeKey)));
       for (const conflict of fromDb) {
-        if (!seen.has(this.conflictId(conflict))) {
+        if (!seen.has(this.conflictId(conflict, scopeKey))) {
           conflicts = [...conflicts, conflict];
-          seen.add(this.conflictId(conflict));
+          seen.add(this.conflictId(conflict, scopeKey));
         }
       }
     } catch {
@@ -500,7 +514,7 @@ export class DatabaseIntentStore implements IntentApiStore, ConflictApiStore {
 export interface IntentApiOptions {
   store?: IntentApiStore & ConflictApiStore;
   database?: Pick<DatabaseClient, '$queryRaw'>;
-  onActivated?: (intent: NetworkIntent) => Promise<unknown> | unknown;
+  onActivated?: (intent: NetworkIntent, ownership: IntentOwnership) => Promise<unknown> | unknown;
   requirePermission?: (
     request: FastifyRequest,
     permission: 'runtime.inspect' | 'runtime.execute',
@@ -532,7 +546,7 @@ const idempotencyKey = (request: FastifyRequest): string => {
   return value.trim();
 };
 
-const ownership = (principal: Principal): IntentOwnership => ({
+export const ownershipOf = (principal: Principal): IntentOwnership => ({
   principalId: principal.id,
   ...(principal.organizationId ? { organizationId: principal.organizationId } : {}),
 });
@@ -545,7 +559,7 @@ export const registerIntentRoutes = (app: FastifyInstance, options: IntentApiOpt
 
   app.post('/api/v1/intents', async (request, reply) => {
     const principal = await authorize(request, 'runtime.execute');
-    const owner = ownership(principal);
+    const owner = ownershipOf(principal);
     const key = idempotencyKey(request);
     const input = createSchema.parse(request.body ?? {});
     const fingerprint = idempotencyFingerprint(input);
@@ -611,21 +625,21 @@ export const registerIntentRoutes = (app: FastifyInstance, options: IntentApiOpt
   app.get('/api/v1/intents', async (request) => {
     const principal = await authorize(request, 'runtime.inspect');
     const query = listQuery.parse(request.query ?? {});
-    const intents = await store.list(query.status, ownership(principal), query.limit);
+    const intents = await store.list(query.status, ownershipOf(principal), query.limit);
     return { success: true, data: intents, meta: { count: intents.length, limit: query.limit } };
   });
 
   app.get('/api/v1/intents/:id', async (request) => {
     const principal = await authorize(request, 'runtime.inspect');
     const { id } = idParams.parse(request.params ?? {});
-    const intent = await store.get(id, ownership(principal));
+    const intent = await store.get(id, ownershipOf(principal));
     if (!intent) throw new NotFoundAppError('intent');
     return { success: true, data: intent };
   });
 
   app.post('/api/v1/intents/:id/commands', async (request) => {
     const principal = await authorize(request, 'runtime.execute');
-    const owner = ownership(principal);
+    const owner = ownershipOf(principal);
     const { id } = idParams.parse(request.params ?? {});
     const intent = await store.get(id, owner);
     if (!intent) throw new NotFoundAppError('intent');
@@ -633,7 +647,7 @@ export const registerIntentRoutes = (app: FastifyInstance, options: IntentApiOpt
     try {
       const updated = transitionIntent(intent, command);
       await store.put(updated, owner, { expectedVersion: intent.version });
-      if (updated.status === 'active') await options.onActivated?.(updated);
+      if (updated.status === 'active') await options.onActivated?.(updated, owner);
       return { success: true, data: updated };
     } catch (error) {
       if (error instanceof ConflictAppError) throw error;
@@ -647,7 +661,7 @@ export const registerIntentRoutes = (app: FastifyInstance, options: IntentApiOpt
   app.get('/api/v1/intents/conflicts', async (request) => {
     const principal = await authorize(request, 'runtime.inspect');
     const query = conflictListQuery.parse(request.query ?? {});
-    const owner = ownership(principal);
+    const owner = ownershipOf(principal);
     const conflicts = await store.listConflicts(
       owner,
       query.limit,
@@ -669,7 +683,7 @@ export const registerIntentRoutes = (app: FastifyInstance, options: IntentApiOpt
         ownership: IntentOwnership,
       ) => Promise<ArbitrationConflict | undefined>;
     };
-    const conflict = await storeWithLookup.getConflict?.(params.id, ownership(principal));
+    const conflict = await storeWithLookup.getConflict?.(params.id, ownershipOf(principal));
     if (!conflict) throw new NotFoundAppError('conflict');
     return { success: true, data: conflict };
   });

@@ -1,36 +1,63 @@
 import { describe, expect, it } from 'vitest';
-import { createNetworkIntent } from '@irp/core';
-import { arbitrateIntents, InMemoryIntentStore } from '../src/intent/arbitration.js';
-import { compileNetworkIntent } from '../src/intent/compiler.js';
+import { InMemoryIntentStore, type IntentConflict } from '../src/intent/arbitration.js';
+import { arbitrateIntents } from '../src/intent/arbitration.js';
+import type { CompiledIntent } from '../src/domain/types.js';
 
-const arbitrationTime = new Date('2026-10-25T20:00:00.000Z');
+const makeIntent = (overrides: Partial<CompiledIntent> = {}): CompiledIntent => ({
+  intentId: 'intent-1',
+  version: 1,
+  priority: 'normal',
+  desiredOutcome: 'reach github.com',
+  target: { destination: 'github.com' },
+  constraints: {},
+  objectives: {},
+  confidence: 0.9,
+  provenance: 'test',
+  autonomy: 'SAFE_AUTOMATION',
+  scope: { destination: 'github.com' },
+  compiledAt: new Date().toISOString(),
+  ...overrides,
+});
 
-type MakeIntentOptions = {
-  id: string;
-  priority?: 'low' | 'normal' | 'high' | 'critical';
-  outcome?: string;
-  scope?: Record<string, string>;
-  version?: number;
-  compiledAt?: string;
-};
+describe('arbitrateIntents — Phase 83 Policy Conflict Resolution', () => {
+  const now = new Date('2026-10-21T12:00:00.000Z');
 
-const makeIntent = ({
-  id,
-  priority = 'normal',
-  outcome = 'reach destination',
-  scope = { destination: 'github.com' },
-  version = 1,
-  compiledAt = arbitrationTime.toISOString(),
-}: MakeIntentOptions) => {
-  const timestamp = new Date(compiledAt);
-  const base = createNetworkIntent({
-    id,
-    priority,
-    spec: { outcome, target: scope },
-    confidence: 0.9,
-    autonomy: 'SAFE_AUTOMATION',
-    createdAt: timestamp.toISOString(),
-    updatedAt: timestamp.toISOString(),
+  it('filters to effective intents and excludes stale ones', () => {
+    const effective = makeIntent({ intentId: 'eff', effectiveFrom: '2026-10-20T00:00:00.000Z' });
+    const expired = makeIntent({
+      intentId: 'exp',
+      expiresAt: '2026-10-20T00:00:00.000Z',
+    });
+    const future = makeIntent({
+      intentId: 'fut',
+      effectiveFrom: '2026-10-22T00:00:00.000Z',
+    });
+
+    const { ordered, conflicts } = arbitrateIntents([effective, expired, future], now);
+
+    expect(ordered.map((i) => i.intentId)).toEqual(['eff']);
+    expect(conflicts).toHaveLength(0);
+  });
+
+  it('orders by priority then version then recency', () => {
+    const low = makeIntent({ intentId: 'low', priority: 'low', version: 2 });
+    const high = makeIntent({ intentId: 'high', priority: 'high', version: 1 });
+    const normalNew = makeIntent({
+      intentId: 'normal-new',
+      priority: 'normal',
+      version: 3,
+      compiledAt: '2026-10-21T11:00:00.000Z',
+    });
+    const normalOld = makeIntent({
+      intentId: 'normal-old',
+      priority: 'normal',
+      version: 3,
+      compiledAt: '2026-10-21T10:00:00.000Z',
+    });
+
+    const { ordered } = arbitrateIntents([low, high, normalNew, normalOld], now);
+
+    expect(ordered.map((i) => i.intentId)).toEqual(['high', 'normal-new', 'normal-old', 'low']);
   });
 
   return compileNetworkIntent(
@@ -178,5 +205,21 @@ describe('intent arbitration', () => {
 
     await store.delete('superseded');
     expect(await store.get('superseded')).toBeUndefined();
+  });
+});
+
+describe('InMemoryIntentStore — durable conflict journal (Phase 83)', () => {
+  it('records conflicts and lists them after "restart" simulation (new instance sees prior if persisted, but in-memory is session)', async () => {
+    const store = new InMemoryIntentStore();
+    const conflict: IntentConflict = {
+      intentA: makeIntent({ intentId: 'a' }),
+      intentB: makeIntent({ intentId: 'b' }),
+      reason: 'overlap',
+      resolution: 'supersede-b',
+    };
+    await store.recordConflicts([conflict]);
+    const listed = await store.listConflicts();
+    expect(listed).toHaveLength(1);
+    expect(listed[0]).toMatchObject({ reason: 'overlap', resolution: 'supersede-b' });
   });
 });

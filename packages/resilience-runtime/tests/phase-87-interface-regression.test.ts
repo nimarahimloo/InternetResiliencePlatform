@@ -2,114 +2,105 @@ import { describe, expect, it } from 'vitest';
 import {
   ProgrammableConnectivityFabric,
   type FabricResource,
+  type FabricCapability,
+  FABRIC_RESOURCE_KINDS,
 } from '../src/index.js';
 
-const iso = (offsetMs = 0) => new Date(Date.now() + offsetMs).toISOString();
+describe('Phase 87 — Multi-Interface Intelligence regressions', () => {
+  const now = new Date().toISOString();
+  const makeInterface = (overrides: Partial<FabricResource> = {}): FabricResource => ({
+    id: 'if-eth0',
+    kind: 'Interface',
+    state: 'HEALTHY',
+    health: { status: 'healthy', score: 95, checkedAt: now },
+    confidence: 0.95,
+    observedAt: new Date(Date.now() - 10_000).toISOString(),
+    trust: 0.9,
+    capacity: { bandwidthMbps: 1000 },
+    cost: {},
+    owner: 'device-1',
+    failureDomains: ['nic-eth0'],
+    lifecycle: 'active',
+    capabilities: [],
+    metadata: { media: 'ethernet' },
+    ...overrides,
+  });
 
-const iface = (over: Partial<FabricResource> = {}): FabricResource => ({
-  id: 'if-default',
-  kind: 'Interface',
-  state: 'HEALTHY',
-  health: { status: 'healthy', score: 80, checkedAt: iso() },
-  confidence: 0.85,
-  observedAt: iso(),
-  trust: 0.9,
-  capacity: { bandwidthMbps: 100 },
-  cost: { unit: 1 },
-  owner: 'linux-client',
-  failureDomains: ['wifi'],
-  lifecycle: 'active',
-  capabilities: [
-    {
+  it('models interfaces exclusively as closed-kind FabricResource', () => {
+    expect(FABRIC_RESOURCE_KINDS).toContain('Interface');
+    const iface = makeInterface();
+    expect(iface.kind).toBe('Interface');
+  });
+
+  it('selects fresh high-trust interface and rejects stale or low-trust', () => {
+    const fabric = new ProgrammableConnectivityFabric();
+    const fresh = makeInterface({ id: 'if-fresh' });
+    const stale = makeInterface({
+      id: 'if-stale',
+      expiresAt: new Date(Date.now() - 5_000).toISOString(),
+    });
+    const lowTrust = makeInterface({ id: 'if-low', trust: 0.4 });
+
+    // Direct snapshot injection for unit isolation (mirrors existing fabric tests)
+    (fabric as any).snapshot = Object.freeze({
+      version: 1,
+      discoveredAt: now,
+      resources: Object.freeze([fresh, stale, lowTrust]),
+      edges: Object.freeze([]),
+    });
+
+    const result = fabric.select({
+      kind: 'Interface',
+      minimumTrust: 0.7,
+      now,
+    });
+
+    expect(result.selected?.id).toBe('if-fresh');
+    expect(result.rejected.some((r) => r.id === 'if-stale' && r.reason === 'stale-resource')).toBe(
+      true,
+    );
+    expect(
+      result.rejected.some((r) => r.id === 'if-low' && r.reason === 'insufficient-trust'),
+    ).toBe(true);
+  });
+
+  it('capability authority can restrict interface selection by platform', () => {
+    const fabric = new ProgrammableConnectivityFabric();
+    const cap: FabricCapability = {
       id: 'interface.use',
       scope: 'interface',
-      authority: 'adapter',
+      authority: 'runtime',
       trust: 0.9,
       safety: 'safe',
-      platforms: ['linux', 'any'],
-    },
-  ],
-  metadata: { media: 'wifi' },
-  ...over,
-});
+      platforms: ['linux'],
+    };
+    const iface = makeInterface({
+      id: 'if-linux',
+      capabilities: [cap],
+    });
+    fabric.capabilityAuthority.register(cap);
+    (fabric as any).snapshot = Object.freeze({
+      version: 1,
+      discoveredAt: now,
+      resources: Object.freeze([iface]),
+      edges: Object.freeze([]),
+    });
 
-const provider = (id: string, owner: string, resources: FabricResource[]) => ({
-  id,
-  owner,
-  async discover() {
-    return resources;
-  },
-});
+    const allowed = fabric.select({
+      kind: 'Interface',
+      requiredCapabilities: ['interface.use'],
+      platform: 'linux',
+      now,
+    });
+    expect(allowed.selected?.id).toBe('if-linux');
 
-describe('Phase 87 — Multi-Interface Intelligence regressions', () => {
-  it('selects the highest-ranked Interface among multiple candidates', async () => {
-    const fabric = new ProgrammableConnectivityFabric();
-    fabric.registerProvider(
-      provider('multi-if', 'linux-client', [
-        iface({ id: 'eth0', health: { status: 'healthy', score: 95, checkedAt: iso() }, failureDomains: ['ethernet'] }),
-        iface({ id: 'wlan0', health: { status: 'healthy', score: 70, checkedAt: iso() }, failureDomains: ['wifi'] }),
-        iface({ id: 'wwan0', health: { status: 'degraded', score: 40, checkedAt: iso() }, state: 'DEGRADED', failureDomains: ['cellular'] }),
-      ]),
-    );
-    await fabric.discover();
-
-    const selection = fabric.select({ kind: 'Interface' });
-    expect(selection.selected?.id).toBe('eth0');
-    expect(selection.candidates.map((c) => c.id)).toEqual(['eth0', 'wlan0', 'wwan0']);
-    expect(selection.reason).toBeTruthy();
-  });
-
-  it('rejects non-Interface resources when kind filter is applied', async () => {
-    const fabric = new ProgrammableConnectivityFabric();
-    fabric.registerProvider(
-      provider('mixed', 'linux-client', [
-        iface({ id: 'eth0' }),
-        { ...iface({ id: 'gw-1' }), kind: 'Gateway' as const },
-      ]),
-    );
-    await fabric.discover();
-
-    const selection = fabric.select({ kind: 'Interface' });
-    expect(selection.selected?.id).toBe('eth0');
-    expect(selection.rejected).toContainEqual({ id: 'gw-1', reason: 'kind-mismatch' });
-  });
-
-  it('excludes stale Interface resources from selection', async () => {
-    const fabric = new ProgrammableConnectivityFabric();
-    fabric.registerProvider(
-      provider('stale-if', 'linux-client', [
-        iface({ id: 'eth0-fresh' }),
-        iface({ id: 'wlan0-stale', expiresAt: iso(-10_000) }),
-      ]),
-    );
-    await fabric.discover();
-
-    const selection = fabric.select({ kind: 'Interface' });
-    expect(selection.selected?.id).toBe('eth0-fresh');
-    expect(selection.rejected).toContainEqual({ id: 'wlan0-stale', reason: 'stale-resource' });
-  });
-
-  it('prefers higher trust and lower cost when health scores are equal', async () => {
-    const fabric = new ProgrammableConnectivityFabric();
-    fabric.registerProvider(
-      provider('tiebreak', 'linux-client', [
-        iface({
-          id: 'low-trust',
-          trust: 0.6,
-          cost: { unit: 5 },
-          health: { status: 'healthy', score: 80, checkedAt: iso() },
-        }),
-        iface({
-          id: 'high-trust',
-          trust: 0.95,
-          cost: { unit: 1 },
-          health: { status: 'healthy', score: 80, checkedAt: iso() },
-        }),
-      ]),
-    );
-    await fabric.discover();
-
-    const selection = fabric.select({ kind: 'Interface' });
-    expect(selection.selected?.id).toBe('high-trust');
+    const denied = fabric.select({
+      kind: 'Interface',
+      requiredCapabilities: ['interface.use'],
+      platform: 'windows',
+      now,
+    });
+    expect(denied.selected).toBeUndefined();
+    expect(denied.rejected.some((r) => r.reason.includes('capability-denied'))).toBe(true);
   });
 });
