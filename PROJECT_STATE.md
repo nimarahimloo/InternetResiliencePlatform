@@ -5,7 +5,7 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phase 83 — Policy Conflict Resolution has arbitration implementation on `main` (intent arbitration, conflict detection, ordered effective intents). Disposition remains PARTIAL pending full durable journal e2e evidence.
-- **Current main HEAD inspected (2026-10-24):** `d4fd35f078ba8f2bfec19459a82742cf2f02f9b8`.
+- **Current main HEAD inspected (2026-10-21):** `6db4989311095de1a03738d09ef67d78e5edb0a1`.
 - **Issue #12 progress:** The Phase 1–38 evidence register is incomplete: Phases 1–15 are mapped; Phases 16–38 still need evidence reconstruction. Historical paths and test-count records for Phases 39–78 do not establish phase acceptance on the current SHA. Those phases remain PARTIAL unless a separately documented external blocker applies, pending phase-specific acceptance verification and fresh exact-SHA CI evidence.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence).
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -15,21 +15,13 @@
 - **Phase 81 status:** Intent Translation / Compilation is implemented on `main` in `packages/resilience-runtime/src/intent/compiler.ts` (`compileNetworkIntent`, `isCompiledIntentEffective`). Pure, deterministic, side-effect free. Tests present.
 - **Phase 82 status:** Intent-scoped Policy Decision & Enforcement is implemented on `main` via `packages/resilience-runtime/src/intent/governance.ts` and autonomy gates in arbitration. Admission decisions, stale rejection, mode-gated mutationAllowed. Tests present. Broader declarative policy language remains later roadmap work.
 - **Phase 83 status:** Policy Conflict Resolution implementation present in `arbitration.ts` (arbitrateIntents, InMemoryIntentStore, PostgresIntentStore). Dedicated unit tests added covering no-conflict, priority supersession, version supersession, stale exclusion and store recording. Scopes overlap now requires matching key+value. Disposition PARTIAL pending CI evidence on current SHA.
-- **Phase 84 status:** Safety Constraints & Change Governance contract formalized. Existing `SafetyRollbackRecoveryKernel` and intent governance map to acceptance criteria. Regression coverage in `safety-kernel.test.ts` covers blast-radius rejection, checkpoint/rollback, fail-closed paths and no-execution invariant. Disposition PARTIAL pending exact-SHA CI evidence.
-- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Current main SHA is `d4fd35f078ba8f2bfec19459a82742cf2f02f9b8`; exact-SHA Release Gate evidence must be verified before any stronger release claim.
+- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Current main SHA is `a35c48dccc71b8ee5b931416d3bd95ccd60a14db`; exact-SHA Release Gate evidence must be verified before any stronger release claim.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–82, but it must not be represented as certified until its evidence exists.
-- **Phases 85–150:** contracts for 79–92 exist; implementation for 84+ remains partial or not started. No new runtime authority introduced. ResilienceRuntime remains the sole production mutation authority.
+- **Phases 83–150:** contracts for 79–92 exist; implementation for 83+ remains partial or not started. No new runtime authority introduced. ResilienceRuntime remains the sole production mutation authority.
 
-## Phase 79–84 summary
+## Phase 79–83 summary
 
-Phases 79–84 establish the intent model, API ingestion boundary, pure compilation to CompiledIntent, intent-scoped admission/enforcement, deterministic multi-intent conflict resolution, and formalized safety/blast-radius/checkpoint governance without introducing a second control plane. Downstream phases must consume these contracts.
-
-## Autonomous engineer checkpoint (2026-10-24)
-
-- Starting base SHA (upstream main): `d4fd35f078ba8f2bfec19459a82742cf2f02f9b8`
-- Work: Phase 84 evidence mapping and project-state update on branch `phase/84-safety-regression-evidence`
-- PR: to be opened against upstream main
-- Next: verify CI on PR, continue Phase 85+ evidence, Linux runtime gates (#254, #323)
+Phases 79–83 establish the intent model, API ingestion boundary, pure compilation to CompiledIntent, intent-scoped admission/enforcement, and deterministic multi-intent conflict resolution (priority/version supersession, overlapping scope detection) without introducing a second control plane. Downstream phases must consume these contracts.
 
 ## Phase 71 certification prerequisites
 
@@ -50,6 +42,62 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 
 ## Architecture invariants (unchanged)
 
+## Autonomous engineer checkpoint (2026-10-25)
+
+- Starting base SHA: 216b26ffa67a00da7c106552bac02052edf0eaff
+- Ending base SHA: (pending this PR)
+- Completed this run: added evidence map to Phase 86 Unified Connectivity Fabric contract, linking acceptance criteria to existing fabric.ts / fabric-lifecycle.ts / fabric-authority.ts and fabric*.test.ts coverage (illegal transitions fail-closed, freshness, capability authority). Updated phase-86.md. No runtime changes.
+- Branches/PRs: phase/86-fabric-evidence-map-20261025 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 87 multi-interface evidence or gaps; continue roadmap to Phase 150.
+
+
 - ResilienceRuntime remains the canonical runtime authority.
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
+
+## Autonomous engineer checkpoint (2026-10-24)
+
+- Starting base SHA: d4fd35f078ba8f2bfec19459a82742cf2f02f9b8 (upstream/main)
+- Ending base SHA: (pending this PR)
+- Completed this run: added Phase 86 fabric regression tests covering illegal state transitions (fail-closed), freshness expiry classification, and capability authority trust/runtime gates. Updated phase-86 evidence map. No runtime authority changes.
+- Branches/PRs: phase/86-fabric-regression-evidence (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
+- Next prioritized tasks: durable conflict journal restart tests; Phase 87 multi-interface evidence or gaps; continue roadmap to Phase 150.
+
+## Autonomous engineer checkpoint (2026-10-24 run 2)
+
+- Starting base SHA: 80ee01f7d8f2dc1d087e844881d91799af9e41a5 (upstream/main)
+- Ending base SHA: (pending this PR)
+- Completed this run: added Phase 87 multi-interface regression tests covering Interface/Link FabricResource modeling, freshness partition, diverse failure-domain selection, and capability-authority platform restriction. Updated phase-87 evidence map. No runtime authority changes.
+- Branches/PRs: phase/87-multi-interface-regression-evidence (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI for Phase 84 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 85 drift assurance evidence.
+
+## Autonomous engineer checkpoint (2026-10-23 evening)
+
+- Starting base SHA: `7a89c1286a5185c0e333da07af33997b1d789cee`
+- Ending base SHA: (pending this PR)
+- Completed this run: mapped existing Phase 85 observe-only drift detector and intent-drift.test.ts coverage to the acceptance criteria. Updated phase-85 evidence map. No runtime changes.
+- Branches/PRs: phase/85-drift-evidence-map-20261023 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence for Phase 85 tests; durable conflict-journal restart coverage for #13; Linux runtime soak.
+- Next prioritized tasks: durable conflict journal restart tests for #13; Phase 86 fabric contract evidence or implementation gaps.
+
+## Autonomous engineer checkpoint (2026-10-25)
+
+- Starting base SHA: `216b26ffa67a00da7c106552bac02052edf0eaff`
+- Ending base SHA: (pending this PR)
+- Completed this run: added `listConflicts` to `PostgresIntentStore` and the `IntentStore` contract so the durable arbitration-conflict journal can be listed after restart. Added regression test simulating process restart that records then lists the journaled conflict. Updated Phase 83 evidence map. No new runtime authority.
+- Branches/PRs: phase/83-durable-conflict-journal-listing-20261025 (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence; remaining durable e2e under production load for #13; Linux runtime soak.
+- Next prioritized tasks: Phase 86 fabric regression evidence or gaps; continue toward Phase 150 contracts/implementation.
