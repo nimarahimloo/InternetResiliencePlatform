@@ -65,3 +65,13 @@ Provide intelligence over multiple network interfaces on a device (Wi-Fi, Ethern
 
 - Tracking: issue #14
 - External blockers remain in issue #4
+
+## Evidence map (this change)
+
+| Criterion | Location |
+|-----------|----------|
+| Multi-interface diverse selection (disjoint failure domains) | `packages/resilience-runtime/tests/phase-87-multi-interface-regression.test.ts` |
+| Shared failure-domain fallback | same |
+| Interface freshness classification | same |
+| Interface / Link kind modeling | same |
+| Existing fabric suites | `packages/resilience-runtime/tests/fabric*.test.ts` |
