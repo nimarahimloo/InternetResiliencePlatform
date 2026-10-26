@@ -57,3 +57,12 @@ Phase 43 is implementation-complete when repository validation, typecheck, unit 
 **Verification status:** repository-side implementation is documented as verification-pending until repository validation, typecheck, unit tests, build, API smoke and Docker/runtime CI have passed on the resulting commit.
 
 **External boundary:** independently hosted regional probes are required for real multi-vantage operation. Their absence must not be represented as successful regional validation.
+
+
+## Evidence anchors (reconstruction; not completion proof)
+
+- Owning package: `@irp/resilience-runtime`
+- Implementation: `packages/resilience-runtime/src/federation/probe-federation.ts`, `packages/resilience-runtime/src/federation/federated-advisory.ts`
+- API integration: `apps/api/src/probe-federation-api.ts`
+- Historical package test evidence: `docs/audits/evidence/2026-10-12-finalization/test-counts.tsv`
+- Verification boundary: historical package test counts do not establish passing CI on the current source SHA or real regional probe operation. Keep repository verification pending until current-SHA gates pass; external regional validation remains separate.

@@ -358,7 +358,7 @@
       "probe": {
         "doc": "docs/phases/phase-39.md",
         "recordedStatus": "IMPLEMENTED / verification state inherited from current repository gates",
-        "resolvedReferences": 5,
+        "resolvedReferences": 6,
         "missingReferences": [],
         "packages": [
           "@irp/auth"
@@ -430,7 +430,7 @@
       "probe": {
         "doc": "docs/phases/phase-43.md",
         "recordedStatus": "",
-        "resolvedReferences": 3,
+        "resolvedReferences": 4,
         "missingReferences": [],
         "packages": [
           "@irp/resilience-runtime"

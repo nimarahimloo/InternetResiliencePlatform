@@ -25,7 +25,8 @@ import { PrivilegedMutationBoundary, createPrivilegedMutationBoundary } from './
 import { RuntimeActionVerifier } from './verification/verification.js';
 import { FailoverRecoveryProvider } from './recovery/recovery.js';
 import { createDecisionRecord } from './decisions/records.js';
-import { InMemoryDecisionStore, InMemoryIncidentStore } from './stores/memory.js';
+import { InMemoryIncidentStore } from './stores/memory.js';
+import { MirroredDecisionStore } from './stores/mirrored-decision-store.js';
 import {
   EvidencePreservingEventSink,
   type EvidenceExporter,
@@ -38,7 +39,12 @@ import {
   type RuntimeAdapterRegistry,
 } from './adapter-registry.js';
 import { ClassifiedTelemetrySink } from './events/evidence-sink.js';
-import type { DecisionProvider, ObservationProvider, TelemetrySink } from './ports/ports.js';
+import type {
+  DecisionProvider,
+  DecisionStore,
+  ObservationProvider,
+  TelemetrySink,
+} from './ports/ports.js';
 import { CanonicalDecisionProvider } from './canonical-decision-provider.js';
 import { DecisionOrchestrator } from './decision-orchestration.js';
 import type { CanonicalNetworkControlPlane } from './canonical-network-adapter.js';
@@ -74,6 +80,12 @@ export interface ResilienceRuntimeOptions {
   eventExporter?: EvidenceExporter;
   safetyKernel?: SafetyKernelOptions;
   intentStore?: IntentStore;
+  /**
+   * Optional durable decision mirror (for example PostgreSQL). The runtime keeps
+   * its own local decision authority; durable write failures degrade durability
+   * and are counted, they never fail or stop a cycle.
+   */
+  decisionStore?: DecisionStore;
   /** Canonical knowledge boundary for outcome-driven ranking. */
   knowledgeStore?: KnowledgeStore;
   /**
@@ -119,7 +131,7 @@ export class ResilienceRuntime {
   readonly events: EvidencePreservingEventSink;
   readonly telemetry: TelemetrySink;
   readonly telemetryRegistry: MetricsRegistry;
-  readonly decisions = new InMemoryDecisionStore();
+  readonly decisions: DecisionStore;
   readonly incidents = new InMemoryIncidentStore();
   /**
    * Assigned in the constructor: it depends on `events`, which itself depends
@@ -149,6 +161,10 @@ export class ResilienceRuntime {
     options: ResilienceRuntimeOptions = {},
   ) {
     this.runtimeId = options.runtimeId ?? 'runtime-default';
+    this.decisions = new MirroredDecisionStore(options.decisionStore, () => {
+      this.counters = { ...this.counters, degradedTotal: this.counters.degradedTotal + 1 };
+      this.recordMetric('runtime_degraded_total', this.counters.degradedTotal);
+    });
     this.telemetry = new ClassifiedTelemetrySink(options.telemetrySink);
     this.events = new EvidencePreservingEventSink({
       ...(options.eventExporter !== undefined ? { external: options.eventExporter } : {}),
