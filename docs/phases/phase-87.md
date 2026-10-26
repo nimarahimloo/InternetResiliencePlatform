@@ -33,6 +33,15 @@ Provide intelligence over multiple network interfaces on a device (Wi-Fi, Ethern
 - Full multi-path bonding or application-aware routing (later phases).
 - Production device evidence on real multi-interface hardware (issue #4).
 
+## Evidence map (this change)
+
+| Criterion | Location |
+|-----------|----------|
+| Diverse failure-domain-disjoint interface selection | `packages/resilience-runtime/tests/phase-87-multi-interface-regression.test.ts` |
+| Insufficient diversity fallback | same |
+| Interface freshness classification | same |
+| Existing fabric suites | `packages/resilience-runtime/tests/fabric*.test.ts` |
+
 ## Acceptance criteria
 
 1. Interfaces and links are modeled exclusively as `FabricResource` instances of the closed kind set; no competing interface registry exists.
@@ -56,3 +65,13 @@ Provide intelligence over multiple network interfaces on a device (Wi-Fi, Ethern
 
 - Tracking: issue #14
 - External blockers remain in issue #4
+
+## Evidence map (this change)
+
+| Criterion | Location |
+|-----------|----------|
+| Multi-interface diverse selection (disjoint failure domains) | `packages/resilience-runtime/tests/phase-87-multi-interface-regression.test.ts` |
+| Shared failure-domain fallback | same |
+| Interface freshness classification | same |
+| Interface / Link kind modeling | same |
+| Existing fabric suites | `packages/resilience-runtime/tests/fabric*.test.ts` |

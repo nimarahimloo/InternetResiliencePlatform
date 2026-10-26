@@ -136,6 +136,11 @@ export interface IntentStore {
    * persisted wherever the runtime persists intents.
    */
   readonly recordConflicts?: (conflicts: readonly IntentConflict[]) => Promise<void>;
+  /**
+   * List previously journaled conflicts. Optional; used for restart evidence
+   * and API surfaces that need to surface the durable journal.
+   */
+  readonly listConflicts?: () => Promise<readonly IntentConflict[]>;
 }
 
 /**

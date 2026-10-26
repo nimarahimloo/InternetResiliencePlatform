@@ -95,6 +95,51 @@ describe('PostgresIntentStore (Phase 2: Persistence)', () => {
     );
   });
 
+  it('lists journaled conflicts after a simulated restart (durable journal survives re-init)', async () => {
+    // First process: record
+    mockPool.query.mockResolvedValueOnce({ rows: [] });
+    await store.recordConflicts([
+      {
+        intentA: { intentId: 'restart-a' },
+        intentB: { intentId: 'restart-b' },
+        reason: 'overlap-restart',
+        resolution: 'supersede-b',
+      } as never,
+    ]);
+
+    // Simulate process restart: new store instance, pool reconnected
+    const restarted = new PostgresIntentStore({
+      host: 'localhost',
+      port: 5432,
+      database: 'test',
+      user: 'test',
+      password: 'test',
+    });
+    restarted['pool'] = mockPool;
+
+    mockPool.query.mockResolvedValueOnce({
+      rows: [
+        {
+          intent_a_id: 'restart-a',
+          intent_b_id: 'restart-b',
+          reason: 'overlap-restart',
+          resolution: 'supersede-b',
+          recorded_at: new Date().toISOString(),
+        },
+      ],
+    });
+
+    const listed = await restarted.listConflicts();
+    expect(listed).toHaveLength(1);
+    expect(listed[0]?.intentA.intentId).toBe('restart-a');
+    expect(listed[0]?.intentB.intentId).toBe('restart-b');
+    expect(listed[0]?.reason).toBe('overlap-restart');
+    expect(listed[0]?.resolution).toBe('supersede-b');
+    expect(mockPool.query).toHaveBeenCalledWith(
+      expect.stringContaining('SELECT intent_a_id, intent_b_id, reason, resolution, recorded_at'),
+    );
+  });
+
   it('upserts intent with correct fields', async () => {
     const now = new Date();
     const draftIntent = createNetworkIntent({

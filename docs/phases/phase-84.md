@@ -20,7 +20,7 @@ Formalize bounded safety constraints and change-governance rules that every priv
 - `@irp/resilience-runtime` — `src/safety/safety-kernel.ts` (`SafetyRollbackRecoveryKernel`, `SafetyAssessment`, `SafetyViolationError`)
 - Intent governance: `src/intent/governance.ts` (`enforceAutonomy`, admission decisions)
 - Consumed by privileged mutation boundary and closed-loop controller
-- Tests: `packages/resilience-runtime/tests/safety-kernel.test.ts`, `packages/resilience-runtime/tests/intent-governance.test.ts`
+- Tests: `packages/resilience-runtime/tests/safety-kernel.test.ts` (blast-radius, checkpoint/rollback, fail-closed, no-execute invariant)
 
 ## Scope
 
@@ -45,17 +45,15 @@ Formalize bounded safety constraints and change-governance rules that every priv
 4. Unit tests covering blast-radius rejection, successful checkpoint/rollback, and admission matrix (ALLOW / DENY / REQUIRE_APPROVAL) pass in the owning package.
 5. No new mutation path is introduced that bypasses the safety kernel or intent governance.
 
-## Evidence map (SHA `2091b8a26c369ffe1bfe4e0736246ab51a74e7f6`)
+## Evidence map (current main)
 
 | Criterion | Location |
 |-----------|----------|
-| Blast-radius rejection (default + configured) | `packages/resilience-runtime/tests/safety-kernel.test.ts` (`blocks excessive blast radius`, `honors a configured maxBlastRadius...`) |
-| Invalid risk / missing capability fail-closed | same suite (`fails closed on invalid plan risk`, `rejects a mutating plan missing a required capability`) |
-| Checkpoint / rollback | same suite (`captures a checkpoint...`, `rolls back a checkpoint...`) |
-| No execute method | same suite (`exposes no execution method...`) |
-| Admission matrix | `packages/resilience-runtime/tests/intent-governance.test.ts` |
-| Safety kernel source | `packages/resilience-runtime/src/safety/safety-kernel.ts` |
-| Intent governance source | `packages/resilience-runtime/src/intent/governance.ts` |
+| Blast-radius rejection & assessment | `packages/resilience-runtime/tests/safety-kernel.test.ts` (`blocks excessive blast radius`, invalid risk, expired/cancelled/untrusted) |
+| Checkpoint / rollback | same file (`captures a checkpoint...`, `rolls back a checkpoint...`) |
+| Recovery delegation | same file (`delegates verification recovery...`, transaction identity stamping) |
+| No-execution invariant | same file (`exposes no execution method...`) + architecture guards |
+| Intent governance admission | `packages/resilience-runtime/tests/intent-governance.test.ts` |
 
 ## Verification boundary
 
