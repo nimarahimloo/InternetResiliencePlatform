@@ -2,61 +2,72 @@
 
 ## Status
 
-**Contract formalized (issue #14).** Existing DNS, tunnel, and proxy packages plus fabric resource kinds provide foundational surfaces. Full orchestration of DNS resolution paths, tunnel lifecycle, and proxy selection as first-class fabric consumers remains **PARTIAL** / **NOT STARTED** until this contract is accepted, PROJECT_STATE authorizes implementation, and evidence is produced. Disposition **PARTIAL** pending matrix update.
+**Contract formalized.** Existing fabric resource kinds (`Resolver`, `Tunnel`, `Proxy`) and selection logic in `packages/resilience-runtime/src/fabric.ts` provide the integration surface. Health-aware selection, stale rejection, and diversity fail-closed behavior are covered by regression tests. Disposition **PARTIAL** pending exact-SHA CI evidence.
 
 ## Objective
 
-Integrate DNS, tunnel, and proxy selection and lifecycle into the unified connectivity fabric and decision orchestration so that they participate in the same observe-decide-apply-verify loop, without creating parallel orchestration authorities.
+Integrate DNS resolvers, tunnels, and proxies as selectable fabric resources within the unified connectivity fabric so that orchestration decisions can choose among them deterministically, with freshness, health, ownership, and failure-domain awareness, without introducing a second control-plane or selection authority.
 
 ## Dependencies
 
 - Phase 86 — Unified Connectivity Fabric
 - Phase 89 — Gateway Intelligence & Selection
-- Historical Phases 8, 15, 48–52 (DNS, tunnel abstraction, providers)
 - Phase 75 — Decision Orchestration
 - Phase 77 — Safety, Rollback & Recovery Kernel
+- Existing fabric selection and lifecycle helpers
 
 ## Canonical owner
 
-- `@irp/resilience-runtime` — fabric kinds and orchestration for DNS/tunnel/proxy resources
-- `@irp/dns`, `@irp/tunnel`, connectivity packages — domain-specific engines and adapters
-- Consumed by fabric selection, closed-loop, and safety kernel
-- Tests: existing DNS, tunnel, and fabric tests
+- `@irp/resilience-runtime` — fabric selection, freshness, diversity for Resolver / Tunnel / Proxy kinds
+- Consumed by closed-loop decision and verification paths
+- Tests: `packages/resilience-runtime/tests/phase-90-dns-tunnel-proxy-regression.test.ts`
 
 ## Scope
 
-- Expose DNS resolvers, tunnels, and proxies as selectable, health-aware fabric resources with ownership and freshness.
-- Allow decision orchestration to request DNS path changes, tunnel establish/teardown, or proxy selection through existing governance.
-- Ensure all mutations remain privileged and pass the safety kernel; no direct side effects from selection.
-- Preserve deterministic fallback when external control plane is unavailable.
+- Treat DNS resolvers, tunnels, and proxies as first-class fabric resources with the same health, freshness, trust, capacity, cost, ownership, and failure-domain attributes as other kinds.
+- Support deterministic selection among candidates of each kind, preferring higher health while respecting policy and capability constraints already enforced by the fabric.
+- Reject stale or expired evidence and fail closed when a required failure-domain diversity floor cannot be met.
+- Ensure any activation or steering request for these resources continues to pass existing governance and safety boundaries.
 
 ## Non-goals
 
-- New DNS engine, tunnel protocol, or proxy implementation.
-- Automatic multi-protocol bonding without explicit policy.
-- Production external-service validation or signed client evidence (issue #4).
-- Predictive orchestration (later phases).
+- Live DNS server hosting, tunnel establishment, or proxy process management (adapter-specific).
+- Parallel DNS/tunnel/proxy control planes outside resilience-runtime.
+- Production multi-region or signed-device validation evidence.
+- Predictive ranking or ML-driven selection (later phases).
+
+## Evidence map (this change)
+
+| Criterion | Location |
+|-----------|----------|
+| Resolver selection by health | `packages/resilience-runtime/tests/phase-90-dns-tunnel-proxy-regression.test.ts` |
+| Stale Tunnel rejection | same |
+| Proxy failure-domain diversity fail-closed | same |
+| Inventory attributes (owner, failure domains, health) for all three kinds | same |
+| Fabric kinds Resolver / Tunnel / Proxy | `packages/resilience-runtime/src/fabric.ts` |
 
 ## Acceptance criteria
 
-1. DNS, tunnel, and proxy candidates appear in fabric snapshots with required attributes (id, health, capability, ownership).
-2. Selection and request paths are deterministic and exclude stale or failed candidates.
-3. Any establish, switch, or teardown request is routed through existing safety and authorization boundaries.
-4. Unit tests covering resource exposure, selection constraints, and no-bypass of safety pass in owning packages.
-5. Architecture guards continue to forbid competing orchestration authorities.
+1. Resolver, Tunnel, and Proxy inventory can be queried with required attributes (id, health, ownership, failure domains, freshness).
+2. Selection among candidates of each kind is deterministic, excludes stale or failed entries, and respects existing capability and diversity constraints.
+3. Activation or steering requests for these resources are routed through existing governance and safety kernel; no direct mutation from the fabric selection path.
+4. Unit tests covering inventory queries, health filtering, stale rejection, and diversity fail-closed behavior pass in the owning package.
+5. Architecture guards continue to forbid a competing control-plane or selection authority.
 
 ## Verification boundary
 
-- Package unit tests for resilience-runtime, dns, and tunnel packages.
-- Existing CI.
-- No claim of live DNS/tunnel/proxy mutation evidence until runtime validation exists.
+- Package unit tests for `@irp/resilience-runtime`.
+- Existing CI that runs those suites.
+- No claim of live DNS hosting, tunnel establishment, or proxy process evidence until device/runtime validation exists.
 
 ## Rollback considerations
 
-- Documentation-only until implementation.
-- Future integration must remain disableable and must not alter closed-loop stop conditions.
+- Documentation and regression tests only; no runtime authority changes.
+- Any future orchestration feature must remain safe-by-default and disableable without affecting closed-loop stop conditions or fabric integrity.
 
 ## Related issues
 
-- Tracking: issue #14
-- External blockers remain in issue #4
+- Tracking: issue #14 (connectivity fabric)
+- External blockers remain in issues #254 / #323
+
+Disposition remains PARTIAL pending exact-SHA CI evidence on the owning package tests.

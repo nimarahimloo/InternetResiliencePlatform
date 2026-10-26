@@ -15,7 +15,7 @@
 - **Phase 81 status:** Intent Translation / Compilation is implemented on `main` in `packages/resilience-runtime/src/intent/compiler.ts` (`compileNetworkIntent`, `isCompiledIntentEffective`). Pure, deterministic, side-effect free. Tests present.
 - **Phase 82 status:** Intent-scoped Policy Decision & Enforcement is implemented on `main` via `packages/resilience-runtime/src/intent/governance.ts` and autonomy gates in arbitration. Admission decisions, stale rejection, mode-gated mutationAllowed. Tests present. Broader declarative policy language remains later roadmap work.
 - **Phase 83 status:** Policy Conflict Resolution implementation present in `arbitration.ts` (arbitrateIntents, InMemoryIntentStore, PostgresIntentStore). Dedicated unit tests added covering no-conflict, priority supersession, version supersession, stale exclusion and store recording. Scopes overlap now requires matching key+value. Disposition PARTIAL pending CI evidence on current SHA.
-- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Current main SHA is `da42060aa31a7fef4ce917da6357de3f1b619a53`; exact-SHA Release Gate evidence must be verified before any stronger release claim.
+- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Current main SHA is `95d9c5edaa7b20f1d0baf0b1d6cbf63fcdd38a4e`; exact-SHA Release Gate evidence must be verified before any stronger release claim.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–82, but it must not be represented as certified until its evidence exists.
 - **Phases 83–150:** contracts for 79–92 exist; implementation for 83+ remains partial or not started. No new runtime authority introduced. ResilienceRuntime remains the sole production mutation authority.
 
@@ -78,3 +78,15 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Verified merges: none this run (Phase 88 previously merged)
 - Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
 - Next prioritized tasks: Phase 90 DNS/Tunnel/Proxy orchestration evidence or gaps; continue roadmap to Phase 150; durable journal tests.
+
+## Autonomous engineer checkpoint (2026-10-26 run 3)
+
+- Starting base SHA: 95d9c5edaa7b20f1d0baf0b1d6cbf63fcdd38a4e (upstream/main)
+- Ending base SHA: (pending this PR)
+- Completed this run: added Phase 90 DNS / Tunnel / Proxy orchestration regression tests covering Resolver selection by health, stale Tunnel rejection, Proxy failure-domain diversity fail-closed behavior, and inventory attribute exposure for all three kinds. Updated phase-90 evidence map. No runtime authority changes.
+- Branches/PRs: phase/90-dns-tunnel-proxy-evidence (this PR)
+- Actual CI: pending
+- Verified merges: none this run (Phase 89 previously merged)
+- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
+- Next prioritized tasks: Phase 91 application-aware path selection evidence or gaps; continue roadmap to Phase 150; durable journal tests.
+
