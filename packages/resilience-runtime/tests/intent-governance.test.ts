@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { compileNetworkIntent } from '../src/intent/compiler.js';
 import { selectGovernedIntents, resolveIntentGovernance } from '../src/intent/governance.js';
+import { arbitrateIntents } from '../src/intent/arbitration.js';
 import { createRuntimeContext } from '../src/context/context.js';
 import { createNetworkIntent, type IntentAutonomyLevel } from '@irp/core';
 import { DecisionOrchestrator } from '../src/decision-orchestration.js';
@@ -68,7 +69,79 @@ const trustedSimulationContext = (
   });
 };
 
+const trustedLiveContext = (
+  compiledIntent: ReturnType<typeof intent>,
+  compiledIntents?: ReturnType<typeof intent>[],
+) => {
+  const base = createRuntimeContext({
+    mode: 'live',
+    securityContext: { trusted: true },
+    capabilitySnapshot: {
+      ...createRuntimeContext({ mode: 'live' }).capabilitySnapshot,
+      trusted: true,
+    },
+  });
+
+  return createRuntimeContext({
+    ...base,
+    policySnapshot: {
+      ...base.policySnapshot,
+      policy: {
+        ...base.policySnapshot.policy,
+        allowedActions: ['route_change'],
+      },
+    },
+    compiledIntent,
+    ...(compiledIntents ? { compiledIntents } : {}),
+  });
+};
+
 describe('intent governance', () => {
+  it('does not treat intent identity alone as an overlapping scope', () => {
+    const a = {
+      ...intent('a', 'high'),
+      scope: { intentId: 'a', destination: 'github.com' },
+      desiredOutcome: 'prefer-primary',
+    };
+    const b = {
+      ...intent('b', 'high'),
+      scope: { intentId: 'b', destination: 'example.com' },
+      desiredOutcome: 'prefer-secondary',
+    };
+
+    expect(arbitrateIntents([a, b]).conflicts).toHaveLength(0);
+  });
+
+  it('detects matching target scopes while ignoring differing intent identities', () => {
+    const a = {
+      ...intent('a', 'high'),
+      scope: { intentId: 'a', destination: 'github.com' },
+      desiredOutcome: 'prefer-primary',
+    };
+    const b = {
+      ...intent('b', 'normal'),
+      scope: { intentId: 'b', destination: 'github.com' },
+      desiredOutcome: 'prefer-secondary',
+    };
+
+    expect(arbitrateIntents([a, b]).conflicts).toHaveLength(1);
+  });
+
+  it('treats conflicting values on a shared scope dimension as disjoint', () => {
+    const a = {
+      ...intent('a', 'high'),
+      scope: { intentId: 'a', destination: 'github.com', region: 'us-east' },
+      desiredOutcome: 'prefer-primary',
+    };
+    const b = {
+      ...intent('b', 'normal'),
+      scope: { intentId: 'b', destination: 'github.com', region: 'eu-west' },
+      desiredOutcome: 'prefer-secondary',
+    };
+
+    expect(arbitrateIntents([a, b]).conflicts).toHaveLength(0);
+  });
+
   it('arbitrates overlapping intents deterministically by priority', () => {
     const selected = selectGovernedIntents([intent('low', 'normal'), intent('high', 'critical')]);
     expect(selected.selectedIntent?.intentId).toBe('high');
@@ -153,6 +226,23 @@ describe('intent governance', () => {
     expect(decision.rejectedIntents.map((item) => item.intentId)).toEqual(['expired']);
     expect(decision.reasons).toContain(
       'all supplied compiled intents are outside their effective lifecycle window',
+    );
+  });
+
+  it('rejects only stale intents when mixed with an effective one and admits the effective intent', () => {
+    const effective = intent('effective', 'high');
+    const stale = {
+      ...intent('stale', 'critical'),
+      expiresAt: '2020-01-01T00:00:00.000Z',
+    };
+    const decision = resolveIntentGovernance([effective, stale], trustedLiveContext(effective));
+
+    expect(decision.admission).toBe('ALLOW');
+    expect(decision.mutationAllowed).toBe(true);
+    expect(decision.selectedIntent?.intentId).toBe('effective');
+    expect(decision.rejectedIntents.map((item) => item.intentId)).toContain('stale');
+    expect(decision.reasons).toContain(
+      'rejected 1 intent(s) outside their effective lifecycle window',
     );
   });
 });

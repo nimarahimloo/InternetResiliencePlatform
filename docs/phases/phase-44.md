@@ -96,3 +96,11 @@ Consumes historical/federated evidence from Phases 28–29 and 43. Feeds later d
 ## Definition of Done
 
 Implementation, shared contracts, API integration, tests, documentation, changelog/state synchronization, and final CI/runtime evidence must agree. Source presence alone is not completion evidence.
+
+
+## Evidence anchors (reconstruction; not completion proof)
+
+- Owning package: `@irp/historical-analysis`
+- Implementation and unit tests: `packages/historical-analysis/src/analytics.ts`, `packages/historical-analysis/src/analytics.test.ts`
+- Historical package test evidence: `docs/audits/evidence/2026-10-12-finalization/test-counts.tsv`
+- Verification boundary: historical package test counts are not current-SHA CI evidence. Keep the phase PARTIAL until acceptance criteria are mapped to tests and fresh repository/runtime verification is attached.
