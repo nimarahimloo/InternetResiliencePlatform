@@ -4,8 +4,8 @@
 
 ## Current implementation gate
 
-- **Current implementation baseline:** Phase 92 — Connectivity Service Assurance regression evidence merged (PR #415); Phase 93 Advanced Routing Control foundational regression evidence added.
-- **Current main HEAD inspected (2026-10-27):** `9d6c1d562e5c3b0e868cc03b3acd3993b0346a13` (post-PR #421 CI fix merge).
+- **Current implementation baseline:** Phase 93 — Advanced Routing Control implementation and local regression evidence complete; Phase 94 Traffic Classification contract formalized.
+- **Current main HEAD inspected (2026-10-28):** upstream `ffa2a1548b000426ffcd9c8fec18fb76e4a47ecb` (post recent fixes); fork main at `53f5ca1566755f16d82880bb49d39187011d56f5`.
 - **Issue #12 progress:** The Phase 1–38 evidence register is incomplete: Phases 1–15 are mapped; Phases 16–38 still need evidence reconstruction. Historical paths and test-count records for Phases 39–78 do not establish phase acceptance on the current SHA. Those phases remain PARTIAL unless a separately documented external blocker applies, pending phase-specific acceptance verification and fresh exact-SHA CI evidence.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence), #410/#411/#412 (durable stores / auth / PostgreSQL), #413 (reconcile project state), #420 (CodeQL workflow).
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -16,9 +16,11 @@
 - **Phase 82 status:** Intent-scoped Policy Decision & Enforcement is implemented on `main` via `packages/resilience-runtime/src/intent/governance.ts` and autonomy gates in arbitration. Admission decisions, stale rejection, mode-gated mutationAllowed. Tests present. Broader declarative policy language remains later roadmap work.
 - **Phase 83 status:** Policy Conflict Resolution implementation present in `arbitration.ts` (arbitrateIntents, InMemoryIntentStore, PostgresIntentStore). Dedicated unit tests added covering no-conflict, priority supersession, version supersession, stale exclusion and store recording. Scopes overlap now requires matching key+value. Disposition PARTIAL pending CI evidence on current SHA.
 - **Phase 92 status:** regression evidence for fabric health/freshness signals, observe-only intent drift detection, and re-selection through existing fabric.select boundary merged via PR #415. Disposition PARTIAL pending exact-SHA CI on owning package tests and full continuous assurance.
-- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Current main SHA is `9d6c1d562e5c3b0e868cc03b3acd3993b0346a13`; exact-SHA Release Gate evidence must be verified before any stronger release claim.
-- **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–92, but it must not be represented as certified until its evidence exists.
-- **Phases 93–150:** Phase 93 contract formalized and foundational regression evidence added (ranking, preferred domains, fail-closed, select boundary). Implementation for full advanced control and 94+ remains not started. No new runtime authority introduced. ResilienceRuntime remains the sole production mutation authority.
+- **Phase 93 status:** advanced route ranking, bounded compiled-intent routing preferences, fail-closed validation, and selection audit evidence are implemented in `packages/resilience-runtime/src/fabric.ts`, with regression coverage in `phase-93-advanced-routing.test.ts`. Disposition PARTIAL pending exact-SHA CI and external runtime evidence. No new runtime authority was introduced.
+- **Phase 94 status:** Traffic Classification acceptance contract formalized in `docs/phases/phase-94.md`. Implementation not started. Disposition NOT STARTED pending regression evidence.
+- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Exact-SHA Release Gate evidence must be verified before any stronger release claim.
+- **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–94, but it must not be represented as certified until its evidence exists.
+- **Phases 95–150:** not started. Their phase contracts and acceptance criteria have not yet been formalized, so implementation is not authorized. ResilienceRuntime remains the sole production mutation authority.
 
 ## Phase 79–83 summary
 
@@ -47,90 +49,13 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
 
-## Autonomous engineer checkpoint (2026-10-25)
+## Autonomous engineer checkpoint (2026-10-28)
 
-- Starting base SHA: 7872f2b298db0694cc869f4d491437770e752ad1 (upstream/main)
+- Starting base SHA: 53f5ca1566755f16d82880bb49d39187011d56f5 (fork/main; upstream at ffa2a1548b000426ffcd9c8fec18fb76e4a47ecb)
 - Ending base SHA: (pending this PR)
-- Completed this run: added Phase 87 multi-interface regression tests covering Interface selection by health, freshness filtering of stale interfaces, and platform/trust capability restrictions. Updated phase-87 evidence map. No runtime authority changes.
-- Branches/PRs: phase/87-multi-interface-evidence (this PR)
-- Actual CI: pending
-- Verified merges: none this run (Phase 86 previously merged)
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
-- Next prioritized tasks: durable conflict journal restart tests; Phase 88 multi-path evidence or gaps; continue roadmap to Phase 150.
-
-## Autonomous engineer checkpoint (2026-10-26)
-
-- Starting base SHA: 3f1bae49a99631e063c028985a6ac559ddf94f41 (upstream/main)
-- Ending base SHA: (pending this PR)
-- Completed this run: added Phase 88 multi-path regression tests covering Route selection by health, stale path rejection, failure-domain diversity fail-closed behavior, and ApplicationPath kind exposure. Updated phase-88 evidence map. No runtime authority changes.
-- Branches/PRs: phase/88-multi-path-regression-evidence (this PR)
+- Completed this run: formalized Phase 94 Traffic Classification acceptance contract in docs/phases/phase-94.md. Updated PROJECT_STATE baseline. No runtime authority changes. Classification remains bounded to existing fabric.select.
+- Branches/PRs: phase/94-traffic-classification-contract (this PR)
 - Actual CI: pending
 - Verified merges: none this run
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
-- Next prioritized tasks: Phase 89 gateway intelligence evidence or gaps; continue roadmap to Phase 150; durable journal tests.
-
-## Autonomous engineer checkpoint (2026-10-26 run 2)
-
-- Starting base SHA: da42060aa31a7fef4ce917da6357de3f1b619a53 (upstream/main)
-- Ending base SHA: (pending this PR)
-- Completed this run: added Phase 89 gateway intelligence regression tests covering Gateway selection by health, stale gateway rejection, failure-domain diversity fail-closed behavior, and inventory attribute exposure (owner, failure domains). Updated phase-89 evidence map. No runtime authority changes.
-- Branches/PRs: phase/89-gateway-intelligence-evidence (this PR)
-- Actual CI: pending
-- Verified merges: none this run (Phase 88 previously merged)
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
-- Next prioritized tasks: Phase 90 DNS/Tunnel/Proxy orchestration evidence or gaps; continue roadmap to Phase 150; durable journal tests.
-
-## Autonomous engineer checkpoint (2026-10-26 run 3)
-
-- Starting base SHA: 95d9c5edaa7b20f1d0baf0b1d6cbf63fcdd38a4e (upstream/main)
-- Ending base SHA: (pending this PR)
-- Completed this run: added Phase 90 DNS/Tunnel/Proxy orchestration regression tests covering Resolver/Tunnel/Proxy selection by health, stale rejection, failure-domain diversity fail-closed behavior, and inventory attribute exposure. Updated phase-90 evidence map. No runtime authority changes.
-- Branches/PRs: phase/90-dns-tunnel-proxy-evidence (this PR)
-- Actual CI: pending
-- Verified merges: none this run (Phase 89 previously merged)
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
-- Next prioritized tasks: Phase 91 application-aware path selection evidence or gaps; continue roadmap to Phase 150; durable journal tests.
-
-## Autonomous engineer checkpoint (2026-10-26 run 4)
-
-- Starting base SHA: 60bb534781cd641a484b73ab1536a315cf03a17b (upstream/main)
-- Ending base SHA: (pending this PR)
-- Completed this run: added Phase 91 application-aware path selection regression tests covering ApplicationPath/Service/Endpoint selection by health, stale rejection, failure-domain diversity fail-closed behavior, and inventory attribute exposure including application metadata. Updated phase-91 evidence map. No runtime authority changes.
-- Branches/PRs: phase/91-application-aware-path-evidence (this PR)
-- Actual CI: pending
-- Verified merges: none this run (Phase 90 previously merged)
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323).
-- Next prioritized tasks: Phase 92 connectivity service assurance evidence or gaps; continue roadmap to Phase 150; durable journal tests.
-
-## Autonomous engineer checkpoint (2026-10-26 run 5)
-
-- Starting base SHA: b5a484c22570c08c63364c2bd3be291d51af35ee (upstream/main, post-Phase 91 merge)
-- Ending base SHA: (pending this PR)
-- Completed this run: added Phase 92 connectivity service assurance regression tests covering fabric health/freshness as assurance signals, observe-only intent drift detection, and confirmation that re-selection remains on the existing fabric.select boundary (no parallel mutation path). Updated phase-92 evidence map and PROJECT_STATE baseline. No runtime authority changes.
-- Branches/PRs: phase/92-connectivity-service-assurance-evidence (this PR)
-- Actual CI: pending
-- Verified merges: Phase 91 previously merged (PR #414)
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage for #13; Linux runtime soak (#254/#323); production PostgreSQL / durable stores (#410/#411); auth lifecycle (#412).
-- Next prioritized tasks: Phase 93 advanced routing control evidence or gaps (if contract exists) or durable store / auth blockers; continue roadmap to Phase 150.
-
-## Autonomous engineer checkpoint (2026-10-27)
-
-- Starting base SHA: 9d6c1d562e5c3b0e868cc03b3acd3993b0346a13 (upstream/main, post-#421)
-- Ending base SHA: (pending this PR)
-- Completed this run: reconciled PROJECT_STATE.md with live main SHA and Phase 92 merge (PR #415). Formalized that Phase 92 evidence is merged; next is Phase 93. No runtime authority changes.
-- Branches/PRs: chore/update-project-state-phase-92-93 (this PR)
-- Actual CI: pending
-- Verified merges: Phase 92 previously merged (PR #415); CI fix #421 merged.
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage; Linux runtime soak (#254/#323); production PostgreSQL / durable stores (#410); auth lifecycle (#412); CodeQL config (#420).
-- Next prioritized tasks: formalize Phase 93 Advanced Routing Control contract + regression evidence; address #413 fully; continue roadmap to Phase 150.
-
-## Autonomous engineer checkpoint (2026-10-27 run 2)
-
-- Starting base SHA: b424e7e9e1f16d7f578076906c71fc54ccb54be7 (upstream/main, post-#425)
-- Ending base SHA: (pending this PR)
-- Completed this run: added Phase 93 advanced routing regression tests covering multi-attribute ranking (health/freshness/cost), preferred failure-domain constraints, fail-closed diversity shortfall, and confirmation that re-selection stays on the existing fabric.select boundary. Updated phase-93 evidence map and PROJECT_STATE baseline. No runtime authority changes.
-- Branches/PRs: phase/93-advanced-routing-evidence (this PR)
-- Actual CI: pending
-- Verified merges: none this run
-- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage; Linux runtime soak (#254/#323); production PostgreSQL / durable stores (#410); auth lifecycle (#412); CodeQL config (#420).
-- Next prioritized tasks: Phase 94 traffic classification evidence or gaps; continue roadmap to Phase 150; address remaining durable/auth blockers.
+- Blockers: exact-SHA CI evidence; durable conflict-journal restart coverage; Linux runtime soak (#254/#323); production PostgreSQL / durable stores (#410); auth lifecycle (#412); CodeQL config (#420); fork/upstream divergence.
+- Next prioritized tasks: implement Phase 94 regression evidence (classification derivation, intent preference, fail-closed); continue roadmap to Phase 150; address remaining durable/auth blockers.
