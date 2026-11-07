@@ -5,7 +5,7 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phases 94–150 implemented locally on branch `phase/94-150-implementation` (authorized by the repository owner's explicit request); each phase is PARTIAL pending exact-SHA CI evidence. Phase 93 and earlier baselines are unchanged.
-- **Current main HEAD inspected (2026-11-01):** `200de484edb0ed3105f094fba8daf85dab81158c` (previous line named `9d6c1d5`, which was stale). Independent audit and the durable identity/auth work package are in `docs/audit/` (branch `fix/durable-identity-auth`, not merged; exact-SHA GitHub CI evidence pending).
+- **Current main HEAD inspected (2026-11-07):** `2cd626e457bcf79b9f10461c58d9dad476355d78` (merge of PR #495 integration/full-cross-platform-completion). Phases 94–150 modules and docs are present on main; disposition remains PARTIAL pending exact-SHA CI evidence and external runtime validation.
 - **Issue #12 progress:** The Phase 1–38 evidence register is incomplete: Phases 1–15 are mapped; Phases 16–38 still need evidence reconstruction. Historical paths and test-count records for Phases 39–78 do not establish phase acceptance on the current SHA. Those phases remain PARTIAL unless a separately documented external blocker applies, pending phase-specific acceptance verification and fresh exact-SHA CI evidence.
 - **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence), #412 (auth lifecycle), #413 (reconcile project state), #420 (CodeQL workflow). Issue #410/#411 (durable stores / PostgreSQL): RESOLVED — PostgresDecisionStore and PostgresIncidentStore implemented; daemon uses them when DATABASE_URL is configured.
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -245,3 +245,14 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Verified merges: none
 - Blockers: exact-SHA full green; CodeQL neutral due to default-setup conflict (#420, requires repo settings); privileged netns e2e BLOCKED on hosted runners; native platform full runtime evidence external; auth production evidence (#412).
 - Next prioritized tasks: poll checks on e23346a; if netns/windows pass, consider merge readiness; address CodeQL if permissions allow; continue Phase 94-150 evidence gaps if any remain on main.
+
+## Autonomous engineer checkpoint (2026-11-07)
+
+- Starting base SHA: 2cd626e457bcf79b9f10461c58d9dad476355d78 (upstream/main)
+- Ending base SHA: (pending this PR)
+- Completed this run: reconciled PROJECT_STATE.md with live main SHA 2cd626e4 (post-PR #495). Confirmed phases 94–150 modules/docs remain on main and PARTIAL pending exact-SHA CI + external evidence. Identity repositories fail closed without DATABASE_URL in production/staging (resolveIdentityRepositories). No runtime authority changes.
+- Branches/PRs: chore/reconcile-project-state-current-sha (this PR)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence on phase suites; Linux runtime soak (#254/#323); full auth lifecycle production evidence (#412); CodeQL default/advanced conflict (#420); autonomous capacity provisioning (#463) not implemented.
+- Next prioritized tasks: address #412 auth lifecycle gaps; verify phase 94–150 test suites on current SHA; resolve CodeQL workflow; continue evidence collection for production gates.
