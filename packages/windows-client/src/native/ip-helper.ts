@@ -66,7 +66,7 @@ async function ensureIpHlp(): Promise<unknown | undefined> {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     iphlp = (ffi as any).Library('iphlpapi.dll', {
-      GetAdaptersAddresses: ['uint', ['uint', 'uint', 'pointer', 'pointer', 'pointer', 'uint']],
+      GetAdaptersAddresses: ['uint', ['uint', 'uint', 'pointer', 'pointer', 'pointer']],
       GetIpForwardTable: ['uint', ['pointer', 'pointer', 'uint']],
       GetIpAddrTable: ['uint', ['pointer', 'pointer', 'uint']],
       GetBestInterface: ['uint', ['uint', 'pointer']],
