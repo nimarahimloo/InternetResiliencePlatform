@@ -5,7 +5,7 @@
 ## Current implementation gate
 
 - **Current implementation baseline:** Phases 94–150 implemented locally on branch `phase/94-150-implementation` (authorized by the repository owner's explicit request); each phase is PARTIAL pending exact-SHA CI evidence. Phase 93 and earlier baselines are unchanged.
-- **Current main HEAD inspected (2026-11-15):** `d6e9fe2aeb517f86c3ca5a314475cbe2a8851e92` (post-merge of #499 chore/reconcile-project-state-2026-11-11). Previous inspected SHA was stale. Phases 94–150 modules and docs are present on main. Disposition PARTIAL pending exact-SHA CI evidence and external runtime verification. Independent audit and durable identity/auth work remain pending exact-SHA CI.
+- **Current main HEAD inspected (2026-11-18):** `7f1241bf095aaf4498c8dc32d821e3fb28742158` (post-merge of #522 ci/netns-hosted-runner). Phases 94–150 modules and docs are present on main. Disposition PARTIAL pending exact-SHA CI evidence and external runtime verification. Durable identity repositories fail closed in production (DATABASE_URL required); #410 remains open pending full production multi-instance evidence.
 - **Issue #12 progress:** The Phase 1–38 evidence register is incomplete: Phases 1–15 are mapped; Phases 16–38 still need evidence reconstruction. Historical paths and test-count records for Phases 39–78 do not establish phase acceptance on the current SHA. Those phases remain PARTIAL unless a separately documented external blocker applies, pending phase-specific acceptance verification and fresh exact-SHA CI evidence.
 - **Current open issues (authoritative tracker):** #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence), #410/#411 (durable stores / PostgreSQL — implementation present but issue remains open pending production evidence), #463 (Autonomous bandwidth/egress provisioning). #254 and #420 closed as completed.
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
@@ -16,7 +16,7 @@
 - **Phase 82 status:** Intent-scoped Policy Decision & Enforcement is implemented on `main` via `packages/resilience-runtime/src/intent/governance.ts` and autonomy gates in arbitration. Admission decisions, stale rejection, mode-gated mutationAllowed. Tests present. Broader declarative policy language remains later roadmap work.
 - **Phase 83 status:** Policy Conflict Resolution implementation present in `arbitration.ts` (arbitrateIntents, InMemoryIntentStore, PostgresIntentStore). Dedicated unit tests added covering no-conflict, priority supersession, version supersession, stale exclusion and store recording. Scopes overlap now requires matching key+value. Disposition PARTIAL pending CI evidence on current SHA.
 - **Phase 92 status:** regression evidence for fabric health/freshness signals, observe-only intent drift detection, and re-selection through existing fabric.select boundary merged via PR #415. Disposition PARTIAL pending exact-SHA CI on owning package tests and full continuous assurance.
-- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Current main SHA is `3f6535aee9228764f93f35ee2d7371af0e4d1e2c`; exact-SHA Release Gate evidence must be verified before any stronger release claim.
+- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Current main SHA is `7f1241bf095aaf4498c8dc32d821e3fb28742158`; exact-SHA Release Gate evidence must be verified before any stronger release claim.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–92, but it must not be represented as certified until its evidence exists.
 - **Phase 93 status:** advanced route ranking, bounded compiled-intent routing preferences, fail-closed validation, and selection audit evidence are implemented in `packages/resilience-runtime/src/fabric.ts`, with regression coverage in `phase-93-advanced-routing.test.ts`. Disposition PARTIAL pending exact-SHA CI and external runtime evidence. No new runtime authority was introduced.
 - **Phases 94–150:** phase documents and corresponding modules exist on main under `packages/resilience-runtime/src/{traffic,telemetry-plane,control-security,fleet,intelligence,dataplane,control-api,governance,scale}` with tests. All modules are additive, pure or injected-clock, advisory, and reach the network only through `PrivilegedMutationBoundary`; data-plane enforcement requires a governed transaction id. Disposition PARTIAL pending exact-SHA CI, review and external runtime evidence; no new runtime authority was introduced and `ResilienceRuntime` remains the sole production mutation authority.
@@ -267,3 +267,14 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - Verified merges: none this run
 - Blockers: exact-SHA CI evidence on current main; Linux runtime soak and external validation (#323); production PostgreSQL provisioning/verification (#410/#411); full production certification gates.
 - Next prioritized tasks: address remaining open issues with evidence where possible; continue production gate verification; do not declare Phase 150 complete without required evidence.
+
+## Autonomous engineer checkpoint (2026-11-18)
+
+- Starting base SHA: 7f1241bf095aaf4498c8dc32d821e3fb28742158 (upstream/main)
+- Ending base SHA: (pending this PR)
+- Completed this run: reconciled PROJECT_STATE.md with live main SHA 7f1241bf (post #522 netns hosted runner). Confirmed identity repositories fail-closed for production (no silent memory fallback). No runtime authority changes. Open issues #272, #323, #410, #463 remain the trackers.
+- Branches/PRs: chore/reconcile-project-state-7f1241b (this PR)
+- Actual CI: pending
+- Verified merges: #522 previously merged
+- Blockers: exact-SHA CI evidence on phase tests; production multi-instance PostgreSQL evidence for #410; Linux runtime soak (#323); autonomous capacity provisioning (#463).
+- Next prioritized tasks: address remaining production evidence gaps for durable stores; continue Phase 150 certification evidence; resolve any CI failures on current SHA.
