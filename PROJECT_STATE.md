@@ -4,10 +4,10 @@
 
 ## Current implementation gate
 
-- **Current implementation baseline:** Phase 92 — Connectivity Service Assurance regression evidence merged (PR #415); Phase 93 Advanced Routing Control foundational regression evidence added.
-- **Current main HEAD inspected (2026-10-27):** `9d6c1d562e5c3b0e868cc03b3acd3993b0346a13` (post-PR #421 CI fix merge).
+- **Current implementation baseline:** Phases 94–150 implemented on upstream main (modules and docs present under packages/resilience-runtime and docs/phases); each remains PARTIAL pending exact-SHA CI evidence and external runtime verification. Phase 93 and earlier baselines are unchanged. ResilienceRuntime remains the sole production mutation authority.
+- **Current upstream main HEAD inspected (2026-11-18):** `7f1241bf095aaf4498c8dc32d821e3fb28742158`. Fork main is behind; this update reconciles state documentation.
 - **Issue #12 progress:** The Phase 1–38 evidence register is incomplete: Phases 1–15 are mapped; Phases 16–38 still need evidence reconstruction. Historical paths and test-count records for Phases 39–78 do not establish phase acceptance on the current SHA. Those phases remain PARTIAL unless a separately documented external blocker applies, pending phase-specific acceptance verification and fresh exact-SHA CI evidence.
-- **Current open issues (authoritative tracker):** #254 (Linux Client runtime wiring), #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #284 (Workstream: Full Verification, CI/CD, Deployment & Final Evidence), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence), #410/#411/#412 (durable stores / auth / PostgreSQL), #413 (reconcile project state), #420 (CodeQL workflow).
+- **Current open issues (authoritative tracker on upstream):** #272 (EPIC: Autonomous Network Superplatform — Full-System Reconstruction & Completion), #323 (Final External Validation Gate — Remote CI, Linux Runtime Soak & Release Evidence), #410/#411 (durable stores / PostgreSQL — implementation present but issue remains open pending production evidence), #463 (Autonomous bandwidth/egress provisioning). #254 and #420 closed as completed.
 - **Phase 77 status:** implementation is complete and merged on `main`; the safety/rollback/recovery kernel is available from `@irp/resilience-runtime`.
 - **Phase 78 status:** the bounded closed-loop controller is implemented and present on `main`.
 - **Phase 79 status:** NetworkIntent model, lifecycle transitions, effective-window evaluation, autonomy levels and dedicated tests are implemented and present on `main` in `packages/core/src/intent.ts` and `intent.test.ts`. Exported from the core barrel.
@@ -16,17 +16,18 @@
 - **Phase 82 status:** Intent-scoped Policy Decision & Enforcement is implemented on `main` via `packages/resilience-runtime/src/intent/governance.ts` and autonomy gates in arbitration. Admission decisions, stale rejection, mode-gated mutationAllowed. Tests present. Broader declarative policy language remains later roadmap work.
 - **Phase 83 status:** Policy Conflict Resolution implementation present in `arbitration.ts` (arbitrateIntents, InMemoryIntentStore, PostgresIntentStore). Dedicated unit tests added covering no-conflict, priority supersession, version supersession, stale exclusion and store recording. Scopes overlap now requires matching key+value. Disposition PARTIAL pending CI evidence on current SHA.
 - **Phase 92 status:** regression evidence for fabric health/freshness signals, observe-only intent drift detection, and re-selection through existing fabric.select boundary merged via PR #415. Disposition PARTIAL pending exact-SHA CI on owning package tests and full continuous assurance.
-- **Release state:** Existing `v0.2.0` and `v0.2.1` are historical developer-preview releases. The release workflow now publishes normal GitHub Releases from version tags after platform bundles and packaging smoke checks succeed; it no longer requires a separate exact-SHA Release Gate. Production readiness remains a separate evidence-based claim.
+- **Release state:** GitHub Releases `v0.2.0` and `v0.2.1` are developer-preview/prerelease evidence, not production certification. Production certification remains open. Exact-SHA Release Gate evidence must be verified before any stronger release claim.
 - **Phase 71 is a separate release-evidence gate:** it does not block architecture implementation in Phases 72–92, but it must not be represented as certified until its evidence exists.
-- **Phases 93–150:** Phase 93 contract formalized and foundational regression evidence added (ranking, preferred domains, fail-closed, select boundary). Implementation for full advanced control and 94+ remains not started. No new runtime authority introduced. ResilienceRuntime remains the sole production mutation authority.
+- **Phase 93 status:** advanced route ranking, bounded compiled-intent routing preferences, fail-closed validation, and selection audit evidence are implemented in `packages/resilience-runtime/src/fabric.ts`, with regression coverage in `phase-93-advanced-routing.test.ts`. Disposition PARTIAL pending exact-SHA CI and external runtime evidence. No new runtime authority was introduced.
+- **Phases 94–150:** phase documents and corresponding modules exist on main under `packages/resilience-runtime/src/{traffic,telemetry-plane,control-security,fleet,intelligence,dataplane,control-api,governance,scale}` with tests. All modules are additive, pure or injected-clock, advisory, and reach the network only through `PrivilegedMutationBoundary`; data-plane enforcement requires a governed transaction id. Disposition PARTIAL pending exact-SHA CI, review and external runtime evidence; no new runtime authority was introduced and `ResilienceRuntime` remains the sole production mutation authority.
 
 ## Phase 79–83 summary
 
 Phases 79–83 establish the intent model, API ingestion boundary, pure compilation to CompiledIntent, intent-scoped admission/enforcement, and deterministic multi-intent conflict resolution (priority/version supersession, overlapping scope detection) without introducing a second control plane. Downstream phases must consume these contracts.
 
-## Release and production readiness
+## Phase 71 certification prerequisites
 
-Release publication is handled by the version-tag workflow and does not wait for a global exact-SHA gate. Production readiness remains separate and requires real device, regional, signing, security, deployment, rollback and recovery evidence. See `docs/release/RELEASE_GATE_ROADMAP.md`.
+The Phase 71 gate is limited to the release/distribution contract defined by `docs/phases/phase-71.md`. Remaining production certification (device smoke, regional validation, signing, security sign-off) is tracked in open issues and `docs/release/RELEASE_GATE_ROADMAP.md`.
 
 ## Canonical evidence locations
 
@@ -46,6 +47,20 @@ IRP's long-term objective is a safe, observable and policy-governed Internet con
 - ResilienceRuntime remains the canonical runtime authority.
 - Never restore NetworkAutopilot as a parallel production control plane.
 - No competing authorities for runtime state, policy, decisions, safety, mutation, execution, verification, recovery, intent, or orchestration.
+
+## Autonomous engineer checkpoint (2026-11-18)
+
+- Starting base SHA: a012e1eda4fba063d7f6e50a4e2a15c1a9655d08 (fork/main, behind upstream)
+- Upstream main inspected: 7f1241bf095aaf4498c8dc32d821e3fb28742158
+- Ending base SHA: (pending this PR on fork)
+- Completed this run: reconciled PROJECT_STATE.md with live upstream main SHA 7f1241bf. Confirmed phases 94–150 modules and docs exist on upstream. Updated open issues list to match live upstream state (#254 and #420 closed). No runtime authority changes. Disposition remains PARTIAL pending exact-SHA CI and external evidence (Linux soak, production PostgreSQL verification, release certification).
+- Branches/PRs: chore/update-project-state-to-upstream-7f1241bf (this PR on fork)
+- Actual CI: pending
+- Verified merges: none this run
+- Blockers: exact-SHA CI evidence on upstream; durable stores production verification (#410/#411); Linux runtime soak (#323); autonomous bandwidth provisioning (#463); fork lag behind upstream.
+- Next prioritized tasks: sync fork with upstream; verify exact-SHA CI on phase tests; address remaining production evidence gates; continue any unique gaps in 94-150.
+
+(Previous checkpoints preserved below for history.)
 
 ## Autonomous engineer checkpoint (2026-10-25)
 
