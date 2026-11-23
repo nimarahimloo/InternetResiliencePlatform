@@ -1,4 +1,28 @@
 # InternetResiliencePlatform — Canonical Project State
+# InternetResiliencePlatform — Canonical Project State
+
+> Authoritative handoff point for continuing development from any account, agent, or future session.
+
+## Autonomous engineer checkpoint (2026-11-23 live inspection) — status confirmation
+
+- Current main SHA: `bac51aea6afd8ada57d40c877cad81fb5cb9005e` (origin/main, post-merge of #536)
+- Open PR: #537 (`release/linux-enduser-ready` → main) for Linux end-user ready prerelease.
+- Verified on live main: Phases 94–150 have local implementation records and unit-test evidence in `@irp/resilience-runtime` (e.g. `packages/resilience-runtime/src/scale/certification.ts` for Phase 150); all remain PARTIAL pending exact-SHA CI evidence.
+- ResilienceRuntime remains the sole production mutation authority; no competing control plane introduced.
+- Remaining blockers (explicit, unchanged): Linux runtime soak evidence (#323); Postgres production evidence (#410/#411); exact-SHA CI on release gates; DNS write policy under non-root (intentionally disabled under `User=irp`); full production certification open.
+- Honest status: **prerelease / developer-preview only**. Not production-certified. Source presence and local tests do not constitute certification.
+- Next: owner review of PR #537; obtain external evidence for #323/#410; continue collecting exact-SHA CI without weakening gates.
+
+## Autonomous engineer checkpoint (2026-11-23 live inspection) — status confirmation
+
+- Current main SHA: `bac51aea6afd8ada57d40c877cad81fb5cb9005e` (origin/main, post-merge of #536)
+- Open PR: #537 (`release/linux-enduser-ready` → main) for Linux end-user ready prerelease.
+- Verified on live main: Phases 94–150 have local implementation records and unit-test evidence in `@irp/resilience-runtime` (e.g. `packages/resilience-runtime/src/scale/certification.ts` for Phase 150); all remain PARTIAL pending exact-SHA CI evidence.
+- ResilienceRuntime remains the sole production mutation authority; no competing control plane introduced.
+- Remaining blockers (explicit, unchanged): Linux runtime soak evidence (#323); Postgres production evidence (#410/#411); exact-SHA CI on release gates; DNS write policy under non-root (intentionally disabled under `User=irp`); full production certification open.
+- Honest status: **prerelease / developer-preview only**. Not production-certified. Source presence and local tests do not constitute certification.
+- Next: owner review of PR #537; obtain external evidence for #323/#410; continue collecting exact-SHA CI without weakening gates.
+
 
 > Authoritative handoff point for continuing development from any account, agent, or future session.
 
