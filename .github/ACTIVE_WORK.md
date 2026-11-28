@@ -4,14 +4,14 @@ Canonical coordination record for parallel agents. This file is intentionally sh
 
 ## Current baseline
 
-- Current implementation baseline: **Phases 94–150 implemented locally** (branch `phase/94-150-implementation`, PARTIAL pending exact-SHA CI). Phase 93 and earlier unchanged. ResilienceRuntime remains the sole production mutation authority.
+- Current implementation baseline: Phases 94–150 phase documents and foundational implementations present on `main` (PARTIAL pending exact-SHA CI evidence and external validation). Phase 119 tenant isolation PARTIAL. ResilienceRuntime remains the sole production mutation authority.
 - Current execution tracker: open issues **#272**, **#323**, **#410**, **#411**, **#463**.
 - Main branch: `main`
-- Current main commit reviewed: `3f6535aee9228764f93f35ee2d7371af0e4d1e2c`.
+- Current main commit reviewed: `d6fa748f4526a75845b30c6aa1bdf5e9335cd614`.
 - Phase 71 status: implementation/release contract work exists; external release certification remains open. Published GitHub Release v0.2.1 is developer-preview evidence only.
 - Release certification must not be inferred from source presence, local tests, or architecture checks alone.
 - Current work must close source → contract → consumer → entrypoint → execution → outcome gaps without creating a second control plane or declaring completion from source presence alone.
-- Open PRs: dependabot updates and state reconciliation PR (this).
+- Open PRs: none on upstream main at this checkpoint.
 
 ## Active agent slots
 
@@ -28,7 +28,7 @@ Canonical coordination record for parallel agents. This file is intentionally sh
 - One agent owns a file/package at a time. Architecture work must preserve `ResilienceRuntime` as the sole production orchestration authority.
 - Shared contract changes require integration review before dependent implementation proceeds.
 - Do not mark a workstream complete while any required verification gate is unresolved.
-- Use open issues #254/#272/#284/#323 as the current execution tracker. `docs/roadmap/MASTER_ROADMAP_V2.md` remains architectural reference material; new phases require formalized contracts and authorization.
+- Use open issues #272/#323/#410/#411/#463 as the current execution tracker. `docs/roadmap/MASTER_ROADMAP_V2.md` remains architectural reference material; new phases require formalized contracts and authorization.
 - Do not use this file to claim a CI result; link to actual CI evidence in the phase record or PR.
 - Do not start dependent runtime implementation merely because a historical phase document exists; honor the evidence-backed workstream dependency graph and current repository truth.
 - Baseline changes to this file must record the actual reviewed `main` commit; never copy an older handoff SHA forward.
